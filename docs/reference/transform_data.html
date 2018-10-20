@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • SAFE</title>
+<title>Features transformation using PDP plots — transform_data • SAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Features transformation using PDP plots — transform_data" />
+
+<meta property="og:description" content="The transform_data() function creates new variables
+using PDP plots from DALEX package and adds them to the original ones." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +50,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -102,60 +106,58 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Features transformation using PDP plots</h1>
+    
+    <div class="hidden name"><code>transform_data.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>The transform_data() function creates new variables
+using PDP plots from DALEX package and adds them to the original ones.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="transform_continuous.html">transform_continuous()</a></code> </p>
-        </td>
-        <td><p>Continuous feature transformation using PDP plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_data.html">transform_data()</a></code> </p>
-        </td>
-        <td><p>Features transformation using PDP plots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_factor.html">transform_factor()</a></code> </p>
-        </td>
-        <td><p>Factor feature transformation using factorMerger package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_propositions.html">transform_propositions()</a></code> </p>
-        </td>
-        <td><p>Features transformation using PDP plots</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>transform_data</span>(<span class='no'>data</span>, <span class='no'>propositions</span>, <span class='kw'>user_interaction</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>keep_old</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>data for which features values are to be transformed</p></td>
+    </tr>
+    <tr>
+      <th>propositions</th>
+      <td><p>list of transformations functions and interactions returned by transform_propositons() function</p></td>
+    </tr>
+    <tr>
+      <th>user_interaction</th>
+      <td><p>logical, TRUE allows the user to decide whether to keep the old variables after transformation</p></td>
+    </tr>
+    <tr>
+      <th>keep_old</th>
+      <td><p>logical, if FALSE then old variables are removed from the dataset</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>data with extra columns containing transformed variables</p>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • SAFE</title>
+<title>Factor feature transformation using factorMerger package — transform_factor • SAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,7 +30,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Factor feature transformation using factorMerger package — transform_factor" />
+
+<meta property="og:description" content="The transform_factor() function calculates a transformation function
+for the factor variable using the getOptimalPartitionDf() function from factorMerger package." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +50,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -102,60 +106,53 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Factor feature transformation using factorMerger package</h1>
+    
+    <div class="hidden name"><code>transform_factor.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>The transform_factor() function calculates a transformation function
+for the factor variable using the getOptimalPartitionDf() function from factorMerger package.</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="transform_continuous.html">transform_continuous()</a></code> </p>
-        </td>
-        <td><p>Continuous feature transformation using PDP plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_data.html">transform_data()</a></code> </p>
-        </td>
-        <td><p>Features transformation using PDP plots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_factor.html">transform_factor()</a></code> </p>
-        </td>
-        <td><p>Factor feature transformation using factorMerger package</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_propositions.html">transform_propositions()</a></code> </p>
-        </td>
-        <td><p>Features transformation using PDP plots</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>transform_factor</span>(<span class='no'>explainer</span>, <span class='no'>variable</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>explainer</th>
+      <td><p>DALEX explainer created with explain() function</p></td>
+    </tr>
+    <tr>
+      <th>variable</th>
+      <td><p>a feature for which the transformation function is to be computed</p></td>
+    </tr>
+    <tr>
+      <th>plot</th>
+      <td><p>logical, if TRUE then plots the optimal partition</p></td>
+    </tr>
     </table>
-  </div>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>transformation function for the given variable</p>
+    
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 
