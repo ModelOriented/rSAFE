@@ -1,7 +1,7 @@
 #' Continuous feature transformation using PDP plot
 #'
 #' The transform_continuous() function calculates a transformation function
-#' for the continuous variable using PDP plots from DALEX package.
+#' for the continuous variable using a PDP plot from DALEX package.
 #'
 #' @param explainer DALEX explainer created with explain() function
 #' @param variable a feature for which the transformation function is to be computed
@@ -85,10 +85,7 @@ transform_continuous <- function(explainer, variable, package = "changepoint.np"
 
   #transformation function coefficients
   if (type == "constant") {
-    trans_coef <- rep(0, n_groups)
-    for (i in 1:n_groups) {
-      trans_coef[i] <- mean(y_split[[i]])
-    }
+    trans_coef <- as.factor(1:n_groups)
   } else {
     trans_coef <- matrix(rep(0, 2*n_groups), ncol = 2)
     for (i in 1:n_groups) {
@@ -108,39 +105,79 @@ transform_continuous <- function(explainer, variable, package = "changepoint.np"
       }
     }
     if (type == "constant") {
-      return(trans_coef[interv])
+      return(as.factor(trans_coef[interv]))
     } else {
       return(trans_coef[interv,1] + trans_coef[interv,2] * value)
     }
   }
 
 
-  if (plot == TRUE) {
-    plot(sv$x, sv$y, type = "l", xlab = variable, ylab = "y")
+  #transformation propositions
+  cat(paste0("Transformation for '", variable, "' variable:\n"))
+  if (n_groups == 1) {
     if (type == "constant") {
-      for (i in 1:n_groups) {
-        segments(x_split[[i]][1], trans_coef[i],
-                 x_split[[i]][length(x_split[[i]])], trans_coef[i],
-                 col = "red", lwd = 3)
-      }
+      #cat(paste0("\t", trans_coef[1]))
+      cat("No transformation.\n") #no transformation for 1 factor
+      return(NULL)
     } else {
+      if (trans_coef[1,1]<0) {
+        sgn_coef <- " - "
+      } else {
+        sgn_coef <- " + "
+      }
+      cat(paste0("\t", trans_coef[1,2], " * ", variable, sgn_coef , abs(trans_coef[1,1])))
+    }
+  } else {
+    for (i in 1:n_groups) {
+      if (i == 1) {
+        cat(paste0("\t<=", x_bounds[1], ":   "))
+      } else if (i == n_groups) {
+        cat(paste0("\t>", x_bounds[n_groups-1], ":   "))
+      } else {
+        cat(paste0("\t(", x_bounds[i-1], ", ", x_bounds[i], "]:   "))
+      }
+      if (type == "constant") {
+        cat(paste0(as.numeric(trans_coef[i]), "\n"))
+      } else {
+        if (trans_coef[i,1]<0) {
+          sgn_coef <- " - "
+        } else {
+          sgn_coef <- " + "
+        }
+        cat(paste0(trans_coef[i,2], " * ", variable, sgn_coef, abs(trans_coef[i,1]), "\n"))
+      }
+    }
+  }
+
+
+
+
+  #plot with breakpoints indicated
+  if (plot == TRUE) {
+    p <- ggplot(data = data.frame(cbind(sv$x, sv$y)), aes(x = sv$x, y = sv$y)) +
+      geom_line() +
+      labs(x = variable, y = "y")
+
+    if (type != "constant") {
       for (i in 1:n_groups) {
-        segments(x_split[[i]][1], trans_coef[i,1] + trans_coef[i,2] * x_split[[i]][1],
-                 x_split[[i]][length(x_split[[i]])], trans_coef[i,1] + trans_coef[i,2] * x_split[[i]][length(x_split[[i]])],
-                 col = "red", lwd = 3)
+        p <- p + geom_segment(data = data.frame(x1 = x_split[[i]][1], y1 = trans_coef[i,1] + trans_coef[i,2] * x_split[[i]][1],
+                              x2 = x_split[[i]][length(x_split[[i]])], y2 = trans_coef[i,1] + trans_coef[i,2] * x_split[[i]][length(x_split[[i]])]),
+                              aes(x = x1, y = y1, xend = x2, yend = y2), colour = "red", size = 1.5)
       }
     }
 
     if (n_groups > 1) {
       for (i in 1:(n_groups-1)) {
-        abline(v = x_bounds[i], col = "blue", lty = "dashed")
+        p <- p + geom_vline(xintercept = x_bounds[i], colour = "blue", size = 1, linetype = "dotted")
       }
     }
+
+    plot(p)
 
   }
 
 
-
+  #transformation function for given variable
   return(transformation)
 
 

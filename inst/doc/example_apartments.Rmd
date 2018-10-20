@@ -21,113 +21,300 @@ library(DALEX)
 library(changepoint.np)
 library(strucchange)
 library(randomForest)
+library(ggplot2)
+library(utils)
+library(stringr)
+library(iml)
+library(factorMerger)
 ```
+
+Modele oparte na oryginalnych danych:
 
 ```{r, warning = FALSE}
+model_lm1 <- lm(m2.price ~ ., data = apartments)
+explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1")
 set.seed(111)
-apartments_rf_model <- randomForest(m2.price ~ ., data = apartments)
-explainer <- explain(apartments_rf_model, data = apartmentsTest[1:7000,2:6], y = apartmentsTest$m2.price[1:7000])
+model_rf1 <- randomForest(m2.price ~ ., data = apartments)
+explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "rf1")
 ```
 
-Package changepoint.np + type constant:
-
-```{r}
-data1 <- transform_variables(explainer, apartmentsTest[7001:9000,2:6], package = "changepoint.np", type = "constant", plot = TRUE)
-```
-
-```{r, echo = FALSE}
-knitr::kable(head(data1))
-```
+**Transformacje (package=changepoint.np, type=constant):**
 
 ```{r, fig.width=6}
-data1 <- cbind(apartmentsTest[7001:9000, 1], data1)
+trans_prop <- transform_propositions(explainer_rf1, package = "changepoint.np", type = "constant", plot = TRUE, interactions = FALSE)
+data1 <- transform_data(apartmentsTest[3001:6000,2:6], trans_prop, keep_old = FALSE)
+data1_old <- transform_data(apartmentsTest[3001:6000,2:6], trans_prop, keep_old = TRUE)
+
+data1 <- cbind(apartmentsTest[3001:6000,1], data1)
 colnames(data1)[1] <- 'm2.price'
-
-set.seed(111)
-model1_rf <- randomForest(m2.price ~ ., data = data1)
-varImpPlot(model1_rf)
-
-model1_lm <- lm(m2.price ~ ., data = data1)
-summary(model1_lm)
-```
-
-
-
-
-Package strucchange + type constant:
-
-```{r}
-data2 <- transform_variables(explainer, apartmentsTest[7001:9000,2:6], package = "strucchange", type = "constant", plot = TRUE)
+data1_old <- cbind(apartmentsTest[3001:6000,1], data1_old)
+colnames(data1_old)[1] <- 'm2.price'
 ```
 
 ```{r, echo = FALSE}
-knitr::kable(head(data2))
+knitr::kable(head(data1_old))
 ```
-
-```{r, fig.width=6}
-data2 <- cbind(apartmentsTest[7001:9000, 1], data2)
-colnames(data2)[1] <- 'm2.price'
-
-set.seed(111)
-model2_rf <- randomForest(m2.price ~ ., data = data2)
-varImpPlot(model2_rf)
-
-model2_lm <- lm(m2.price ~ ., data = data2)
-summary(model2_lm)
-```
-
-
-
-
-
-
-Package changepoint.np + type linear:
 
 ```{r}
-data3 <- transform_variables(explainer, apartmentsTest[7001:9000,2:6], package = "changepoint.np", type = "linear", plot = TRUE)
+data2 <- transform_data(apartmentsTest[6001:9000,2:6], trans_prop, keep_old = FALSE)
+data2_old <- transform_data(apartmentsTest[6001:9000,2:6], trans_prop, keep_old = TRUE)
+
+model_lm2 <- lm(m2.price ~ ., data = data1)
+explainer_lm2 <- explain(model_lm2, data = data2, y = apartmentsTest[6001:9000,1], label = "lm2")
+
+model_lm2_old <- lm(m2.price ~ ., data = data1_old)
+explainer_lm2_old <- explain(model_lm2_old, data = data2_old, y = apartmentsTest[6001:9000,1], label = "lm2_old")
+
+set.seed(111)
+model_rf2 <- randomForest(m2.price ~ ., data = data1)
+explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2")
+
+set.seed(111)
+model_rf2_old <- randomForest(m2.price ~ ., data = data1_old)
+explainer_rf2_old <- explain(model_rf2_old, data2_old, apartmentsTest[6001:9000,1], label = "rf2_old")
+```
+
+```{r, echo = FALSE, fig.width=7, fig.height=6}
+mp_lm1 <- model_performance(explainer_lm1)
+vi_lm1 <- variable_importance(explainer_lm1, type = "difference")
+
+mp_rf1 <- model_performance(explainer_rf1)
+vi_rf1 <- variable_importance(explainer_rf1, type = "difference")
+
+mp_lm2 <- model_performance(explainer_lm2)
+vi_lm2 <- variable_importance(explainer_lm2, type = "difference")
+
+mp_lm2_old <- model_performance(explainer_lm2_old)
+vi_lm2_old <- variable_importance(explainer_lm2_old, type = "difference")
+
+mp_rf2 <- model_performance(explainer_rf2)
+vi_rf2 <- variable_importance(explainer_rf2, type = "difference")
+
+mp_rf2_old <- model_performance(explainer_rf2_old)
+vi_rf2_old <- variable_importance(explainer_rf2_old, type = "difference")
+
+
+plot(mp_lm1, mp_rf1, mp_lm2, mp_lm2_old, mp_rf2, mp_rf2_old, geom = "boxplot")
+plot(vi_lm1, vi_rf1, vi_lm2, vi_lm2_old, vi_rf2, vi_rf2_old)
+```
+
+```{r}
+summary(model_lm1)
+summary(model_lm2)
+```
+
+
+
+
+
+**Transformacje (package=strucchange, type=constant):**
+
+```{r, fig.width=6}
+trans_prop <- transform_propositions(explainer_rf1, package = "strucchange", type = "constant", plot = TRUE, interactions = FALSE)
+data1 <- transform_data(apartmentsTest[3001:6000,2:6], trans_prop, keep_old = FALSE)
+data1_old <- transform_data(apartmentsTest[3001:6000,2:6], trans_prop, keep_old = TRUE)
+
+data1 <- cbind(apartmentsTest[3001:6000,1], data1)
+colnames(data1)[1] <- 'm2.price'
+data1_old <- cbind(apartmentsTest[3001:6000,1], data1_old)
+colnames(data1_old)[1] <- 'm2.price'
 ```
 
 ```{r, echo = FALSE}
-knitr::kable(head(data3))
+knitr::kable(head(data1_old))
 ```
-
-```{r, fig.width=6}
-data3 <- cbind(apartmentsTest[7001:9000, 1], data3)
-colnames(data3)[1] <- 'm2.price'
-
-set.seed(111)
-model3_rf <- randomForest(m2.price ~ ., data = data3)
-varImpPlot(model3_rf)
-
-model3_lm <- lm(m2.price ~ ., data = data3)
-summary(model3_lm)
-```
-
-
-
-
-
-Package strucchange + type linear:
 
 ```{r}
-data4 <- transform_variables(explainer, apartmentsTest[7001:9000,2:6], package = "strucchange", type = "linear", plot = TRUE)
+data2 <- transform_data(apartmentsTest[6001:9000,2:6], trans_prop, keep_old = FALSE)
+data2_old <- transform_data(apartmentsTest[6001:9000,2:6], trans_prop, keep_old = TRUE)
+
+
+model_lm2 <- lm(m2.price ~ ., data = data1)
+explainer_lm2 <- explain(model_lm2, data = data2, y = apartmentsTest[6001:9000,1], label = "lm2")
+
+model_lm2_old <- lm(m2.price ~ ., data = data1_old)
+explainer_lm2_old <- explain(model_lm2_old, data = data2_old, y = apartmentsTest[6001:9000,1], label = "lm2_old")
+
+set.seed(111)
+model_rf2 <- randomForest(m2.price ~ ., data = data1)
+explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2")
+
+set.seed(111)
+model_rf2_old <- randomForest(m2.price ~ ., data = data1_old)
+explainer_rf2_old <- explain(model_rf2_old, data2_old, apartmentsTest[6001:9000,1], label = "rf2_old")
+```
+
+```{r, echo = FALSE, fig.width=7, fig.height=6}
+mp_lm1 <- model_performance(explainer_lm1)
+vi_lm1 <- variable_importance(explainer_lm1, type = "difference")
+
+mp_rf1 <- model_performance(explainer_rf1)
+vi_rf1 <- variable_importance(explainer_rf1, type = "difference")
+
+mp_lm2 <- model_performance(explainer_lm2)
+vi_lm2 <- variable_importance(explainer_lm2, type = "difference")
+
+mp_lm2_old <- model_performance(explainer_lm2_old)
+vi_lm2_old <- variable_importance(explainer_lm2_old, type = "difference")
+
+mp_rf2 <- model_performance(explainer_rf2)
+vi_rf2 <- variable_importance(explainer_rf2, type = "difference")
+
+mp_rf2_old <- model_performance(explainer_rf2_old)
+vi_rf2_old <- variable_importance(explainer_rf2_old, type = "difference")
+
+
+plot(mp_lm1, mp_rf1, mp_lm2, mp_lm2_old, mp_rf2, mp_rf2_old, geom = "boxplot")
+plot(vi_lm1, vi_rf1, vi_lm2, vi_lm2_old, vi_rf2, vi_rf2_old)
+```
+
+```{r}
+summary(model_lm1)
+summary(model_lm2)
+```
+
+
+
+**Transformacje (package=changepoint.np, type=linear):**
+
+```{r, fig.width=6}
+trans_prop <- transform_propositions(explainer_rf1, package = "changepoint.np", type = "linear", plot = TRUE, interactions = FALSE)
+data1 <- transform_data(apartmentsTest[3001:6000,2:6], trans_prop, keep_old = FALSE)
+data1_old <- transform_data(apartmentsTest[3001:6000,2:6], trans_prop, keep_old = TRUE)
+
+data1 <- cbind(apartmentsTest[3001:6000,1], data1)
+colnames(data1)[1] <- 'm2.price'
+data1_old <- cbind(apartmentsTest[3001:6000,1], data1_old)
+colnames(data1_old)[1] <- 'm2.price'
 ```
 
 ```{r, echo = FALSE}
-knitr::kable(head(data4))
+knitr::kable(head(data1_old))
 ```
 
-```{r, fig.width=6}
-data4 <- cbind(apartmentsTest[7001:9000, 1], data4)
-colnames(data4)[1] <- 'm2.price'
+```{r}
+data2 <- transform_data(apartmentsTest[6001:9000,2:6], trans_prop, keep_old = FALSE)
+data2_old <- transform_data(apartmentsTest[6001:9000,2:6], trans_prop, keep_old = TRUE)
+
+model_lm2 <- lm(m2.price ~ ., data = data1)
+explainer_lm2 <- explain(model_lm2, data = data2, y = apartmentsTest[6001:9000,1], label = "lm2")
+
+model_lm2_old <- lm(m2.price ~ ., data = data1_old)
+explainer_lm2_old <- explain(model_lm2_old, data = data2_old, y = apartmentsTest[6001:9000,1], label = "lm2_old")
 
 set.seed(111)
-model4_rf <- randomForest(m2.price ~ ., data = data4)
-varImpPlot(model4_rf)
+model_rf2 <- randomForest(m2.price ~ ., data = data1)
+explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2")
 
-model4_lm <- lm(m2.price ~ ., data = data4)
-summary(model4_lm)
+set.seed(111)
+model_rf2_old <- randomForest(m2.price ~ ., data = data1_old)
+explainer_rf2_old <- explain(model_rf2_old, data2_old, apartmentsTest[6001:9000,1], label = "rf2_old")
 ```
+
+```{r, echo = FALSE, fig.width=7, fig.height=6}
+mp_lm1 <- model_performance(explainer_lm1)
+vi_lm1 <- variable_importance(explainer_lm1, type = "difference")
+
+mp_rf1 <- model_performance(explainer_rf1)
+vi_rf1 <- variable_importance(explainer_rf1, type = "difference")
+
+mp_lm2 <- model_performance(explainer_lm2)
+vi_lm2 <- variable_importance(explainer_lm2, type = "difference")
+
+mp_lm2_old <- model_performance(explainer_lm2_old)
+vi_lm2_old <- variable_importance(explainer_lm2_old, type = "difference")
+
+mp_rf2 <- model_performance(explainer_rf2)
+vi_rf2 <- variable_importance(explainer_rf2, type = "difference")
+
+mp_rf2_old <- model_performance(explainer_rf2_old)
+vi_rf2_old <- variable_importance(explainer_rf2_old, type = "difference")
+
+
+plot(mp_lm1, mp_rf1, mp_lm2, mp_lm2_old, mp_rf2, mp_rf2_old, geom = "boxplot")
+plot(vi_lm1, vi_rf1, vi_lm2, vi_lm2_old, vi_rf2, vi_rf2_old)
+```
+
+```{r}
+summary(model_lm1)
+summary(model_lm2)
+```
+
+
+
+
+
+**Transformacje (package=strucchange, type=linear):**
+
+```{r, fig.width=6}
+trans_prop <- transform_propositions(explainer_rf1, package = "strucchange", type = "linear", plot = TRUE, interactions = FALSE)
+data1 <- transform_data(apartmentsTest[3001:6000,2:6], trans_prop, keep_old = FALSE)
+data1_old <- transform_data(apartmentsTest[3001:6000,2:6], trans_prop, keep_old = TRUE)
+
+data1 <- cbind(apartmentsTest[3001:6000,1], data1)
+colnames(data1)[1] <- 'm2.price'
+data1_old <- cbind(apartmentsTest[3001:6000,1], data1_old)
+colnames(data1_old)[1] <- 'm2.price'
+```
+
+```{r, echo = FALSE}
+knitr::kable(head(data1_old))
+```
+
+```{r}
+data2 <- transform_data(apartmentsTest[6001:9000,2:6], trans_prop, keep_old = FALSE)
+data2_old <- transform_data(apartmentsTest[6001:9000,2:6], trans_prop, keep_old = TRUE)
+
+model_lm2 <- lm(m2.price ~ ., data = data1)
+explainer_lm2 <- explain(model_lm2, data = data2, y = apartmentsTest[6001:9000,1], label = "lm2")
+
+model_lm2_old <- lm(m2.price ~ ., data = data1_old)
+explainer_lm2_old <- explain(model_lm2_old, data = data2_old, y = apartmentsTest[6001:9000,1], label = "lm2_old")
+
+set.seed(111)
+model_rf2 <- randomForest(m2.price ~ ., data = data1)
+explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2")
+
+set.seed(111)
+model_rf2_old <- randomForest(m2.price ~ ., data = data1_old)
+explainer_rf2_old <- explain(model_rf2_old, data2_old, apartmentsTest[6001:9000,1], label = "rf2_old")
+```
+
+```{r, echo = FALSE, fig.width=7, fig.height=6}
+mp_lm1 <- model_performance(explainer_lm1)
+vi_lm1 <- variable_importance(explainer_lm1, type = "difference")
+
+mp_rf1 <- model_performance(explainer_rf1)
+vi_rf1 <- variable_importance(explainer_rf1, type = "difference")
+
+mp_lm2 <- model_performance(explainer_lm2)
+vi_lm2 <- variable_importance(explainer_lm2, type = "difference")
+
+mp_lm2_old <- model_performance(explainer_lm2_old)
+vi_lm2_old <- variable_importance(explainer_lm2_old, type = "difference")
+
+mp_rf2 <- model_performance(explainer_rf2)
+vi_rf2 <- variable_importance(explainer_rf2, type = "difference")
+
+mp_rf2_old <- model_performance(explainer_rf2_old)
+vi_rf2_old <- variable_importance(explainer_rf2_old, type = "difference")
+
+
+plot(mp_lm1, mp_rf1, mp_lm2, mp_lm2_old, mp_rf2, mp_rf2_old, geom = "boxplot")
+plot(vi_lm1, vi_rf1, vi_lm2, vi_lm2_old, vi_rf2, vi_rf2_old)
+```
+
+```{r}
+summary(model_lm1)
+summary(model_lm2)
+```
+
+
+
+
+
+
+
 
 
 

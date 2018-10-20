@@ -23,5 +23,5 @@ transformation function for the given variable
 }
 \description{
 The transform_continuous() function calculates a transformation function
-for the continuous variable using PDP plots from DALEX package.
+for the continuous variable using a PDP plot from DALEX package.
 }
