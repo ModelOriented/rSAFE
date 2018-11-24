@@ -121,8 +121,7 @@ for all continuous variables using PDP plots from DALEX package.</p>
     </div>
 
     <pre class="usage"><span class='fu'>transform_propositions</span>(<span class='no'>explainer</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"changepoint.np"</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"constant"</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>user_interaction</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>interactions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"constant"</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,19 +142,11 @@ for all continuous variables using PDP plots from DALEX package.</p>
       <th>plot</th>
       <td><p>logical, if TRUE then plots breakpoints and segments means</p></td>
     </tr>
-    <tr>
-      <th>user_interaction</th>
-      <td><p>logical, TRUE allows the user to decide which of the transformations keep</p></td>
-    </tr>
-    <tr>
-      <th>interactions</th>
-      <td><p>logical, if TRUE then H-statistics corresponding to interactions are computed for all pairs of variables</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list of transformations propositions and possible interactions between variables</p>
+    <p>list of propositions of variables transformations</p>
     
 
   </div>

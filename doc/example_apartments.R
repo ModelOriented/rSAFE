@@ -1,21 +1,10 @@
----
-title: "SAFE examples - apartments dataset"
-author: "Anna Gierlak"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r setup, include = FALSE}
+## ----setup, include = FALSE----------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
+## ---- echo = FALSE, message = FALSE, warning = FALSE---------------------
 library(SAFE)
 library(DALEX)
 library(changepoint.np)
@@ -27,22 +16,15 @@ library(utils)
 library(stringr)
 library(iml)
 library(factorMerger)
-```
 
-Modele oparte na oryginalnych danych:
-
-```{r, warning = FALSE}
+## ---- warning = FALSE----------------------------------------------------
 model_lm1 <- lm(m2.price ~ ., data = apartments)
 explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1")
 set.seed(111)
 model_rf1 <- randomForest(m2.price ~ ., data = apartments)
 explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "rf1")
-```
 
-
-**Transformacje (package=changepoint.np, type=constant):**
-
-```{r, fig.width=6, warning = FALSE}
+## ---- fig.width=6, warning = FALSE---------------------------------------
 trans_prop <- transform_propositions(explainer_rf1, package = "changepoint.np", type = "constant", plot = TRUE)
 
 data1_new <- transform_data(apartmentsTest[3001:6000,2:6], apartmentsTest[3001:6000,1], trans_prop, which_variables = "only_new")
@@ -55,13 +37,11 @@ data1_all <- cbind(apartmentsTest[3001:6000,1], data1_all)
 colnames(data1_all)[1] <- 'm2.price'
 data1_aic <- cbind(apartmentsTest[3001:6000,1], data1_aic)
 colnames(data1_aic)[1] <- 'm2.price'
-```
 
-```{r, echo = FALSE}
+## ---- echo = FALSE-------------------------------------------------------
 knitr::kable(head(data1_all))
-```
 
-```{r, warning = FALSE}
+## ---- warning = FALSE----------------------------------------------------
 data2_new <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "only_new")
 data2_all <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "all")
 data2_aic <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "all")
@@ -87,9 +67,8 @@ explainer_rf2_all <- explain(model_rf2_all, data2_all, apartmentsTest[6001:9000,
 set.seed(111)
 model_rf2_aic <- randomForest(m2.price ~ ., data = data1_aic)
 explainer_rf2_aic <- explain(model_rf2_aic, data2_aic, apartmentsTest[6001:9000,1], label = "rf2_aic")
-```
 
-```{r, echo = FALSE, warning = FALSE}
+## ---- echo = FALSE, warning = FALSE--------------------------------------
 mp_lm1 <- model_performance(explainer_lm1)
 vi_lm1 <- variable_importance(explainer_lm1, type = "difference")
 
@@ -113,30 +92,20 @@ vi_rf2_all <- variable_importance(explainer_rf2_all, type = "difference")
 
 mp_rf2_aic <- model_performance(explainer_rf2_aic)
 vi_rf2_aic <- variable_importance(explainer_rf2_aic, type = "difference")
-```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+## ---- echo = FALSE, fig.width=7, fig.height=6, warning = FALSE-----------
 plot(mp_lm1, mp_rf1, mp_lm2_new, mp_lm2_all, mp_lm2_aic, mp_rf2_new, mp_rf2_all, mp_rf2_aic, geom = "boxplot")
-```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+## ---- echo = FALSE, fig.width=7, fig.height=6, warning = FALSE-----------
 grid.arrange(
   plot(vi_lm1, vi_lm2_new, vi_lm2_all, vi_lm2_aic),
   plot(vi_rf1, vi_rf2_new, vi_rf2_all, vi_rf2_aic), ncol = 2)
-```
 
-```{r}
+## ------------------------------------------------------------------------
 summary(model_lm1)
 summary(model_lm2_aic)
-```
 
-
-
-
-
-**Transformacje (package=strucchange, type=constant):**
-
-```{r, fig.width=6, warning = FALSE}
+## ---- fig.width=6, warning = FALSE---------------------------------------
 trans_prop <- transform_propositions(explainer_rf1, package = "strucchange", type = "constant", plot = TRUE)
 
 data1_new <- transform_data(apartmentsTest[3001:6000,2:6], apartmentsTest[3001:6000,1], trans_prop, which_variables = "only_new")
@@ -149,13 +118,11 @@ data1_all <- cbind(apartmentsTest[3001:6000,1], data1_all)
 colnames(data1_all)[1] <- 'm2.price'
 data1_aic <- cbind(apartmentsTest[3001:6000,1], data1_aic)
 colnames(data1_aic)[1] <- 'm2.price'
-```
 
-```{r, echo = FALSE}
+## ---- echo = FALSE-------------------------------------------------------
 knitr::kable(head(data1_all))
-```
 
-```{r, warning = FALSE}
+## ---- warning = FALSE----------------------------------------------------
 data2_new <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "only_new")
 data2_all <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "all")
 data2_aic <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "all")
@@ -181,9 +148,8 @@ explainer_rf2_all <- explain(model_rf2_all, data2_all, apartmentsTest[6001:9000,
 set.seed(111)
 model_rf2_aic <- randomForest(m2.price ~ ., data = data1_aic)
 explainer_rf2_aic <- explain(model_rf2_aic, data2_aic, apartmentsTest[6001:9000,1], label = "rf2_aic")
-```
 
-```{r, echo = FALSE, warning = FALSE}
+## ---- echo = FALSE, warning = FALSE--------------------------------------
 mp_lm1 <- model_performance(explainer_lm1)
 vi_lm1 <- variable_importance(explainer_lm1, type = "difference")
 
@@ -207,29 +173,20 @@ vi_rf2_all <- variable_importance(explainer_rf2_all, type = "difference")
 
 mp_rf2_aic <- model_performance(explainer_rf2_aic)
 vi_rf2_aic <- variable_importance(explainer_rf2_aic, type = "difference")
-```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+## ---- echo = FALSE, fig.width=7, fig.height=6, warning = FALSE-----------
 plot(mp_lm1, mp_rf1, mp_lm2_new, mp_lm2_all, mp_lm2_aic, mp_rf2_new, mp_rf2_all, mp_rf2_aic, geom = "boxplot")
-```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+## ---- echo = FALSE, fig.width=7, fig.height=6, warning = FALSE-----------
 grid.arrange(
   plot(vi_lm1, vi_lm2_new, vi_lm2_all, vi_lm2_aic),
   plot(vi_rf1, vi_rf2_new, vi_rf2_all, vi_rf2_aic), ncol = 2)
-```
 
-```{r}
+## ------------------------------------------------------------------------
 summary(model_lm1)
 summary(model_lm2_aic)
-```
 
-
-
-
-**Transformacje (package=changepoint.np, type=linear):**
-
-```{r, fig.width=6, warning = FALSE}
+## ---- fig.width=6, warning = FALSE---------------------------------------
 trans_prop <- transform_propositions(explainer_rf1, package = "changepoint.np", type = "linear", plot = TRUE)
 
 data1_new <- transform_data(apartmentsTest[3001:6000,2:6], apartmentsTest[3001:6000,1], trans_prop, which_variables = "only_new")
@@ -242,13 +199,11 @@ data1_all <- cbind(apartmentsTest[3001:6000,1], data1_all)
 colnames(data1_all)[1] <- 'm2.price'
 data1_aic <- cbind(apartmentsTest[3001:6000,1], data1_aic)
 colnames(data1_aic)[1] <- 'm2.price'
-```
 
-```{r, echo = FALSE}
+## ---- echo = FALSE-------------------------------------------------------
 knitr::kable(head(data1_all))
-```
 
-```{r, warning = FALSE}
+## ---- warning = FALSE----------------------------------------------------
 data2_new <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "only_new")
 data2_all <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "all")
 data2_aic <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "all")
@@ -274,9 +229,8 @@ explainer_rf2_all <- explain(model_rf2_all, data2_all, apartmentsTest[6001:9000,
 set.seed(111)
 model_rf2_aic <- randomForest(m2.price ~ ., data = data1_aic)
 explainer_rf2_aic <- explain(model_rf2_aic, data2_aic, apartmentsTest[6001:9000,1], label = "rf2_aic")
-```
 
-```{r, echo = FALSE, warning = FALSE}
+## ---- echo = FALSE, warning = FALSE--------------------------------------
 mp_lm1 <- model_performance(explainer_lm1)
 vi_lm1 <- variable_importance(explainer_lm1, type = "difference")
 
@@ -300,31 +254,20 @@ vi_rf2_all <- variable_importance(explainer_rf2_all, type = "difference")
 
 mp_rf2_aic <- model_performance(explainer_rf2_aic)
 vi_rf2_aic <- variable_importance(explainer_rf2_aic, type = "difference")
-```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+## ---- echo = FALSE, fig.width=7, fig.height=6, warning = FALSE-----------
 plot(mp_lm1, mp_rf1, mp_lm2_new, mp_lm2_all, mp_lm2_aic, mp_rf2_new, mp_rf2_all, mp_rf2_aic, geom = "boxplot")
-```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+## ---- echo = FALSE, fig.width=7, fig.height=6, warning = FALSE-----------
 grid.arrange(
   plot(vi_lm1, vi_lm2_new, vi_lm2_all, vi_lm2_aic),
   plot(vi_rf1, vi_rf2_new, vi_rf2_all, vi_rf2_aic), ncol = 2)
-```
 
-```{r}
+## ------------------------------------------------------------------------
 summary(model_lm1)
 summary(model_lm2_aic)
-```
 
-
-
-
-
-
-**Transformacje (package=strucchange, type=linear):**
-
-```{r, fig.width=6, warning = FALSE}
+## ---- fig.width=6, warning = FALSE---------------------------------------
 trans_prop <- transform_propositions(explainer_rf1, package = "strucchange", type = "linear", plot = TRUE)
 
 data1_new <- transform_data(apartmentsTest[3001:6000,2:6], apartmentsTest[3001:6000,1], trans_prop, which_variables = "only_new")
@@ -337,13 +280,11 @@ data1_all <- cbind(apartmentsTest[3001:6000,1], data1_all)
 colnames(data1_all)[1] <- 'm2.price'
 data1_aic <- cbind(apartmentsTest[3001:6000,1], data1_aic)
 colnames(data1_aic)[1] <- 'm2.price'
-```
 
-```{r, echo = FALSE}
+## ---- echo = FALSE-------------------------------------------------------
 knitr::kable(head(data1_all))
-```
 
-```{r, warning = FALSE}
+## ---- warning = FALSE----------------------------------------------------
 data2_new <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "only_new")
 data2_all <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "all")
 data2_aic <- transform_data(apartmentsTest[6001:9000,2:6], apartmentsTest[6001:9000,1], trans_prop, which_variables = "all")
@@ -369,9 +310,8 @@ explainer_rf2_all <- explain(model_rf2_all, data2_all, apartmentsTest[6001:9000,
 set.seed(111)
 model_rf2_aic <- randomForest(m2.price ~ ., data = data1_aic)
 explainer_rf2_aic <- explain(model_rf2_aic, data2_aic, apartmentsTest[6001:9000,1], label = "rf2_aic")
-```
 
-```{r, echo = FALSE, warning = FALSE}
+## ---- echo = FALSE, warning = FALSE--------------------------------------
 mp_lm1 <- model_performance(explainer_lm1)
 vi_lm1 <- variable_importance(explainer_lm1, type = "difference")
 
@@ -395,30 +335,16 @@ vi_rf2_all <- variable_importance(explainer_rf2_all, type = "difference")
 
 mp_rf2_aic <- model_performance(explainer_rf2_aic)
 vi_rf2_aic <- variable_importance(explainer_rf2_aic, type = "difference")
-```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+## ---- echo = FALSE, fig.width=7, fig.height=6, warning = FALSE-----------
 plot(mp_lm1, mp_rf1, mp_lm2_new, mp_lm2_all, mp_lm2_aic, mp_rf2_new, mp_rf2_all, mp_rf2_aic, geom = "boxplot")
-```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+## ---- echo = FALSE, fig.width=7, fig.height=6, warning = FALSE-----------
 grid.arrange(
   plot(vi_lm1, vi_lm2_new, vi_lm2_all, vi_lm2_aic),
   plot(vi_rf1, vi_rf2_new, vi_rf2_all, vi_rf2_aic), ncol = 2)
-```
 
-```{r}
+## ------------------------------------------------------------------------
 summary(model_lm1)
 summary(model_lm2_aic)
-```
-
-
-
-
-
-
-
-
-
-
 

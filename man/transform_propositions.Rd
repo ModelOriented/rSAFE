@@ -5,8 +5,7 @@
 \title{Features transformation using PDP plots}
 \usage{
 transform_propositions(explainer, package = "changepoint.np",
-  type = "constant", plot = FALSE, user_interaction = FALSE,
-  interactions = FALSE)
+  type = "constant", plot = FALSE)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
@@ -16,13 +15,9 @@ transform_propositions(explainer, package = "changepoint.np",
 \item{type}{a transformation method, one of: "constant", "linear"}
 
 \item{plot}{logical, if TRUE then plots breakpoints and segments means}
-
-\item{user_interaction}{logical, TRUE allows the user to decide which of the transformations keep}
-
-\item{interactions}{logical, if TRUE then H-statistics corresponding to interactions are computed for all pairs of variables}
 }
 \value{
-list of transformations propositions and possible interactions between variables
+list of propositions of variables transformations
 }
 \description{
 The transform_propositions() function computes transformation functions

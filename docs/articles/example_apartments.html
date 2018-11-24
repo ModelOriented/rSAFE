@@ -90,7 +90,7 @@ explainer_lm1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 model_rf1 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartments)
 explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf1"</span>)</code></pre></div>
 <p><strong>Transformacje (package=changepoint.np, type=constant):</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"changepoint.np"</span>, <span class="dt">type =</span> <span class="st">"constant"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>, <span class="dt">interactions =</span> <span class="ot">FALSE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"changepoint.np"</span>, <span class="dt">type =</span> <span class="st">"constant"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; These are the propositions for variables transformations:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Transformation for 'construction.year' variable:</span>
@@ -129,13 +129,63 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 #&gt; Scale for 'x' is already present. Adding another scale for 'x', which
 #&gt; will replace the existing scale.</code></pre>
 <p><img src="example_apartments_files/figure-html/unnamed-chunk-3-3.png" width="576"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data1_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+data1_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data1_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data1_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"aic"</span>)
+<span class="co">#&gt; Start:  AIC=31082.83</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new + district_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=31082.83</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - surface_new            3     106451   93591544 31080</span>
+<span class="co">#&gt; - floor_new              1       5756   93490849 31081</span>
+<span class="co">#&gt; &lt;none&gt;                                  93485094 31083</span>
+<span class="co">#&gt; - no.rooms               1    2775603   96260697 31169</span>
+<span class="co">#&gt; - construction.year      1    7408316  100893410 31310</span>
+<span class="co">#&gt; - surface                1   24837583  118322677 31788</span>
+<span class="co">#&gt; - floor                  1   69900764  163385857 32756</span>
+<span class="co">#&gt; - construction.year_new  3  144248474  237733567 33877</span>
+<span class="co">#&gt; - district               9 1427132453 1520617546 39432</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=31080.25</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + floor_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - floor_new              1       6002   93597546 31078</span>
+<span class="co">#&gt; &lt;none&gt;                                  93591544 31080</span>
+<span class="co">#&gt; - no.rooms               1    2754479   96346023 31165</span>
+<span class="co">#&gt; - construction.year      1    7457139  101048683 31308</span>
+<span class="co">#&gt; - surface                1   67915361  161506905 32715</span>
+<span class="co">#&gt; - floor                  1   69952899  163544443 32753</span>
+<span class="co">#&gt; - construction.year_new  3  144540689  238132233 33876</span>
+<span class="co">#&gt; - district               9 1427928114 1521519658 39428</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=31078.44</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; &lt;none&gt;                                  93597546 31078</span>
+<span class="co">#&gt; - no.rooms               1    2772802   96370347 31164</span>
+<span class="co">#&gt; - construction.year      1    7453525  101051071 31306</span>
+<span class="co">#&gt; - surface                1   67964880  161562426 32714</span>
+<span class="co">#&gt; - construction.year_new  3  144541400  238138946 33874</span>
+<span class="co">#&gt; - floor                  1  259599990  353197536 35061</span>
+<span class="co">#&gt; - district               9 1428192288 1521789834 39426</span>
 
-data1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1)
-<span class="kw">colnames</span>(data1)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
-data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_old)
-<span class="kw">colnames</span>(data1_old)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span></code></pre></div>
+data1_new &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_new)
+<span class="kw">colnames</span>(data1_new)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
+data1_all &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_all)
+<span class="kw">colnames</span>(data1_all)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
+data1_aic &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_aic)
+<span class="kw">colnames</span>(data1_aic)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">m2.price</th>
@@ -152,130 +202,105 @@ data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartments
 <tbody>
 <tr class="odd">
 <td align="right">3542</td>
-<td align="left">Bemowo</td>
-<td align="right">1989</td>
-<td align="right">65</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="left">4</td>
-<td align="left">2</td>
+<td align="left">Bielany</td>
+<td align="right">1979</td>
+<td align="right">21</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="left">3</td>
+<td align="left">1</td>
 <td align="left">2</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
 <td align="right">5631</td>
-<td align="left">Bemowo</td>
-<td align="right">1920</td>
-<td align="right">46</td>
-<td align="right">5</td>
-<td align="right">3</td>
+<td align="left">Srodmiescie</td>
+<td align="right">1997</td>
+<td align="right">107</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="left">4</td>
+<td align="left">3</td>
 <td align="left">1</td>
-<td align="left">2</td>
-<td align="left">2</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">Srodmiescie</td>
 </tr>
 <tr class="odd">
 <td align="right">2989</td>
-<td align="left">Bemowo</td>
-<td align="right">1944</td>
-<td align="right">62</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="left">2</td>
+<td align="left">Bielany</td>
+<td align="right">1994</td>
+<td align="right">41</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="left">4</td>
 <td align="left">2</td>
 <td align="left">2</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
 <td align="right">3822</td>
-<td align="left">Bemowo</td>
-<td align="right">1935</td>
-<td align="right">37</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="left">2</td>
-<td align="left">2</td>
+<td align="left">Ursynow</td>
+<td align="right">1968</td>
+<td align="right">28</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">3</td>
+<td align="left">1</td>
 <td align="left">1</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="odd">
 <td align="right">2337</td>
-<td align="left">Bemowo</td>
-<td align="right">1939</td>
-<td align="right">65</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="left">2</td>
-<td align="left">2</td>
+<td align="left">Ursynow</td>
+<td align="right">1971</td>
+<td align="right">146</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="left">3</td>
+<td align="left">4</td>
 <td align="left">1</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
 <td align="right">3381</td>
-<td align="left">Bemowo</td>
-<td align="right">2000</td>
-<td align="right">21</td>
+<td align="left">Ochota</td>
+<td align="right">1956</td>
+<td align="right">97</td>
 <td align="right">8</td>
-<td align="right">1</td>
-<td align="left">4</td>
-<td align="left">1</td>
+<td align="right">3</td>
+<td align="left">3</td>
+<td align="left">3</td>
 <td align="left">2</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">MokotowOchota</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data2_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data2_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span>data2_aic[,<span class="kw">names</span>(data2_aic) <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(data1_aic)]
 
-model_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>)
+model_lm2_new &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_lm2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_new, <span class="dt">data =</span> data2_new, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_new"</span>)
 
-model_lm2_old &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_lm2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_old, <span class="dt">data =</span> data2_old, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_old"</span>)
+model_lm2_all &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_lm2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_all, <span class="dt">data =</span> data2_all, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_all"</span>)
+
+model_lm2_aic &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_lm2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_aic, <span class="dt">data =</span> data2_aic, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_aic"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)
+model_rf2_new &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_rf2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_new, data2_new, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_new"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2_old &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_old, data2_old, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_old"</span>)</code></pre></div>
-<pre><code>#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
+model_rf2_all &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_rf2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_all, data2_all, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_all"</span>)
 
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-6-1.png" width="672"><img src="example_apartments_files/figure-html/unnamed-chunk-6-2.png" width="672"></p>
+<span class="kw">set.seed</span>(<span class="dv">111</span>)
+model_rf2_aic &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_rf2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_aic, data2_aic, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_aic"</span>)</code></pre></div>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model_lm1)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -307,37 +332,42 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 <span class="co">#&gt; Residual standard error: 281.3 on 986 degrees of freedom</span>
 <span class="co">#&gt; Multiple R-squared:  0.905,  Adjusted R-squared:  0.9037 </span>
 <span class="co">#&gt; F-statistic: 722.5 on 13 and 986 DF,  p-value: &lt; 2.2e-16</span>
-<span class="kw">summary</span>(model_lm2)
+<span class="kw">summary</span>(model_lm2_aic)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
-<span class="co">#&gt; lm(formula = m2.price ~ ., data = data1)</span>
+<span class="co">#&gt; lm(formula = m2.price ~ ., data = data1_aic)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
-<span class="co">#&gt; -1911.9  -663.0  -107.5   546.8  3026.0 </span>
+<span class="co">#&gt; -350.25  -95.15  -10.64   77.93  563.86 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                           Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)               3590.292     78.880  45.516   &lt;2e-16 ***</span>
-<span class="co">#&gt; no.rooms                    -4.499     24.110  -0.187   0.8520    </span>
-<span class="co">#&gt; construction.year_new2    -114.640     59.915  -1.913   0.0558 .  </span>
-<span class="co">#&gt; construction.year_new3    -114.006     52.299  -2.180   0.0293 *  </span>
-<span class="co">#&gt; construction.year_new4    -120.855     55.205  -2.189   0.0287 *  </span>
-<span class="co">#&gt; surface_new2                75.401     63.290   1.191   0.2336    </span>
-<span class="co">#&gt; surface_new3                85.821     80.367   1.068   0.2857    </span>
-<span class="co">#&gt; surface_new4                80.028    108.472   0.738   0.4607    </span>
-<span class="co">#&gt; floor_new2                 -11.840     34.045  -0.348   0.7280    </span>
-<span class="co">#&gt; district_newZoliborz       -18.426     59.065  -0.312   0.7551    </span>
-<span class="co">#&gt; district_newMokotowOchota  -11.744     43.627  -0.269   0.7878    </span>
-<span class="co">#&gt; district_newSrodmiescie    -52.310     55.149  -0.949   0.3429    </span>
+<span class="co">#&gt;                          Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)            -7115.2565   786.7895  -9.043   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtBielany          -13.1808    14.6463  -0.900    0.368    </span>
+<span class="co">#&gt; districtMokotow          888.1704    14.8389  59.854   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtOchota           894.1836    14.5831  61.316   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtPraga              3.0830    14.2117   0.217    0.828    </span>
+<span class="co">#&gt; districtSrodmiescie     2105.9557    14.3182 147.082   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtUrsus              3.5202    14.7367   0.239    0.811    </span>
+<span class="co">#&gt; districtUrsynow            1.2907    14.4848   0.089    0.929    </span>
+<span class="co">#&gt; districtWola              -8.9666    14.7820  -0.607    0.544    </span>
+<span class="co">#&gt; districtZoliborz         897.8889    14.8941  60.285   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year          6.2953     0.4085  15.413   &lt;2e-16 ***</span>
+<span class="co">#&gt; surface                   -9.8331     0.2113 -46.541   &lt;2e-16 ***</span>
+<span class="co">#&gt; floor                   -102.0990     1.1225 -90.959   &lt;2e-16 ***</span>
+<span class="co">#&gt; no.rooms                 -53.0602     5.6444  -9.401   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new2  -584.0813    12.9346 -45.157   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new3  -857.5891    19.5006 -43.977   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new4  -700.2096    30.9303 -22.638   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 916.2 on 2988 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.00283,    Adjusted R-squared:  -0.0008412 </span>
-<span class="co">#&gt; F-statistic: 0.7709 on 11 and 2988 DF,  p-value: 0.6698</span></code></pre></div>
+<span class="co">#&gt; Residual standard error: 177.1 on 2983 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.9628, Adjusted R-squared:  0.9626 </span>
+<span class="co">#&gt; F-statistic:  4824 on 16 and 2983 DF,  p-value: &lt; 2.2e-16</span></code></pre></div>
 <p><strong>Transformacje (package=strucchange, type=constant):</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"strucchange"</span>, <span class="dt">type =</span> <span class="st">"constant"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>, <span class="dt">interactions =</span> <span class="ot">FALSE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"strucchange"</span>, <span class="dt">type =</span> <span class="st">"constant"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; These are the propositions for variables transformations:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Transformation for 'construction.year' variable:</span>
@@ -348,7 +378,7 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 <span class="co">#&gt;  (1988.4, 1993.8]:   5</span>
 <span class="co">#&gt;  (1993.8, 1999.2]:   6</span>
 <span class="co">#&gt;  &gt;1999.2:   7</span></code></pre></div>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'surface' variable:
 #&gt;  &lt;=25.2:   1
@@ -363,13 +393,13 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 #&gt;  (111, 121.4]:   10
 #&gt;  (121.4, 134.4]:   11
 #&gt;  &gt;134.4:   12</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-8-2.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-10-2.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'floor' variable:
 #&gt;  &lt;=3:   1
 #&gt;  (3, 6]:   2
 #&gt;  &gt;6:   3</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-8-3.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-10-3.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'no.rooms' variable:
 #&gt;  &lt;=3:   1
@@ -389,14 +419,92 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 #&gt; 10    Zoliborz                           Zoliborz
 #&gt; Scale for 'x' is already present. Adding another scale for 'x', which
 #&gt; will replace the existing scale.</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-8-4.png" width="576"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data1_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-10-4.png" width="576"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+data1_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data1_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data1_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"aic"</span>)
+<span class="co">#&gt; Start:  AIC=26712.62</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new + no.rooms_new + </span>
+<span class="co">#&gt;     district_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=26712.62</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new + no.rooms_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - surface_new           11      30148   21623733 26695</span>
+<span class="co">#&gt; - floor_new              2       6171   21599756 26709</span>
+<span class="co">#&gt; - no.rooms_new           1        636   21594220 26711</span>
+<span class="co">#&gt; - construction.year      1       4171   21597755 26711</span>
+<span class="co">#&gt; &lt;none&gt;                                  21593585 26713</span>
+<span class="co">#&gt; - no.rooms               1    1478513   23072097 26909</span>
+<span class="co">#&gt; - surface                1    3726263   25319848 27188</span>
+<span class="co">#&gt; - floor                  1   26580969   48174554 29118</span>
+<span class="co">#&gt; - construction.year_new  6  215028014  236621598 33883</span>
+<span class="co">#&gt; - district               9 1415446178 1437039763 39288</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=26694.8</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + floor_new + no.rooms_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - floor_new              2       6691   21630423 26692</span>
+<span class="co">#&gt; - no.rooms_new           1        294   21624027 26693</span>
+<span class="co">#&gt; - construction.year      1       4974   21628706 26693</span>
+<span class="co">#&gt; &lt;none&gt;                                  21623733 26695</span>
+<span class="co">#&gt; - no.rooms               1    1831124   23454856 26937</span>
+<span class="co">#&gt; - floor                  1   26629457   48253190 29101</span>
+<span class="co">#&gt; - surface                1   68490390   90114123 30975</span>
+<span class="co">#&gt; - construction.year_new  6  216450042  238073774 33879</span>
+<span class="co">#&gt; - district               9 1420974402 1442598134 39278</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=26691.73</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + no.rooms_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - no.rooms_new           1        252   21630676 26690</span>
+<span class="co">#&gt; - construction.year      1       5736   21636160 26691</span>
+<span class="co">#&gt; &lt;none&gt;                                  21630423 26692</span>
+<span class="co">#&gt; - no.rooms               1    1828814   23459237 26933</span>
+<span class="co">#&gt; - surface                1   68569431   90199855 30974</span>
+<span class="co">#&gt; - construction.year_new  6  216499273  238129696 33876</span>
+<span class="co">#&gt; - floor                  1  251810543  273440966 34301</span>
+<span class="co">#&gt; - district               9 1420982626 1442613050 39274</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=26689.77</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - construction.year      1       5717   21636393 26689</span>
+<span class="co">#&gt; &lt;none&gt;                                  21630676 26690</span>
+<span class="co">#&gt; - no.rooms               1    2355356   23986031 26998</span>
+<span class="co">#&gt; - surface                1   70329764   91960439 31030</span>
+<span class="co">#&gt; - construction.year_new  6  216508270  238138946 33874</span>
+<span class="co">#&gt; - floor                  1  251962791  273593467 34300</span>
+<span class="co">#&gt; - district               9 1421090950 1442721626 39272</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=26688.56</span>
+<span class="co">#&gt; y ~ district + surface + floor + no.rooms + construction.year_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; &lt;none&gt;                                  21636393 26689</span>
+<span class="co">#&gt; - no.rooms               1    2357552   23993944 26997</span>
+<span class="co">#&gt; - surface                1   70324708   91961101 31028</span>
+<span class="co">#&gt; - construction.year_new  6  216584342  238220735 33873</span>
+<span class="co">#&gt; - floor                  1  252219677  273856069 34301</span>
+<span class="co">#&gt; - district               9 1422071732 1443708125 39272</span>
 
-data1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1)
-<span class="kw">colnames</span>(data1)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
-data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_old)
-<span class="kw">colnames</span>(data1_old)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span></code></pre></div>
+data1_new &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_new)
+<span class="kw">colnames</span>(data1_new)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
+data1_all &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_all)
+<span class="kw">colnames</span>(data1_all)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
+data1_aic &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_aic)
+<span class="kw">colnames</span>(data1_aic)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">m2.price</th>
@@ -414,140 +522,111 @@ data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartments
 <tbody>
 <tr class="odd">
 <td align="right">3542</td>
-<td align="left">Bemowo</td>
-<td align="right">1989</td>
-<td align="right">65</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="left">5</td>
-<td align="left">5</td>
+<td align="left">Bielany</td>
+<td align="right">1979</td>
+<td align="right">21</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="left">4</td>
+<td align="left">1</td>
 <td align="left">2</td>
 <td align="left">1</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
 <td align="right">5631</td>
-<td align="left">Bemowo</td>
-<td align="right">1920</td>
-<td align="right">46</td>
-<td align="right">5</td>
-<td align="right">3</td>
+<td align="left">Srodmiescie</td>
+<td align="right">1997</td>
+<td align="right">107</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="left">6</td>
+<td align="left">9</td>
 <td align="left">1</td>
-<td align="left">3</td>
 <td align="left">2</td>
-<td align="left">1</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">Srodmiescie</td>
 </tr>
 <tr class="odd">
 <td align="right">2989</td>
-<td align="left">Bemowo</td>
-<td align="right">1944</td>
-<td align="right">62</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="left">4</td>
-<td align="left">5</td>
-<td align="left">2</td>
+<td align="left">Bielany</td>
+<td align="right">1994</td>
+<td align="right">41</td>
+<td align="right">9</td>
+<td align="right">2</td>
+<td align="left">6</td>
+<td align="left">3</td>
+<td align="left">3</td>
 <td align="left">1</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
 <td align="right">3822</td>
-<td align="left">Bemowo</td>
-<td align="right">1935</td>
-<td align="right">37</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="left">3</td>
+<td align="left">Ursynow</td>
+<td align="right">1968</td>
+<td align="right">28</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">4</td>
 <td align="left">2</td>
-<td align="left">2</td>
+<td align="left">1</td>
 <td align="left">1</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="odd">
 <td align="right">2337</td>
-<td align="left">Bemowo</td>
-<td align="right">1939</td>
-<td align="right">65</td>
-<td align="right">2</td>
-<td align="right">2</td>
-<td align="left">3</td>
-<td align="left">5</td>
+<td align="left">Ursynow</td>
+<td align="right">1971</td>
+<td align="right">146</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="left">4</td>
+<td align="left">12</td>
 <td align="left">1</td>
-<td align="left">1</td>
+<td align="left">2</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
 <td align="right">3381</td>
-<td align="left">Bemowo</td>
-<td align="right">2000</td>
-<td align="right">21</td>
+<td align="left">Ochota</td>
+<td align="right">1956</td>
+<td align="right">97</td>
 <td align="right">8</td>
-<td align="right">1</td>
-<td align="left">7</td>
-<td align="left">1</td>
+<td align="right">3</td>
+<td align="left">4</td>
+<td align="left">8</td>
 <td align="left">3</td>
 <td align="left">1</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">MokotowOchota</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data2_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data2_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span>data2_aic[,<span class="kw">names</span>(data2_aic) <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(data1_aic)]
 
+model_lm2_new &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_lm2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_new, <span class="dt">data =</span> data2_new, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_new"</span>)
 
-model_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>)
+model_lm2_all &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_lm2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_all, <span class="dt">data =</span> data2_all, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_all"</span>)
 
-model_lm2_old &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_lm2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_old, <span class="dt">data =</span> data2_old, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_old"</span>)
+model_lm2_aic &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_lm2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_aic, <span class="dt">data =</span> data2_aic, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_aic"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)
+model_rf2_new &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_rf2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_new, data2_new, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_new"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2_old &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_old, data2_old, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_old"</span>)</code></pre></div>
-<pre><code>#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
+model_rf2_all &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_rf2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_all, data2_all, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_all"</span>)
 
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-11-1.png" width="672"><img src="example_apartments_files/figure-html/unnamed-chunk-11-2.png" width="672"></p>
+<span class="kw">set.seed</span>(<span class="dv">111</span>)
+model_rf2_aic &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_rf2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_aic, data2_aic, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_aic"</span>)</code></pre></div>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model_lm1)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -579,49 +658,44 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 <span class="co">#&gt; Residual standard error: 281.3 on 986 degrees of freedom</span>
 <span class="co">#&gt; Multiple R-squared:  0.905,  Adjusted R-squared:  0.9037 </span>
 <span class="co">#&gt; F-statistic: 722.5 on 13 and 986 DF,  p-value: &lt; 2.2e-16</span>
-<span class="kw">summary</span>(model_lm2)
+<span class="kw">summary</span>(model_lm2_aic)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
-<span class="co">#&gt; lm(formula = m2.price ~ ., data = data1)</span>
+<span class="co">#&gt; lm(formula = m2.price ~ ., data = data1_aic)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
-<span class="co">#&gt; -1990.0  -660.4  -112.3   554.8  3086.7 </span>
+<span class="co">#&gt; -449.92   -4.29   -0.09    4.02  539.96 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                           Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)               3569.800    100.254  35.608   &lt;2e-16 ***</span>
-<span class="co">#&gt; construction.year_new2    -105.672     88.048  -1.200   0.2302    </span>
-<span class="co">#&gt; construction.year_new3    -157.538     84.998  -1.853   0.0639 .  </span>
-<span class="co">#&gt; construction.year_new4    -113.152     56.351  -2.008   0.0447 *  </span>
-<span class="co">#&gt; construction.year_new5    -150.057     86.832  -1.728   0.0841 .  </span>
-<span class="co">#&gt; construction.year_new6    -121.949     82.086  -1.486   0.1375    </span>
-<span class="co">#&gt; construction.year_new7    -136.760     72.080  -1.897   0.0579 .  </span>
-<span class="co">#&gt; surface_new2                98.496     98.856   0.996   0.3192    </span>
-<span class="co">#&gt; surface_new3               104.909     99.755   1.052   0.2930    </span>
-<span class="co">#&gt; surface_new4                97.226    108.101   0.899   0.3685    </span>
-<span class="co">#&gt; surface_new5                83.812     98.062   0.855   0.3928    </span>
-<span class="co">#&gt; surface_new6                80.703    109.608   0.736   0.4616    </span>
-<span class="co">#&gt; surface_new7               162.139    111.383   1.456   0.1456    </span>
-<span class="co">#&gt; surface_new8                79.239    100.397   0.789   0.4300    </span>
-<span class="co">#&gt; surface_new9               129.300    122.548   1.055   0.2915    </span>
-<span class="co">#&gt; surface_new10               79.378    122.508   0.648   0.5171    </span>
-<span class="co">#&gt; surface_new11               73.647    120.147   0.613   0.5399    </span>
-<span class="co">#&gt; surface_new12               94.319    116.395   0.810   0.4178    </span>
-<span class="co">#&gt; floor_new2                  17.854     43.046   0.415   0.6784    </span>
-<span class="co">#&gt; floor_new3                 -53.566     40.383  -1.326   0.1848    </span>
-<span class="co">#&gt; no.rooms_new2                9.266     65.002   0.143   0.8867    </span>
-<span class="co">#&gt; district_newZoliborz       -21.065     59.238  -0.356   0.7222    </span>
-<span class="co">#&gt; district_newMokotowOchota  -12.615     43.796  -0.288   0.7733    </span>
-<span class="co">#&gt; district_newSrodmiescie    -52.439     55.315  -0.948   0.3432    </span>
+<span class="co">#&gt;                         Estimate Std. Error  t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)            4998.6618     8.2043  609.270   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtBielany          -0.7563     7.0471   -0.107    0.915    </span>
+<span class="co">#&gt; districtMokotow         900.7275     7.1434  126.091   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtOchota          902.8543     7.0172  128.662   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtPraga             5.0685     6.8391    0.741    0.459    </span>
+<span class="co">#&gt; districtSrodmiescie    2107.1900     6.8899  305.838   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtUrsus             2.6275     7.0936    0.370    0.711    </span>
+<span class="co">#&gt; districtUrsynow           5.9041     6.9662    0.848    0.397    </span>
+<span class="co">#&gt; districtWola              8.7142     7.1155    1.225    0.221    </span>
+<span class="co">#&gt; districtZoliborz        897.3762     7.1664  125.219   &lt;2e-16 ***</span>
+<span class="co">#&gt; surface                 -10.0106     0.1017  -98.433   &lt;2e-16 ***</span>
+<span class="co">#&gt; floor                  -100.7014     0.5402 -186.414   &lt;2e-16 ***</span>
+<span class="co">#&gt; no.rooms                -48.9775     2.7175  -18.023   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new2    0.2000     8.1806    0.024    0.981    </span>
+<span class="co">#&gt; construction.year_new3 -529.8072     7.9051  -67.021   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new4 -600.5176     5.2386 -114.632   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new5 -599.8605     8.0660  -74.369   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new6 -162.5770     7.6220  -21.330   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new7   -0.6959     6.6919   -0.104    0.917    </span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 917.3 on 2976 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.004495,   Adjusted R-squared:  -0.003199 </span>
-<span class="co">#&gt; F-statistic: 0.5842 on 23 and 2976 DF,  p-value: 0.9415</span></code></pre></div>
+<span class="co">#&gt; Residual standard error: 85.19 on 2981 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.9914, Adjusted R-squared:  0.9913 </span>
+<span class="co">#&gt; F-statistic: 1.909e+04 on 18 and 2981 DF,  p-value: &lt; 2.2e-16</span></code></pre></div>
 <p><strong>Transformacje (package=changepoint.np, type=linear):</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"changepoint.np"</span>, <span class="dt">type =</span> <span class="st">"linear"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>, <span class="dt">interactions =</span> <span class="ot">FALSE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"changepoint.np"</span>, <span class="dt">type =</span> <span class="st">"linear"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; These are the propositions for variables transformations:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Transformation for 'construction.year' variable:</span>
@@ -629,19 +703,19 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 <span class="co">#&gt;  (1932.6, 1948.8]:   -14.2751120617395 * construction.year + 31170.0343854484</span>
 <span class="co">#&gt;  (1948.8, 1984.8]:   0.0108405305351538 * construction.year + 3362.66970891282</span>
 <span class="co">#&gt;  &gt;1984.8:   16.5555633296337 * construction.year - 29491.3218205762</span></code></pre></div>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'surface' variable:
 #&gt;  &lt;=33:   -6.38558623995713 * surface + 4018.33746170001
 #&gt;  (33, 72]:   -5.78972048760654 * surface + 4031.35644585088
 #&gt;  (72, 121.4]:   -5.0331724855415 * surface + 3904.60934355926
 #&gt;  &gt;121.4:   -2.01601859447294 * surface + 3503.07238122957</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-13-2.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-17-2.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'floor' variable:
 #&gt;  &lt;=4:   -61.9900210958977 * floor + 3872.45720337975
 #&gt;  &gt;4:   -63.6107397296978 * floor + 3835.88008040176</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-13-3.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-17-3.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'no.rooms' variable:
 #&gt;  -111.092583684481 * no.rooms + 3882.28605273292
@@ -660,14 +734,70 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 #&gt; 10    Zoliborz                           Zoliborz
 #&gt; Scale for 'x' is already present. Adding another scale for 'x', which
 #&gt; will replace the existing scale.</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-13-4.png" width="576"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data1_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-17-4.png" width="576"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+data1_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data1_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data1_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"aic"</span>)
+<span class="co">#&gt; Start:  AIC=28513.32</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new + no.rooms_new + </span>
+<span class="co">#&gt;     district_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=28513.32</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new + no.rooms_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=28513.32</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - floor_new              1       1035   39804896 28511</span>
+<span class="co">#&gt; - surface_new            1       4464   39808325 28512</span>
+<span class="co">#&gt; &lt;none&gt;                                  39803860 28513</span>
+<span class="co">#&gt; - floor                  1     794307   40598167 28571</span>
+<span class="co">#&gt; - construction.year      1    2404222   42208082 28687</span>
+<span class="co">#&gt; - no.rooms               1    2582251   42386112 28700</span>
+<span class="co">#&gt; - surface                1    5616435   45420295 28907</span>
+<span class="co">#&gt; - construction.year_new  1  198086922  237890782 33875</span>
+<span class="co">#&gt; - district               9 1412969019 1452772879 39287</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=28511.4</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - surface_new            1       4561   39809457 28510</span>
+<span class="co">#&gt; &lt;none&gt;                                  39804896 28511</span>
+<span class="co">#&gt; - construction.year      1    2403849   42208745 28685</span>
+<span class="co">#&gt; - no.rooms               1    2593060   42397956 28699</span>
+<span class="co">#&gt; - surface                1    5617349   45422245 28905</span>
+<span class="co">#&gt; - construction.year_new  1  198091203  237896099 33873</span>
+<span class="co">#&gt; - floor                  1  254357448  294162344 34510</span>
+<span class="co">#&gt; - district               9 1413207686 1453012582 39286</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=28509.74</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; &lt;none&gt;                                  39809457 28510</span>
+<span class="co">#&gt; - construction.year      1    2410771   42220228 28684</span>
+<span class="co">#&gt; - no.rooms               1    2588499   42397956 28697</span>
+<span class="co">#&gt; - surface                1   69928320  109737777 31550</span>
+<span class="co">#&gt; - construction.year_new  1  198329488  238138946 33874</span>
+<span class="co">#&gt; - floor                  1  254375875  294185333 34508</span>
+<span class="co">#&gt; - district               9 1413268979 1453078436 39284</span>
 
-data1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1)
-<span class="kw">colnames</span>(data1)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
-data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_old)
-<span class="kw">colnames</span>(data1_old)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span></code></pre></div>
+data1_new &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_new)
+<span class="kw">colnames</span>(data1_new)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
+data1_all &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_all)
+<span class="kw">colnames</span>(data1_all)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
+data1_aic &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_aic)
+<span class="kw">colnames</span>(data1_aic)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">m2.price</th>
@@ -685,139 +815,111 @@ data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartments
 <tbody>
 <tr class="odd">
 <td align="right">3542</td>
-<td align="left">Bemowo</td>
-<td align="right">1989</td>
-<td align="right">65</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">3437.694</td>
-<td align="right">3655.025</td>
-<td align="right">3517.826</td>
-<td align="right">3549.008</td>
+<td align="left">Bielany</td>
+<td align="right">1979</td>
+<td align="right">21</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">3384.123</td>
+<td align="right">3884.240</td>
+<td align="right">3454.216</td>
+<td align="right">3771.193</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
 <td align="right">5631</td>
-<td align="left">Bemowo</td>
-<td align="right">1920</td>
-<td align="right">46</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">3795.594</td>
-<td align="right">3765.029</td>
-<td align="right">3517.826</td>
-<td align="right">3549.008</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">Srodmiescie</td>
+<td align="right">1997</td>
+<td align="right">107</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">3570.138</td>
+<td align="right">3366.060</td>
+<td align="right">3748.477</td>
+<td align="right">3437.916</td>
+<td align="left">Srodmiescie</td>
 </tr>
 <tr class="odd">
 <td align="right">2989</td>
-<td align="left">Bemowo</td>
-<td align="right">1944</td>
-<td align="right">62</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">3419.217</td>
-<td align="right">3672.394</td>
-<td align="right">3517.826</td>
-<td align="right">3549.008</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
-</tr>
-<tr class="even">
-<td align="right">3822</td>
-<td align="left">Bemowo</td>
-<td align="right">1935</td>
-<td align="right">37</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="right">3547.693</td>
-<td align="right">3817.137</td>
-<td align="right">3624.497</td>
-<td align="right">3771.193</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
-</tr>
-<tr class="odd">
-<td align="right">2337</td>
-<td align="left">Bemowo</td>
-<td align="right">1939</td>
-<td align="right">65</td>
+<td align="left">Bielany</td>
+<td align="right">1994</td>
+<td align="right">41</td>
+<td align="right">9</td>
 <td align="right">2</td>
-<td align="right">2</td>
-<td align="right">3490.592</td>
-<td align="right">3655.025</td>
-<td align="right">3748.477</td>
+<td align="right">3520.471</td>
+<td align="right">3793.978</td>
+<td align="right">3263.383</td>
 <td align="right">3660.101</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
-<td align="right">3381</td>
-<td align="left">Bemowo</td>
-<td align="right">2000</td>
-<td align="right">21</td>
-<td align="right">8</td>
-<td align="right">1</td>
-<td align="right">3619.805</td>
-<td align="right">3884.240</td>
-<td align="right">3326.994</td>
-<td align="right">3771.193</td>
+<td align="right">3822</td>
+<td align="left">Ursynow</td>
+<td align="right">1968</td>
+<td align="right">28</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3384.004</td>
+<td align="right">3839.541</td>
+<td align="right">3748.477</td>
+<td align="right">3660.101</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+</tr>
+<tr class="odd">
+<td align="right">2337</td>
+<td align="left">Ursynow</td>
+<td align="right">1971</td>
+<td align="right">146</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">3384.036</td>
+<td align="right">3208.734</td>
+<td align="right">3686.487</td>
+<td align="right">3215.731</td>
+<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+</tr>
+<tr class="even">
+<td align="right">3381</td>
+<td align="left">Ochota</td>
+<td align="right">1956</td>
+<td align="right">97</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">3383.874</td>
+<td align="right">3416.392</td>
+<td align="right">3326.994</td>
+<td align="right">3549.008</td>
+<td align="left">MokotowOchota</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data2_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data2_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span>data2_aic[,<span class="kw">names</span>(data2_aic) <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(data1_aic)]
 
-model_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>)
+model_lm2_new &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_lm2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_new, <span class="dt">data =</span> data2_new, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_new"</span>)
 
-model_lm2_old &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_lm2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_old, <span class="dt">data =</span> data2_old, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_old"</span>)
+model_lm2_all &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_lm2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_all, <span class="dt">data =</span> data2_all, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_all"</span>)
+
+model_lm2_aic &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_lm2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_aic, <span class="dt">data =</span> data2_aic, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_aic"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)
+model_rf2_new &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_rf2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_new, data2_new, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_new"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2_old &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_old, data2_old, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_old"</span>)</code></pre></div>
-<pre><code>#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
+model_rf2_all &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_rf2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_all, data2_all, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_all"</span>)
 
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-16-1.png" width="672"><img src="example_apartments_files/figure-html/unnamed-chunk-16-2.png" width="672"></p>
+<span class="kw">set.seed</span>(<span class="dv">111</span>)
+model_rf2_aic &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_rf2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_aic, data2_aic, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_aic"</span>)</code></pre></div>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model_lm1)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -849,33 +951,40 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 <span class="co">#&gt; Residual standard error: 281.3 on 986 degrees of freedom</span>
 <span class="co">#&gt; Multiple R-squared:  0.905,  Adjusted R-squared:  0.9037 </span>
 <span class="co">#&gt; F-statistic: 722.5 on 13 and 986 DF,  p-value: &lt; 2.2e-16</span>
-<span class="kw">summary</span>(model_lm2)
+<span class="kw">summary</span>(model_lm2_aic)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
-<span class="co">#&gt; lm(formula = m2.price ~ ., data = data1)</span>
+<span class="co">#&gt; lm(formula = m2.price ~ ., data = data1_aic)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
-<span class="co">#&gt; -1917.9  -664.1  -115.8   548.0  3097.6 </span>
+<span class="co">#&gt; -296.69  -44.62    7.92   29.14  373.03 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                             Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)               2655.86842  649.29749   4.090 4.42e-05 ***</span>
-<span class="co">#&gt; construction.year_new        0.15802    0.11506   1.373    0.170    </span>
-<span class="co">#&gt; surface_new                 -0.04452    0.17567  -0.253    0.800    </span>
-<span class="co">#&gt; floor_new                    0.11287    0.08323   1.356    0.175    </span>
-<span class="co">#&gt; no.rooms_new                 0.02630    0.25016   0.105    0.916    </span>
-<span class="co">#&gt; district_newZoliborz       -21.54656   59.03564  -0.365    0.715    </span>
-<span class="co">#&gt; district_newMokotowOchota  -12.69155   43.60530  -0.291    0.771    </span>
-<span class="co">#&gt; district_newSrodmiescie    -56.35368   55.14391  -1.022    0.307    </span>
+<span class="co">#&gt;                         Estimate Std. Error  t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)           -3.823e+03  1.757e+02  -21.755   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtBielany       -1.079e+01  9.544e+00   -1.131    0.258    </span>
+<span class="co">#&gt; districtMokotow        8.823e+02  9.673e+00   91.206   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtOchota         8.977e+02  9.508e+00   94.417   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtPraga         -6.169e+00  9.265e+00   -0.666    0.506    </span>
+<span class="co">#&gt; districtSrodmiescie    2.091e+03  9.333e+00  224.006   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtUrsus          2.705e-01  9.602e+00    0.028    0.978    </span>
+<span class="co">#&gt; districtUrsynow       -4.319e-01  9.440e+00   -0.046    0.964    </span>
+<span class="co">#&gt; districtWola          -8.891e+00  9.635e+00   -0.923    0.356    </span>
+<span class="co">#&gt; districtZoliborz       8.878e+02  9.707e+00   91.458   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year      1.106e+00  8.222e-02   13.445   &lt;2e-16 ***</span>
+<span class="co">#&gt; surface               -9.970e+00  1.377e-01  -72.411   &lt;2e-16 ***</span>
+<span class="co">#&gt; floor                 -1.010e+02  7.316e-01 -138.107   &lt;2e-16 ***</span>
+<span class="co">#&gt; no.rooms              -5.125e+01  3.679e+00  -13.932   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new  1.787e+00  1.465e-02  121.947   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 916.1 on 2992 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.001639,   Adjusted R-squared:  -0.0006963 </span>
-<span class="co">#&gt; F-statistic: 0.7019 on 7 and 2992 DF,  p-value: 0.6705</span></code></pre></div>
+<span class="co">#&gt; Residual standard error: 115.5 on 2985 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.9842, Adjusted R-squared:  0.9841 </span>
+<span class="co">#&gt; F-statistic: 1.326e+04 on 14 and 2985 DF,  p-value: &lt; 2.2e-16</span></code></pre></div>
 <p><strong>Transformacje (package=strucchange, type=linear):</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"strucchange"</span>, <span class="dt">type =</span> <span class="st">"linear"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>, <span class="dt">interactions =</span> <span class="ot">FALSE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"strucchange"</span>, <span class="dt">type =</span> <span class="st">"linear"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; These are the propositions for variables transformations:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Transformation for 'construction.year' variable:</span>
@@ -886,7 +995,7 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 <span class="co">#&gt;  (1956, 1988.4]:   0.370993938862718 * construction.year + 2653.14576856694</span>
 <span class="co">#&gt;  (1988.4, 1993.8]:   15.0453163047783 * construction.year - 26547.744617453</span>
 <span class="co">#&gt;  &gt;1993.8:   3.59416877554734 * construction.year - 3507.32053009112</span></code></pre></div>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-18-1.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-24-1.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'surface' variable:
 #&gt;  &lt;=25.2:   -10.9436451811882 * surface + 4120.38803310011
@@ -898,12 +1007,12 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 #&gt;  (100.6, 124]:   -5.53191005957559 * surface + 3966.27661444949
 #&gt;  (124, 142.2]:   -2.81440185619488 * surface + 3603.67998014152
 #&gt;  &gt;142.2:   4.33354720211902 * surface + 2575.01925985963</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-18-2.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-24-2.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'floor' variable:
 #&gt;  &lt;=6:   -68.9530010848428 * floor + 3886.30069492955
 #&gt;  &gt;6:   -47.9747215441706 * floor + 3696.0187957101</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-18-3.png" width="576"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-24-3.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'no.rooms' variable:
 #&gt;  &lt;=3:   -68.8951518856657 * no.rooms + 3812.98232682894
@@ -923,14 +1032,81 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 #&gt; 10    Zoliborz                           Zoliborz
 #&gt; Scale for 'x' is already present. Adding another scale for 'x', which
 #&gt; will replace the existing scale.</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-18-4.png" width="576"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data1_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-24-4.png" width="576"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+data1_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data1_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data1_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"aic"</span>)
+<span class="co">#&gt; Start:  AIC=27046.52</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new + no.rooms_new + </span>
+<span class="co">#&gt;     district_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=27046.52</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + floor_new + no.rooms_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - floor_new              1         70   24394735 27045</span>
+<span class="co">#&gt; - surface_new            1        623   24395288 27045</span>
+<span class="co">#&gt; - no.rooms_new           1       9787   24404453 27046</span>
+<span class="co">#&gt; &lt;none&gt;                                  24394666 27047</span>
+<span class="co">#&gt; - no.rooms               1     444524   24839189 27099</span>
+<span class="co">#&gt; - construction.year      1    1343536   25738201 27205</span>
+<span class="co">#&gt; - floor                  1    1502053   25896719 27224</span>
+<span class="co">#&gt; - surface                1    6448810   30843476 27748</span>
+<span class="co">#&gt; - construction.year_new  1  213499831  237894497 33877</span>
+<span class="co">#&gt; - district               9 1419303260 1443697925 39270</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=27044.53</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + surface_new + no.rooms_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - surface_new            1        635   24395370 27043</span>
+<span class="co">#&gt; - no.rooms_new           1       9834   24404570 27044</span>
+<span class="co">#&gt; &lt;none&gt;                                  24394735 27045</span>
+<span class="co">#&gt; - no.rooms               1     444796   24839532 27097</span>
+<span class="co">#&gt; - construction.year      1    1344140   25738875 27203</span>
+<span class="co">#&gt; - surface                1    6456411   30851146 27747</span>
+<span class="co">#&gt; - construction.year_new  1  213521023  237915758 33875</span>
+<span class="co">#&gt; - floor                  1  254217547  278612283 34349</span>
+<span class="co">#&gt; - district               9 1419350815 1443745551 39268</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=27042.61</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new + no.rooms_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; - no.rooms_new           1       9414   24404784 27042</span>
+<span class="co">#&gt; &lt;none&gt;                                  24395370 27043</span>
+<span class="co">#&gt; - no.rooms               1     456910   24852280 27096</span>
+<span class="co">#&gt; - construction.year      1    1343513   25738883 27201</span>
+<span class="co">#&gt; - surface                1   69274808   93670178 31077</span>
+<span class="co">#&gt; - construction.year_new  1  213709797  238105167 33876</span>
+<span class="co">#&gt; - floor                  1  254218956  278614327 34347</span>
+<span class="co">#&gt; - district               9 1419398349 1443793719 39267</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=27041.77</span>
+<span class="co">#&gt; y ~ district + construction.year + surface + floor + no.rooms + </span>
+<span class="co">#&gt;     construction.year_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;                         Df  Sum of Sq        RSS   AIC</span>
+<span class="co">#&gt; &lt;none&gt;                                  24404784 27042</span>
+<span class="co">#&gt; - construction.year      1    1341669   25746453 27200</span>
+<span class="co">#&gt; - no.rooms               1    2347066   26751851 27315</span>
+<span class="co">#&gt; - surface                1   71013860   95418645 31130</span>
+<span class="co">#&gt; - construction.year_new  1  213734161  238138946 33874</span>
+<span class="co">#&gt; - floor                  1  254448214  278852998 34347</span>
+<span class="co">#&gt; - district               9 1419565316 1443970100 39265</span>
 
-data1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1)
-<span class="kw">colnames</span>(data1)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
-data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_old)
-<span class="kw">colnames</span>(data1_old)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span></code></pre></div>
+data1_new &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_new)
+<span class="kw">colnames</span>(data1_new)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
+data1_all &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_all)
+<span class="kw">colnames</span>(data1_all)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span>
+data1_aic &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,<span class="dv">1</span>], data1_aic)
+<span class="kw">colnames</span>(data1_aic)[<span class="dv">1</span>] &lt;-<span class="st"> 'm2.price'</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="right">m2.price</th>
@@ -948,139 +1124,111 @@ data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(apartments
 <tbody>
 <tr class="odd">
 <td align="right">3542</td>
-<td align="left">Bemowo</td>
-<td align="right">1989</td>
-<td align="right">65</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">3377.390</td>
-<td align="right">3628.116</td>
-<td align="right">3541.536</td>
-<td align="right">3606.297</td>
+<td align="left">Bielany</td>
+<td align="right">1979</td>
+<td align="right">21</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">3387.343</td>
+<td align="right">3890.571</td>
+<td align="right">3472.583</td>
+<td align="right">3744.087</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
 <td align="right">5631</td>
-<td align="left">Bemowo</td>
-<td align="right">1920</td>
-<td align="right">46</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">3767.835</td>
-<td align="right">3777.309</td>
-<td align="right">3541.536</td>
-<td align="right">3606.297</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">Srodmiescie</td>
+<td align="right">1997</td>
+<td align="right">107</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">3670.235</td>
+<td align="right">3374.362</td>
+<td align="right">3748.395</td>
+<td align="right">3397.112</td>
+<td align="left">Srodmiescie</td>
 </tr>
 <tr class="odd">
 <td align="right">2989</td>
-<td align="left">Bemowo</td>
-<td align="right">1944</td>
-<td align="right">62</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">3404.877</td>
-<td align="right">3658.014</td>
-<td align="right">3541.536</td>
-<td align="right">3606.297</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
-</tr>
-<tr class="even">
-<td align="right">3822</td>
-<td align="left">Bemowo</td>
-<td align="right">1935</td>
-<td align="right">37</td>
-<td align="right">4</td>
-<td align="right">1</td>
-<td align="right">3530.865</td>
-<td align="right">3805.435</td>
-<td align="right">3610.489</td>
-<td align="right">3744.087</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
-</tr>
-<tr class="odd">
-<td align="right">2337</td>
-<td align="left">Bemowo</td>
-<td align="right">1939</td>
-<td align="right">65</td>
+<td align="left">Bielany</td>
+<td align="right">1994</td>
+<td align="right">41</td>
+<td align="right">9</td>
 <td align="right">2</td>
-<td align="right">2</td>
-<td align="right">3441.566</td>
-<td align="right">3628.116</td>
-<td align="right">3748.395</td>
+<td align="right">3659.452</td>
+<td align="right">3792.935</td>
+<td align="right">3264.246</td>
 <td align="right">3675.192</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
-<td align="right">3381</td>
-<td align="left">Bemowo</td>
-<td align="right">2000</td>
-<td align="right">21</td>
-<td align="right">8</td>
-<td align="right">1</td>
-<td align="right">3681.017</td>
-<td align="right">3890.571</td>
-<td align="right">3312.221</td>
-<td align="right">3744.087</td>
+<td align="right">3822</td>
+<td align="left">Ursynow</td>
+<td align="right">1968</td>
+<td align="right">28</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3383.262</td>
+<td align="right">3833.561</td>
+<td align="right">3748.395</td>
+<td align="right">3675.192</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+</tr>
+<tr class="odd">
+<td align="right">2337</td>
+<td align="left">Ursynow</td>
+<td align="right">1971</td>
+<td align="right">146</td>
+<td align="right">3</td>
+<td align="right">6</td>
+<td align="right">3384.375</td>
+<td align="right">3207.717</td>
+<td align="right">3679.442</td>
+<td align="right">3226.352</td>
+<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+</tr>
+<tr class="even">
+<td align="right">3381</td>
+<td align="left">Ochota</td>
+<td align="right">1956</td>
+<td align="right">97</td>
+<td align="right">8</td>
+<td align="right">3</td>
+<td align="right">3381.723</td>
+<td align="right">3405.808</td>
+<td align="right">3312.221</td>
+<td align="right">3606.297</td>
+<td align="left">MokotowOchota</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data2_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data2_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span>data2_aic[,<span class="kw">names</span>(data2_aic) <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(data1_aic)]
 
-model_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>)
+model_lm2_new &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_lm2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_new, <span class="dt">data =</span> data2_new, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_new"</span>)
 
-model_lm2_old &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_lm2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_old, <span class="dt">data =</span> data2_old, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_old"</span>)
+model_lm2_all &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_lm2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_all, <span class="dt">data =</span> data2_all, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_all"</span>)
+
+model_lm2_aic &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_lm2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_aic, <span class="dt">data =</span> data2_aic, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2_aic"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)
+model_rf2_new &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_rf2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_new, data2_new, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_new"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2_old &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_old, data2_old, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_old"</span>)</code></pre></div>
-<pre><code>#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
+model_rf2_all &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_rf2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_all, data2_all, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_all"</span>)
 
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading
-
-#&gt; Warning in predict.lm(X.model, newdata, ...): prediction from a rank-
-#&gt; deficient fit may be misleading</code></pre>
-<p><img src="example_apartments_files/figure-html/unnamed-chunk-21-1.png" width="672"><img src="example_apartments_files/figure-html/unnamed-chunk-21-2.png" width="672"></p>
+<span class="kw">set.seed</span>(<span class="dv">111</span>)
+model_rf2_aic &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_rf2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_aic, data2_aic, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2_aic"</span>)</code></pre></div>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-28-1.png" width="672"></p>
+<p><img src="example_apartments_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model_lm1)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
@@ -1112,31 +1260,38 @@ explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(
 <span class="co">#&gt; Residual standard error: 281.3 on 986 degrees of freedom</span>
 <span class="co">#&gt; Multiple R-squared:  0.905,  Adjusted R-squared:  0.9037 </span>
 <span class="co">#&gt; F-statistic: 722.5 on 13 and 986 DF,  p-value: &lt; 2.2e-16</span>
-<span class="kw">summary</span>(model_lm2)
+<span class="kw">summary</span>(model_lm2_aic)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
-<span class="co">#&gt; lm(formula = m2.price ~ ., data = data1)</span>
+<span class="co">#&gt; lm(formula = m2.price ~ ., data = data1_aic)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
 <span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
-<span class="co">#&gt; -1925.9  -665.2  -115.2   546.5  3106.7 </span>
+<span class="co">#&gt; -501.20   -9.31    8.96   28.17  399.86 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;                             Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)                2.753e+03  6.037e+02   4.560 5.32e-06 ***</span>
-<span class="co">#&gt; construction.year_new      1.321e-01  1.085e-01   1.218    0.223    </span>
-<span class="co">#&gt; surface_new               -4.421e-03  1.696e-01  -0.026    0.979    </span>
-<span class="co">#&gt; floor_new                  1.170e-01  8.296e-02   1.411    0.158    </span>
-<span class="co">#&gt; no.rooms_new              -1.980e-02  2.244e-01  -0.088    0.930    </span>
-<span class="co">#&gt; district_newZoliborz      -2.178e+01  5.905e+01  -0.369    0.712    </span>
-<span class="co">#&gt; district_newMokotowOchota -1.268e+01  4.361e+01  -0.291    0.771    </span>
-<span class="co">#&gt; district_newSrodmiescie   -5.592e+01  5.513e+01  -1.014    0.311    </span>
+<span class="co">#&gt;                         Estimate Std. Error  t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)           -3.122e+03  1.351e+02  -23.117   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtBielany       -6.851e+00  7.473e+00   -0.917    0.359    </span>
+<span class="co">#&gt; districtMokotow        8.928e+02  7.574e+00  117.880   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtOchota         8.974e+02  7.444e+00  120.548   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtPraga          1.071e-01  7.254e+00    0.015    0.988    </span>
+<span class="co">#&gt; districtSrodmiescie    2.101e+03  7.307e+00  287.506   &lt;2e-16 ***</span>
+<span class="co">#&gt; districtUrsus          4.075e+00  7.519e+00    0.542    0.588    </span>
+<span class="co">#&gt; districtUrsynow        3.532e+00  7.392e+00    0.478    0.633    </span>
+<span class="co">#&gt; districtWola           1.447e+00  7.545e+00    0.192    0.848    </span>
+<span class="co">#&gt; districtZoliborz       8.934e+02  7.601e+00  117.535   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year      8.217e-01  6.414e-02   12.810   &lt;2e-16 ***</span>
+<span class="co">#&gt; surface               -1.005e+01  1.078e-01  -93.198   &lt;2e-16 ***</span>
+<span class="co">#&gt; floor                 -1.011e+02  5.728e-01 -176.415   &lt;2e-16 ***</span>
+<span class="co">#&gt; no.rooms              -4.880e+01  2.880e+00  -16.943   &lt;2e-16 ***</span>
+<span class="co">#&gt; construction.year_new  1.743e+00  1.078e-02  161.686   &lt;2e-16 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 916.2 on 2992 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.00153,    Adjusted R-squared:  -0.0008064 </span>
-<span class="co">#&gt; F-statistic: 0.6548 on 7 and 2992 DF,  p-value: 0.7106</span></code></pre></div>
+<span class="co">#&gt; Residual standard error: 90.42 on 2985 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.9903, Adjusted R-squared:  0.9903 </span>
+<span class="co">#&gt; F-statistic: 2.176e+04 on 14 and 2985 DF,  p-value: &lt; 2.2e-16</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

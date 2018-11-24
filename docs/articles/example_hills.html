@@ -90,28 +90,49 @@ explainer_lm1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 model_rf1 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> hills[<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,])
 explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf1, <span class="dt">data =</span> hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">y =</span> hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"rf1"</span>)</code></pre></div>
 <p><strong>Transformacje (package=strucchange, type=linear):</strong></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"strucchange"</span>, <span class="dt">type =</span> <span class="st">"linear"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>, <span class="dt">interactions =</span> <span class="ot">FALSE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trans_prop &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_propositions.html">transform_propositions</a></span>(explainer_rf1, <span class="dt">package =</span> <span class="st">"strucchange"</span>, <span class="dt">type =</span> <span class="st">"linear"</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>)
 <span class="co">#&gt; These are the propositions for variables transformations:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Transformation for 'dist' variable:</span>
-<span class="co">#&gt;  &lt;=9.5:   2.55531135763416 * dist + 33.1226980588813</span>
-<span class="co">#&gt;  &gt;9.5:   16.8762532888888 * dist - 120.320406074999</span></code></pre></div>
+<span class="co">#&gt;  &lt;=9.5:   0.0425880158751154 * dist + 0.552047141099774</span>
+<span class="co">#&gt;  &gt;9.5:   0.281270565329219 * dist - 2.00533907043652</span></code></pre></div>
 <p><img src="example_hills_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 <pre><code>#&gt; 
 #&gt; Transformation for 'climb' variable:
-#&gt;  &lt;=1312:   0.00327055700472948 * climb + 37.1182955490293
-#&gt;  &gt;1312:   0.0177873256786231 * climb + 21.4533929663051</code></pre>
+#&gt;  &lt;=1312.5:   5.44757247370824e-05 * climb + 0.618651740746864
+#&gt;  &gt;1312.5:   0.000296430595303419 * climb + 0.357553248723785</code></pre>
 <p><img src="example_hills_files/figure-html/unnamed-chunk-3-2.png" width="576"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>) <span class="co">#tylko nowe zmienne</span>
-data1_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>) <span class="co">#nowe + stare zmienne</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+data1_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data1_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data1_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"aic"</span>)
+<span class="co">#&gt; Start:  AIC=-25.62</span>
+<span class="co">#&gt; y ~ dist + climb + dist_new + climb_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             Df Sum of Sq     RSS     AIC</span>
+<span class="co">#&gt; - dist       1  0.000444 0.61727 -27.608</span>
+<span class="co">#&gt; - dist_new   1  0.098112 0.71494 -25.846</span>
+<span class="co">#&gt; &lt;none&gt;                   0.61683 -25.617</span>
+<span class="co">#&gt; - climb      1  0.297694 0.91453 -22.891</span>
+<span class="co">#&gt; - climb_new  1  0.302958 0.91979 -22.822</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Step:  AIC=-27.61</span>
+<span class="co">#&gt; y ~ climb + dist_new + climb_new</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             Df Sum of Sq     RSS     AIC</span>
+<span class="co">#&gt; &lt;none&gt;                   0.61727 -27.608</span>
+<span class="co">#&gt; - climb      1   0.35127 0.96855 -24.202</span>
+<span class="co">#&gt; - climb_new  1   0.47897 1.09624 -22.716</span>
+<span class="co">#&gt; - dist_new   1   0.55525 1.17252 -21.909</span>
 
-data1 &lt;-<span class="st"> </span><span class="kw">cbind</span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], data1)
-<span class="kw">colnames</span>(data1)[<span class="dv">1</span>] &lt;-<span class="st"> 'time'</span>
-data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], data1_old)
-<span class="kw">colnames</span>(data1_old)[<span class="dv">1</span>] &lt;-<span class="st"> 'time'</span></code></pre></div>
+data1_new &lt;-<span class="st"> </span><span class="kw">cbind</span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], data1_new)
+<span class="kw">colnames</span>(data1_new)[<span class="dv">1</span>] &lt;-<span class="st"> 'time'</span>
+data1_all &lt;-<span class="st"> </span><span class="kw">cbind</span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], data1_all)
+<span class="kw">colnames</span>(data1_all)[<span class="dv">1</span>] &lt;-<span class="st"> 'time'</span>
+data1_aic &lt;-<span class="st"> </span><span class="kw">cbind</span>(hills[<span class="dv">13</span><span class="op">:</span><span class="dv">24</span>,<span class="dv">3</span>], data1_aic)
+<span class="kw">colnames</span>(data1_aic)[<span class="dv">1</span>] &lt;-<span class="st"> 'time'</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
-<th></th>
 <th align="right">time</th>
 <th align="right">dist</th>
 <th align="right">climb</th>
@@ -120,112 +141,117 @@ data1_old &lt;-<span class="st"> </span><span class="kw">cbind</span>(hills[<spa
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>Lomonds</td>
-<td align="right">65.000</td>
+<td align="right">1.0833333</td>
 <td align="right">9.5</td>
 <td align="right">2200</td>
-<td align="right">57.39816</td>
-<td align="right">60.58551</td>
+<td align="right">0.9566333</td>
+<td align="right">1.0097006</td>
 </tr>
 <tr class="even">
-<td>Cairn Table</td>
-<td align="right">44.133</td>
+<td align="right">0.7355556</td>
 <td align="right">6.0</td>
 <td align="right">500</td>
-<td align="right">48.45457</td>
-<td align="right">38.75357</td>
+<td align="right">0.8075752</td>
+<td align="right">0.6458896</td>
 </tr>
 <tr class="odd">
-<td>Eildon Two</td>
-<td align="right">26.933</td>
+<td align="right">0.4488889</td>
 <td align="right">4.5</td>
 <td align="right">1500</td>
-<td align="right">44.62160</td>
-<td align="right">48.13438</td>
+<td align="right">0.7436932</td>
+<td align="right">0.8021991</td>
 </tr>
 <tr class="even">
-<td>Cairngorm</td>
-<td align="right">72.250</td>
+<td align="right">1.2041667</td>
 <td align="right">10.0</td>
 <td align="right">3000</td>
-<td align="right">48.44213</td>
-<td align="right">74.81537</td>
+<td align="right">0.8073666</td>
+<td align="right">1.2468450</td>
 </tr>
 <tr class="odd">
-<td>Seven Hills</td>
-<td align="right">98.417</td>
+<td align="right">1.6402778</td>
 <td align="right">14.0</td>
 <td align="right">2200</td>
-<td align="right">115.94714</td>
-<td align="right">60.58551</td>
+<td align="right">1.9324488</td>
+<td align="right">1.0097006</td>
 </tr>
 <tr class="even">
-<td>Knock Hill</td>
-<td align="right">78.650</td>
+<td align="right">1.3108333</td>
 <td align="right">3.0</td>
 <td align="right">350</td>
-<td align="right">40.78863</td>
-<td align="right">38.26299</td>
+<td align="right">0.6798112</td>
+<td align="right">0.6377182</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">FALSE</span>)
-data2_old &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], trans_prop, <span class="dt">keep_old =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2_new &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"only_new"</span>)
+data2_all &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span><span class="kw"><a href="../reference/transform_data.html">transform_data</a></span>(hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], trans_prop, <span class="dt">which_variables =</span> <span class="st">"all"</span>)
+data2_aic &lt;-<span class="st"> </span>data2_aic[,<span class="kw">names</span>(data2_aic) <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(data1_aic)]
 
-model_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>)
+model_lm2_new &lt;-<span class="st"> </span><span class="kw">lm</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_lm2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_new, <span class="dt">data =</span> data2_new, <span class="dt">y =</span> hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"lm2_new"</span>)
 
-model_lm2_old &lt;-<span class="st"> </span><span class="kw">lm</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_lm2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_old, <span class="dt">data =</span> data2_old, <span class="dt">y =</span> hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"lm2_old"</span>)
+model_lm2_all &lt;-<span class="st"> </span><span class="kw">lm</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_lm2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_all, <span class="dt">data =</span> data2_all, <span class="dt">y =</span> hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"lm2_all"</span>)
+
+model_lm2_aic &lt;-<span class="st"> </span><span class="kw">lm</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_lm2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2_aic, <span class="dt">data =</span> data2_aic, <span class="dt">y =</span> hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"lm2_aic"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)
+model_rf2_new &lt;-<span class="st"> </span><span class="kw">randomForest</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_new)
+explainer_rf2_new &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_new, data2_new, hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"rf2_new"</span>)
 
 <span class="kw">set.seed</span>(<span class="dv">111</span>)
-model_rf2_old &lt;-<span class="st"> </span><span class="kw">randomForest</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_old)
-explainer_rf2_old &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_old, data2_old, hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"rf2_old"</span>)</code></pre></div>
-<p><img src="example_hills_files/figure-html/unnamed-chunk-6-1.png" width="672"><img src="example_hills_files/figure-html/unnamed-chunk-6-2.png" width="672"></p>
+model_rf2_all &lt;-<span class="st"> </span><span class="kw">randomForest</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_all)
+explainer_rf2_all &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_all, data2_all, hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"rf2_all"</span>)
+
+<span class="kw">set.seed</span>(<span class="dv">111</span>)
+model_rf2_aic &lt;-<span class="st"> </span><span class="kw">randomForest</span>(time <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1_aic)
+explainer_rf2_aic &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2_aic, data2_aic, hills[<span class="dv">25</span><span class="op">:</span><span class="kw">nrow</span>(hills),<span class="dv">3</span>], <span class="dt">label =</span> <span class="st">"rf2_aic"</span>)</code></pre></div>
+<p><img src="example_hills_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p><img src="example_hills_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model_lm1)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
 <span class="co">#&gt; lm(formula = time ~ ., data = hills[1:12, ])</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
-<span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
-<span class="co">#&gt; -16.8576  -1.9977   0.5615   3.9828  10.0006 </span>
+<span class="co">#&gt;       Min        1Q    Median        3Q       Max </span>
+<span class="co">#&gt; -0.281785 -0.032256  0.008038  0.067494  0.167629 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
 <span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept) -16.775758   4.264504  -3.934  0.00344 ** </span>
-<span class="co">#&gt; dist          6.459476   0.407896  15.836 7.04e-08 ***</span>
-<span class="co">#&gt; climb         0.014405   0.001447   9.952 3.72e-06 ***</span>
+<span class="co">#&gt; (Intercept) -2.772e-01  7.155e-02  -3.875  0.00376 ** </span>
+<span class="co">#&gt; dist         1.075e-01  6.844e-03  15.711 7.54e-08 ***</span>
+<span class="co">#&gt; climb        2.399e-04  2.432e-05   9.867 4.00e-06 ***</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 8.42 on 9 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.9851, Adjusted R-squared:  0.9818 </span>
-<span class="co">#&gt; F-statistic: 298.1 on 2 and 9 DF,  p-value: 5.964e-09</span>
-<span class="kw">summary</span>(model_lm2)
+<span class="co">#&gt; Residual standard error: 0.1414 on 9 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.9849, Adjusted R-squared:  0.9815 </span>
+<span class="co">#&gt; F-statistic: 293.5 on 2 and 9 DF,  p-value: 6.389e-09</span>
+<span class="kw">summary</span>(model_lm2_aic)
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Call:</span>
-<span class="co">#&gt; lm(formula = time ~ ., data = data1)</span>
+<span class="co">#&gt; lm(formula = time ~ ., data = data1_aic)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Residuals:</span>
-<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
-<span class="co">#&gt; -16.306 -11.605  -3.523   6.459  49.308 </span>
+<span class="co">#&gt;      Min       1Q   Median       3Q      Max </span>
+<span class="co">#&gt; -0.49870 -0.04034 -0.01727  0.02195  0.58130 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)  </span>
-<span class="co">#&gt; (Intercept) -30.0193    24.8276  -1.209   0.2574  </span>
-<span class="co">#&gt; dist_new      0.6914     0.3128   2.210   0.0544 .</span>
-<span class="co">#&gt; climb_new     0.8144     0.5329   1.528   0.1608  </span>
+<span class="co">#&gt;               Estimate Std. Error t value Pr(&gt;|t|)  </span>
+<span class="co">#&gt; (Intercept) -2.5350547  1.0158993  -2.495   0.0372 *</span>
+<span class="co">#&gt; climb       -0.0009665  0.0004530  -2.134   0.0654 .</span>
+<span class="co">#&gt; dist_new     0.7109347  0.2650219   2.683   0.0278 *</span>
+<span class="co">#&gt; climb_new    4.8917489  1.9633811   2.491   0.0374 *</span>
 <span class="co">#&gt; ---</span>
 <span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 19.68 on 9 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.5771, Adjusted R-squared:  0.4831 </span>
-<span class="co">#&gt; F-statistic:  6.14 on 2 and 9 DF,  p-value: 0.02081</span></code></pre></div>
+<span class="co">#&gt; Residual standard error: 0.2778 on 8 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.7305, Adjusted R-squared:  0.6294 </span>
+<span class="co">#&gt; F-statistic: 7.227 on 3 and 8 DF,  p-value: 0.0115</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

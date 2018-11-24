@@ -7,7 +7,8 @@ Depends: R (>= 3.5.0)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-Imports: DALEX,
+Imports:
+    DALEX,
     changepoint.np,
     strucchange,
     randomForest,
@@ -15,8 +16,9 @@ Imports: DALEX,
     utils,
     stringr,
     iml,
-    factorMerger
-RoxygenNote: 6.0.1
+    factorMerger,
+    gridExtra
+RoxygenNote: 6.1.1
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no

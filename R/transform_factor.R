@@ -13,6 +13,7 @@
 
 
 transform_factor <- function(explainer, variable, plot = FALSE) {
+
   sv <- single_variable(explainer, variable, type = "factor")
   partition <- getOptimalPartitionDf(sv)
 
@@ -27,7 +28,8 @@ transform_factor <- function(explainer, variable, plot = FALSE) {
   }
 
   if (plot == TRUE) {
-    plot(sv)
+    #graphics.off()
+    plot(sv) #not showing
   }
 
 

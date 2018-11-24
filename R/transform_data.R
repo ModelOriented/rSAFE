@@ -5,20 +5,23 @@
 #'
 #' @param data data for which features values are to be transformed
 #' @param propositions list of transformations functions and interactions returned by transform_propositons() function
-#' @param user_interaction logical, TRUE allows the user to decide whether to keep the old variables after transformation
-#' @param keep_old logical, if FALSE then old variables are removed from the dataset
+#' @param which_variables allows user to decide which variables keep, one of: "all", "only_new", "aic"
 #'
 #' @return data with extra columns containing transformed variables
 #'
 #' @export
 
 
-transform_data <- function(data, propositions, user_interaction = FALSE, keep_old = FALSE) {
+transform_data <- function(data, y, propositions, which_variables = "only_new") {
 
   n <- length(propositions$transformations)
   if (n == 0) {
     cat("No transformations available.")
+    return(data)
   }
+
+  ind <- data.frame('ind' = 1:nrow(data)) #column created to maintain rows order
+  data <- cbind(ind, data)
 
   for (i in 1:n) {
     if (is.function(propositions$transformations[[i]])) { #continuous
@@ -35,10 +38,8 @@ transform_data <- function(data, propositions, user_interaction = FALSE, keep_ol
       colnames(data)[ncol(data)] <- paste0(names(propositions$transformations)[i], "_new")
 
     } else { #factor
-      data <- merge(data, propositions$transformations[[i]], by = names(propositions$transformations)[i])
+      data <- merge(x = data, y = propositions$transformations[[i]], by = names(propositions$transformations)[i])
     }
-
-
 
   }
 
@@ -49,9 +50,22 @@ transform_data <- function(data, propositions, user_interaction = FALSE, keep_ol
   #     data <- data[,!names(data) %in% names(transformations)]
   #   }
   # }
-  if (keep_old == FALSE) {
+
+  # if (keep_old == FALSE) { #deleting old variables from dataset
+  #   data <- data[,!names(data) %in% names(propositions$transformations)]
+  # }
+
+  data <- data[order(data$ind), colnames(data) != "ind"] #restoring rows order after merge
+  rownames(data) <- 1:nrow(data)
+
+  if (which_variables == "only_new") { #deleting old variables from dataset
     data <- data[,!names(data) %in% names(propositions$transformations)]
+  } else if (which_variables == "aic") {
+    model_lm <- lm(y ~ ., data = cbind(data,y))
+    sel <- stats::step(model_lm, direction = 'backward')
+    data <- data[,names(data) %in% attr(sel$terms, "term.labels")]
   }
+
 
   return(data)
 

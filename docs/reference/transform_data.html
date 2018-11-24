@@ -120,8 +120,7 @@ using PDP plots from DALEX package and adds them to the original ones.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>transform_data</span>(<span class='no'>data</span>, <span class='no'>propositions</span>, <span class='kw'>user_interaction</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>keep_old</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>transform_data</span>(<span class='no'>data</span>, <span class='no'>y</span>, <span class='no'>propositions</span>, <span class='kw'>which_variables</span> <span class='kw'>=</span> <span class='st'>"only_new"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,12 +134,8 @@ using PDP plots from DALEX package and adds them to the original ones.</p>
       <td><p>list of transformations functions and interactions returned by transform_propositons() function</p></td>
     </tr>
     <tr>
-      <th>user_interaction</th>
-      <td><p>logical, TRUE allows the user to decide whether to keep the old variables after transformation</p></td>
-    </tr>
-    <tr>
-      <th>keep_old</th>
-      <td><p>logical, if FALSE then old variables are removed from the dataset</p></td>
+      <th>which_variables</th>
+      <td><p>allows user to decide which variables keep, one of: "all", "only_new", "aic"</p></td>
     </tr>
     </table>
     

@@ -161,7 +161,7 @@ transform_continuous <- function(explainer, variable, package = "changepoint.np"
     if (type != "constant") {
       for (i in 1:n_groups) {
         p <- p + geom_segment(data = data.frame(x1 = x_split[[i]][1], y1 = trans_coef[i,1] + trans_coef[i,2] * x_split[[i]][1],
-                              x2 = x_split[[i]][length(x_split[[i]])], y2 = trans_coef[i,1] + trans_coef[i,2] * x_split[[i]][length(x_split[[i]])]),
+                                                x2 = x_split[[i]][length(x_split[[i]])], y2 = trans_coef[i,1] + trans_coef[i,2] * x_split[[i]][length(x_split[[i]])]),
                               aes(x = x1, y = y1, xend = x2, yend = y2), colour = "red", size = 1.5)
       }
     }

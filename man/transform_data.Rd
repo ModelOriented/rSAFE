@@ -4,17 +4,14 @@
 \alias{transform_data}
 \title{Features transformation using PDP plots}
 \usage{
-transform_data(data, propositions, user_interaction = FALSE,
-  keep_old = FALSE)
+transform_data(data, y, propositions, which_variables = "only_new")
 }
 \arguments{
 \item{data}{data for which features values are to be transformed}
 
 \item{propositions}{list of transformations functions and interactions returned by transform_propositons() function}
 
-\item{user_interaction}{logical, TRUE allows the user to decide whether to keep the old variables after transformation}
-
-\item{keep_old}{logical, if FALSE then old variables are removed from the dataset}
+\item{which_variables}{allows user to decide which variables keep, one of: "all", "only_new", "aic"}
 }
 \value{
 data with extra columns containing transformed variables
