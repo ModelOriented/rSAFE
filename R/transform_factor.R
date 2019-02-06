@@ -3,36 +3,32 @@
 #' The transform_factor() function calculates a transformation function
 #' for the factor variable using the getOptimalPartitionDf() function from factorMerger package.
 #'
-#' @param explainer DALEX explainer created with explain() function
 #' @param variable a feature for which the transformation function is to be computed
-#' @param plot logical, if TRUE then plots the optimal partition
+#' @param explainer DALEX explainer created with explain() function
 #'
-#' @return transformation function for the given variable
+#' @return list of transformation information on the given variable
 #'
 #' @export
 
 
-transform_factor <- function(explainer, variable, plot = FALSE) {
+transform_factor <- function(variable, explainer) {
 
-  sv <- single_variable(explainer, variable, type = "factor")
-  partition <- getOptimalPartitionDf(sv)
+  #calculating average responses of chosen type
+  sv <- DALEX::variable_response(explainer, variable, type = "factor")
+  new_levels <- factorMerger::getOptimalPartitionDf(sv)
 
-  cat(paste0("Transformation for '", variable, "' variable:\n"))
-  if (length(levels(partition$pred)) == 1) {
-    cat("No transformation.") #no transformation for 1 factor
-    return(NULL)
+  if (length(levels(new_levels$pred)) == 1) {
+    new_levels <- NULL
   } else {
-    colnames(partition) <- c(variable, paste0(variable, "_new"))
-    rownames(partition) <- 1:nrow(partition)
-    print(partition)
+    colnames(new_levels) <- c(variable, paste0(variable, "_new"))
+    rownames(new_levels) <- 1:nrow(new_levels)
   }
 
-  if (plot == TRUE) {
-    #graphics.off()
-    plot(sv) #not showing
-  }
+  return(list(sv = sv,
+              new_levels = new_levels))
 
-
-  return(partition)
 
 }
+
+
+

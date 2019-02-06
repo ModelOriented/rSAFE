@@ -1,72 +1,119 @@
 #' Features transformation using PDP plots
 #'
-#' The transform_data() function creates new variables
-#' using PDP plots from DALEX package and adds them to the original ones.
+#' The transform_data() function creates new variables in dataset
+#' using SAFE-extractor object.
 #'
-#' @param data data for which features values are to be transformed
-#' @param propositions list of transformations functions and interactions returned by transform_propositons() function
-#' @param which_variables allows user to decide which variables keep, one of: "all", "only_new", "aic"
+#' @param data data for which features are to be transformed
+#' @param safe_extractor object containing information about variables transformations created with safer() function
+#' @param encoding method of representing factor variables, one of: "categorical", "one-hot"
 #'
-#' @return data with extra columns containing transformed variables
+#' @return data with extra columns containing newly created variables
 #'
 #' @export
 
 
-transform_data <- function(data, y, propositions, which_variables = "only_new") {
+transform_data <- function(data, safe_extractor, encoding = "categorical") {
 
-  n <- length(propositions$transformations)
-  if (n == 0) {
-    cat("No transformations available.")
-    return(data)
+  if (class(safe_extractor) != "safe_extractor") {
+    stop(paste0("No applicable method for 'transform_data' applied to an object of class '", class(safe_extractor), "'."))
   }
 
-  ind <- data.frame('ind' = 1:nrow(data)) #column created to maintain rows order
-  data <- cbind(ind, data)
+  row_ind <- data.frame(row_ind = 1:nrow(data)) #column created to maintain rows order
+  data <- cbind(row_ind, data)
 
-  for (i in 1:n) {
-    if (is.function(propositions$transformations[[i]])) { #continuous
 
-      new_variable <- rep(0, nrow(data))
-      which_var <- which(colnames(data) == names(propositions$transformations)[i])
-      for (j in 1:nrow(data)) {
-        new_variable[j] <- propositions$transformations[[i]](data[j,which_var])
-      }
-      if (is.factor(propositions$transformations[[i]](data[1,which_var]))) {
-        new_variable <- as.factor(new_variable)
-      }
-      data <- cbind(data, new_variable)
-      colnames(data)[ncol(data)] <- paste0(names(propositions$transformations)[i], "_new")
 
-    } else { #factor
-      data <- merge(x = data, y = propositions$transformations[[i]], by = names(propositions$transformations)[i])
+  for (v in colnames(data)) {
+
+    if (! v %in% names(safe_extractor$vars)) { #column with values to be predicted
+      next
     }
 
+    var_info <- safe_extractor$vars[[v]] #information on variable extracted from safer object
+
+    if (is.null(var_info$new_levels)) { #no transformation available
+      cat(paste0("No transformation for '", v, "' variable.\n"))
+      next
+    }
+
+    cat(paste0("Transforming '", v, "' variable.\n"))
+
+
+
+    if (var_info$type == "categorical") {
+
+      data <- merge(data, var_info$new_levels, by = v)
+      data[,paste0(v, "_new")] <- as.factor(data[,paste0(v, "_new")]) #variable as factor
+      #adding levels which do not occur in the dataset
+      levels(data[,paste0(v, "_new")]) <- c(levels(data[,paste0(v, "_new")]),
+                                            setdiff(unique(var_info$new_levels[,paste0(v, "_new")]),
+                                                    levels(data[,paste0(v, "_new")])))
+
+
+    } else {
+
+      #adding new column for transformed variable
+      data[,paste0(v, "_new")] <- sapply(data[,v],
+                                         function(x) which.max(x<c(var_info$break_points, Inf)))
+
+      if (encoding == "categorical") { #for categorical encoding intervals implied by breakpoints as factor names
+        data[,paste0(v, "_new")] <- sapply(data[,paste0(v, "_new")],
+                                           function(x) var_info$new_levels[x])
+      }
+      data[,paste0(v, "_new")] <- as.factor(data[,paste0(v, "_new")]) #variable as factor
+      #adding levels which do not occur in the dataset
+      if (encoding == "categorical") {
+        levels(data[,paste0(v, "_new")]) <- c(levels(data[,paste0(v, "_new")]),
+                                              setdiff(var_info$new_levels,
+                                                      levels(data[,paste0(v, "_new")])))
+      } else {
+        levels(data[,paste0(v, "_new")]) <- c(levels(data[,paste0(v, "_new")]),
+                                              setdiff(1:length(var_info$new_levels),
+                                                      levels(data[,paste0(v, "_new")])))
+      }
+
+    }
+
+    #changing factor names in order to get proper colnames after one-hot encoding
+
+
   }
 
-  # if (user_interaction == TRUE) {
-  #   cat("Do you want to keep the old variables?")
-  #   ans <- menu(c("Yes.", "No."))
-  #   if (ans == 2) {
-  #     data <- data[,!names(data) %in% names(transformations)]
-  #   }
-  # }
 
-  # if (keep_old == FALSE) { #deleting old variables from dataset
-  #   data <- data[,!names(data) %in% names(propositions$transformations)]
-  # }
+  data <- data[order(data$row_ind), colnames(data) != "row_ind"] #restoring rows order after merge
+  rownames(data) <- 1:nrow(data) #reseting rownames
 
-  data <- data[order(data$ind), colnames(data) != "ind"] #restoring rows order after merge
-  rownames(data) <- 1:nrow(data)
 
-  if (which_variables == "only_new") { #deleting old variables from dataset
-    data <- data[,!names(data) %in% names(propositions$transformations)]
-  } else if (which_variables == "aic") {
-    model_lm <- lm(y ~ ., data = cbind(data,y))
-    sel <- stats::step(model_lm, direction = 'backward')
-    data <- data[,names(data) %in% attr(sel$terms, "term.labels")]
+  #transforming factor variables to one-hot encoding
+  if (encoding == "one-hot") {
+
+    data_recipe <- recipes::recipe(~ ., data = data)
+    ref_cell <- data_recipe %>%
+      recipes::step_dummy(ends_with("_new")) %>%
+      recipes::prep(training = data, retain = TRUE)
+    data <- as.data.frame(recipes::bake(ref_cell, data))
+
   }
+
 
 
   return(data)
 
 }
+
+
+
+# transform_data <- function(data, y, propositions, which_variables = "only_new") {
+#
+#   if (which_variables == "only_new") { #deleting old variables from dataset
+#     data <- data[,!names(data) %in% names(propositions$transformations)]
+#   } else if (which_variables == "aic") {
+#     model_lm <- lm(y ~ ., data = cbind(data,y))
+#     sel <- stats::step(model_lm, direction = 'backward')
+#     data <- data[,names(data) %in% attr(sel$terms, "term.labels")]
+#   }
+#
+#
+#   return(data)
+#
+# }

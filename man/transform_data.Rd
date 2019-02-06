@@ -4,19 +4,19 @@
 \alias{transform_data}
 \title{Features transformation using PDP plots}
 \usage{
-transform_data(data, y, propositions, which_variables = "only_new")
+transform_data(data, safe_extractor, encoding = "categorical")
 }
 \arguments{
-\item{data}{data for which features values are to be transformed}
+\item{data}{data for which features are to be transformed}
 
-\item{propositions}{list of transformations functions and interactions returned by transform_propositons() function}
+\item{safe_extractor}{object containing information about variables transformations created with safer() function}
 
-\item{which_variables}{allows user to decide which variables keep, one of: "all", "only_new", "aic"}
+\item{encoding}{method of representing factor variables, one of: "categorical", "one-hot"}
 }
 \value{
-data with extra columns containing transformed variables
+data with extra columns containing newly created variables
 }
 \description{
-The transform_data() function creates new variables
-using PDP plots from DALEX package and adds them to the original ones.
+The transform_data() function creates new variables in dataset
+using SAFE-extractor object.
 }

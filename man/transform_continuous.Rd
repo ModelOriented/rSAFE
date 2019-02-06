@@ -4,22 +4,21 @@
 \alias{transform_continuous}
 \title{Continuous feature transformation using PDP plot}
 \usage{
-transform_continuous(explainer, variable, package = "changepoint.np",
-  type = "constant", plot = FALSE)
+transform_continuous(variable, explainer, package = "changepoint.np",
+  response_type = "pdp")
 }
 \arguments{
-\item{explainer}{DALEX explainer created with explain() function}
-
 \item{variable}{a feature for which the transformation function is to be computed}
 
-\item{package}{a package used to compute breakpoints, one of: "changepoint.np", "strucchange"}
+\item{explainer}{DALEX explainer created with explain() function}
 
-\item{type}{a transformation method, one of: "constant", "linear"}
+\item{package}{character, a package used to compute breakpoints, one of: "changepoint.np", "strucchange"}
 
-\item{plot}{logical, if TRUE then plots breakpoints and segments means}
+\item{response_type}{character, type of response to be calculated, one of: "pdp", "ale".
+If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}
 }
 \value{
-transformation function for the given variable
+list of transformation information on the given variable
 }
 \description{
 The transform_continuous() function calculates a transformation function

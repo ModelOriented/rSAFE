@@ -4,17 +4,15 @@
 \alias{transform_factor}
 \title{Factor feature transformation using factorMerger package}
 \usage{
-transform_factor(explainer, variable, plot = FALSE)
+transform_factor(variable, explainer)
 }
 \arguments{
-\item{explainer}{DALEX explainer created with explain() function}
-
 \item{variable}{a feature for which the transformation function is to be computed}
 
-\item{plot}{logical, if TRUE then plots the optimal partition}
+\item{explainer}{DALEX explainer created with explain() function}
 }
 \value{
-transformation function for the given variable
+list of transformation information on the given variable
 }
 \description{
 The transform_factor() function calculates a transformation function

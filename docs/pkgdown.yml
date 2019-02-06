@@ -3,5 +3,4 @@ pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
   example_apartments: example_apartments.html
-  example_hills: example_hills.html
 

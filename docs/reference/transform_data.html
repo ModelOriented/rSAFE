@@ -32,8 +32,8 @@
 
 <meta property="og:title" content="Features transformation using PDP plots — transform_data" />
 
-<meta property="og:description" content="The transform_data() function creates new variables
-using PDP plots from DALEX package and adds them to the original ones." />
+<meta property="og:description" content="The transform_data() function creates new variables in dataset
+using SAFE-extractor object." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -87,9 +87,6 @@ using PDP plots from DALEX package and adds them to the original ones." />
     <li>
       <a href="../articles/example_apartments.html">SAFE examples - apartments dataset</a>
     </li>
-    <li>
-      <a href="../articles/example_hills.html">SAFE examples - hills dataset</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -115,33 +112,33 @@ using PDP plots from DALEX package and adds them to the original ones." />
 
     <div class="ref-description">
     
-    <p>The transform_data() function creates new variables
-using PDP plots from DALEX package and adds them to the original ones.</p>
+    <p>The transform_data() function creates new variables in dataset
+using SAFE-extractor object.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>transform_data</span>(<span class='no'>data</span>, <span class='no'>y</span>, <span class='no'>propositions</span>, <span class='kw'>which_variables</span> <span class='kw'>=</span> <span class='st'>"only_new"</span>)</pre>
+    <pre class="usage"><span class='fu'>transform_data</span>(<span class='no'>data</span>, <span class='no'>safe_extractor</span>, <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"categorical"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>data for which features values are to be transformed</p></td>
+      <td><p>data for which features are to be transformed</p></td>
     </tr>
     <tr>
-      <th>propositions</th>
-      <td><p>list of transformations functions and interactions returned by transform_propositons() function</p></td>
+      <th>safe_extractor</th>
+      <td><p>object containing information about variables transformations created with safer() function</p></td>
     </tr>
     <tr>
-      <th>which_variables</th>
-      <td><p>allows user to decide which variables keep, one of: "all", "only_new", "aic"</p></td>
+      <th>encoding</th>
+      <td><p>method of representing factor variables, one of: "categorical", "one-hot"</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>data with extra columns containing transformed variables</p>
+    <p>data with extra columns containing newly created variables</p>
     
 
   </div>

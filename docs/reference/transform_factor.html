@@ -87,9 +87,6 @@ for the factor variable using the getOptimalPartitionDf() function from factorMe
     <li>
       <a href="../articles/example_apartments.html">SAFE examples - apartments dataset</a>
     </li>
-    <li>
-      <a href="../articles/example_hills.html">SAFE examples - hills dataset</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -120,28 +117,24 @@ for the factor variable using the getOptimalPartitionDf() function from factorMe
     
     </div>
 
-    <pre class="usage"><span class='fu'>transform_factor</span>(<span class='no'>explainer</span>, <span class='no'>variable</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>transform_factor</span>(<span class='no'>variable</span>, <span class='no'>explainer</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>explainer</th>
-      <td><p>DALEX explainer created with explain() function</p></td>
-    </tr>
-    <tr>
       <th>variable</th>
       <td><p>a feature for which the transformation function is to be computed</p></td>
     </tr>
     <tr>
-      <th>plot</th>
-      <td><p>logical, if TRUE then plots the optimal partition</p></td>
+      <th>explainer</th>
+      <td><p>DALEX explainer created with explain() function</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>transformation function for the given variable</p>
+    <p>list of transformation information on the given variable</p>
     
 
   </div>

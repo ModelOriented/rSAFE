@@ -1,27 +1,26 @@
 Package: SAFE
 Title: Surrogate-assisted feature extraction
 Version: 0.0.0.9000
-Authors@R: person("Anna", "Gierlak", email = "anna.gierlak@op.pl", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.5.0)
-License: What license is it under?
+Authors@R:
+    person(given = "Anna",
+           family = "Gierlak",
+           role = c("aut", "cre"),
+           email = "anna.gierlak@op.pl")
+Description: Surrogate-assisted feature extraction
+License: What license it uses
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
 Imports:
     DALEX,
+    changepoint,
     changepoint.np,
-    strucchange,
-    randomForest,
-    ggplot2,
-    utils,
-    stringr,
-    iml,
     factorMerger,
-    gridExtra
-RoxygenNote: 6.1.1
-Suggests: knitr, rmarkdown
+    recipes,
+    ggplot2,
+    magrittr
+Suggests:
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
-NeedsCompilation: no
-Packaged: 2018-09-05 20:27:33 UTC; Ania
-Author: Anna Gierlak [aut, cre]
-Maintainer: Anna Gierlak <anna.gierlak@op.pl>

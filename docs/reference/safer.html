@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Features transformation using PDP plots — transform_propositions • SAFE</title>
+<title>Creating SAFE-extractor — safer • SAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Features transformation using PDP plots — transform_propositions" />
+<meta property="og:title" content="Creating SAFE-extractor — safer" />
 
-<meta property="og:description" content="The transform_propositions() function computes transformation functions
-for all continuous variables using PDP plots from DALEX package." />
+<meta property="og:description" content="The safer() function creates a SAFE-extractor object which may be used later
+for surrogate feature extraction." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -87,9 +87,6 @@ for all continuous variables using PDP plots from DALEX package." />
     <li>
       <a href="../articles/example_apartments.html">SAFE examples - apartments dataset</a>
     </li>
-    <li>
-      <a href="../articles/example_hills.html">SAFE examples - hills dataset</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -108,20 +105,19 @@ for all continuous variables using PDP plots from DALEX package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Features transformation using PDP plots</h1>
+    <h1>Creating SAFE-extractor</h1>
     
-    <div class="hidden name"><code>transform_propositions.Rd</code></div>
+    <div class="hidden name"><code>safer.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The transform_propositions() function computes transformation functions
-for all continuous variables using PDP plots from DALEX package.</p>
+    <p>The safer() function creates a SAFE-extractor object which may be used later
+for surrogate feature extraction.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>transform_propositions</span>(<span class='no'>explainer</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"changepoint.np"</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"constant"</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>safer</span>(<span class='no'>explainer</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"changepoint.np"</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"pdp"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,21 +128,19 @@ for all continuous variables using PDP plots from DALEX package.</p>
     </tr>
     <tr>
       <th>package</th>
-      <td><p>a package used to compute breakpoints, one of: "changepoint.np", "strucchange"</p></td>
+      <td><p>character, a package used to compute breakpoints in case of continuous variables,
+one of: "changepoint.np", "strucchange"</p></td>
     </tr>
     <tr>
-      <th>type</th>
-      <td><p>a transformation method, one of: "constant", "linear"</p></td>
-    </tr>
-    <tr>
-      <th>plot</th>
-      <td><p>logical, if TRUE then plots breakpoints and segments means</p></td>
+      <th>response_type</th>
+      <td><p>character, type of response to be calculated, one of: "pdp", "ale".
+If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list of propositions of variables transformations</p>
+    <p>SAFE-extractor object containing information about variables transformations</p>
     
 
   </div>
