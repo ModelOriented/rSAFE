@@ -14,7 +14,7 @@
 #' @export
 
 
-transform_continuous <- function(variable, explainer, package = "changepoint.np", response_type = "pdp") {
+safely_transform_continuous <- function(variable, explainer, package = "changepoint.np", response_type = "pdp") {
 
   #calculating average responses of chosen type
   sv <- DALEX::variable_response(explainer, variable, type = response_type)

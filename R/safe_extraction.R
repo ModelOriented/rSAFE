@@ -1,6 +1,6 @@
 #' Creating SAFE-extractor
 #'
-#' The safer() function creates a SAFE-extractor object which may be used later
+#' The safe_extractor() function creates a SAFE-extractor object which may be used later
 #' for surrogate feature extraction.
 #'
 #' @param explainer DALEX explainer created with explain() function
@@ -8,6 +8,7 @@
 #' one of: "changepoint.np", "strucchange"
 #' @param response_type character, type of response to be calculated, one of: "pdp", "ale".
 #' If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.
+#' @param verbose logical, if progress bar is to be printed
 #'
 #' @return SAFE-extractor object containing information about variables transformations
 #'
@@ -15,7 +16,7 @@
 #'
 #'
 
-safer <- function(explainer, package = "changepoint.np", response_type = "pdp") {
+safe_extraction <- function(explainer, package = "changepoint.np", response_type = "ale", verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safer' applied to an object of class '", class(explainer), "'."))
@@ -29,12 +30,18 @@ safer <- function(explainer, package = "changepoint.np", response_type = "pdp") 
     response_type <- "pdp"
   }
 
-  p <- ncol(explainer$data)
+
+  #explainer$data might contain also a response variable - we use model attributes to get the predictors
+  term_names <- attr(explainer$model$terms, "term.labels")
+
+  #p <- ncol(explainer$data)
+  p <- length(term_names)
   n <- nrow(explainer$data)
 
   #list with all variables and information on them
   vars <- vector("list", length = p)
-  names(vars) <- colnames(explainer$data)
+  #names(vars) <- colnames(explainer$data)
+  names(vars) <- term_names
 
   for (v in names(vars)) {
     if (is.factor(explainer$data[1,v])) {
@@ -49,29 +56,45 @@ safer <- function(explainer, package = "changepoint.np", response_type = "pdp") 
   #                    type = sapply(explainer$data[1,], function(x) if(is.factor(x)) 'categorical' else 'numerical'))
 
   # transformations proposition
+  if (verbose == TRUE) {
+    #progress bar - to let the user know how many variables have been already processed
+    pb <- utils::txtProgressBar(min = 0, max = length(names(vars)), style = 3)
+  }
+
   for (v in names(vars)) {
 
-    cat(paste0("Variable processed: ", v, "\n"))
+    # if (verbose == TRUE) {
+    #   cat(paste0("Variable processed: ", v, "\n"))
+    # }
 
     if (vars[[v]]$type == "categorical") {
-      trans_prop <- transform_factor(v, explainer)
+      trans_prop <- safely_transform_factor(v, explainer)
       vars[[v]]$new_levels <- trans_prop$new_levels
     } else {
-      trans_prop <- transform_continuous(v, explainer, package, response_type)
+      trans_prop <- safely_transform_continuous(v, explainer, package, response_type)
       vars[[v]]$break_points <- trans_prop$break_points
       vars[[v]]$new_levels <- trans_prop$new_levels
     }
     vars[[v]]$sv <- trans_prop$sv
+
+    #updating progress bar
+    if (verbose == TRUE) {
+      utils::setTxtProgressBar(pb, which(names(vars) == v))
+    }
+
   }
 
+  #closing progress bar
+  if (verbose == TRUE) {
+    close(pb)
+  }
 
 
 
 
   safe_extractor <- list(explainer = explainer,
                          package = package,
-                         vars = vars,
-                         interactions_detected = NULL
+                         vars = vars
                          )
   class(safe_extractor) <- "safe_extractor"
 
@@ -85,6 +108,7 @@ safer <- function(explainer, package = "changepoint.np", response_type = "pdp") 
 plot.safe_extractor <- function(safe_extractor, variable = NULL) {
 
   if (is.null(variable)) {
+    cat("Give a variable as an argument!")
     return(NULL)
   }
   if (! variable %in% names(safe_extractor$vars)) {

@@ -11,7 +11,7 @@
 #' @export
 
 
-transform_factor <- function(variable, explainer) {
+safely_transform_factor <- function(variable, explainer) {
 
   #calculating average responses of chosen type
   sv <- DALEX::variable_response(explainer, variable, type = "factor")

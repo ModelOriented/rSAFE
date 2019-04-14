@@ -19,7 +19,9 @@ Imports:
     factorMerger,
     recipes,
     ggplot2,
-    magrittr
+    magrittr,
+    reticulate,
+    tidyselect
 Suggests:
     knitr,
     rmarkdown

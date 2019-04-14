@@ -2,7 +2,8 @@
 
 S3method(plot,safe_extractor)
 S3method(print,safe_extractor)
-export(safer)
-export(transform_continuous)
-export(transform_data)
-export(transform_factor)
+export(safe_extraction)
+export(safely_select_variables)
+export(safely_transform_continuous)
+export(safely_transform_data)
+export(safely_transform_factor)

@@ -18,22 +18,11 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
-<!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
-
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-
-
-
-<meta property="og:title" content="Function reference" />
-
-
-
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -48,7 +37,7 @@
   <body>
     <div class="container template-reference-index">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top navbar-mi2" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -56,14 +45,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">SAFE</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9000</span>
-      </span>
+	  <a class = "navbar-mi2logo" href="http://mi2.mini.pw.edu.pl/">
+        <img src = "https://github.com/mi2-warsaw/MI2template/blob/master/inst/pkgdown/assets/MI2logo.jpg?raw=true" alt = "MI2" height = 46 title = "MI2">
+	  </a>
+      <a class="navbar-brand navbar-mi2" href="../index.html"></a>
     </div>
-
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="navbar-mi2 nav navbar-nav">
         <li>
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
@@ -90,7 +78,6 @@
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
-      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -98,59 +85,69 @@
       
       </header>
 
-<div class="row">
-  <div class="contents col-md-9">
+      <div class="row">
+  <div class="col-md-9">
     <div class="page-header">
-      <h1>Reference</h1>
+      <h1>
+        Reference
+        <small>version&nbsp;0.0.0.9000</small>
+      </h1>
     </div>
 
-    <table class="ref-index">
+    <div class="contents">
+      <table class="ref-index">
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+      <colgroup>
+        <col class="alias" />
+        <col class="title" />
+      </colgroup>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="safer.html">safer()</a></code> </p>
-        </td>
-        <td><p>Creating SAFE-extractor</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_continuous.html">transform_continuous()</a></code> </p>
-        </td>
-        <td><p>Continuous feature transformation using PDP plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_data.html">transform_data()</a></code> </p>
-        </td>
-        <td><p>Features transformation using PDP plots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="transform_factor.html">transform_factor()</a></code> </p>
-        </td>
-        <td><p>Factor feature transformation using factorMerger package</p></td>
-      </tr>
-    </tbody>
-    </table>
+      <tbody>
+        <tr>
+          <th colspan="2">
+            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+            <p class="section-desc"></p>
+          </th>
+        </tr>
+        <tr>
+          <!--  -->
+          <td>
+            <p><code><a href="safely_select_variables.html">safely_select_variables()</a></code> </p>
+          </td>
+          <td><p>Selecting variables</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="safely_transform_continuous.html">safely_transform_continuous()</a></code> </p>
+          </td>
+          <td><p>Continuous feature transformation using PDP plot</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="safely_transform_data.html">safely_transform_data()</a></code> </p>
+          </td>
+          <td><p>Features transformation using PDP plots</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="safely_transform_factor.html">safely_transform_factor()</a></code> </p>
+          </td>
+          <td><p>Factor feature transformation using factorMerger package</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="safe_extraction.html">safe_extraction()</a></code> </p>
+          </td>
+          <td><p>Creating SAFE-extractor</p></td>
+        </tr>
+      </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
+    <ul class="nav nav-pills nav-stacked contents-mi2">
       <li><a href="#section-all-functions">All functions</a></li>
     </ul>
   </div>
@@ -162,13 +159,11 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
-
-  
 
   </body>
 </html>

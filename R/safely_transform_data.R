@@ -4,15 +4,16 @@
 #' using SAFE-extractor object.
 #'
 #' @param data data for which features are to be transformed
-#' @param safe_extractor object containing information about variables transformations created with safer() function
+#' @param safe_extractor object containing information about variables transformations created with safe_extractor() function
 #' @param encoding method of representing factor variables, one of: "categorical", "one-hot"
+#' @param verbose logical, if progress bar is to be printed
 #'
 #' @return data with extra columns containing newly created variables
 #'
 #' @export
 
 
-transform_data <- function(data, safe_extractor, encoding = "categorical") {
+safely_transform_data <- function(safe_extractor, data, encoding = "categorical", verbose = TRUE) {
 
   if (class(safe_extractor) != "safe_extractor") {
     stop(paste0("No applicable method for 'transform_data' applied to an object of class '", class(safe_extractor), "'."))
@@ -22,21 +23,25 @@ transform_data <- function(data, safe_extractor, encoding = "categorical") {
   data <- cbind(row_ind, data)
 
 
+  if (verbose == TRUE) {
+    #progress bar - to let the user know how many variables have been already processed
+    pb <- utils::txtProgressBar(min = 0, max = length(names(safe_extractor$vars)), style = 3)
+  }
 
-  for (v in colnames(data)) {
+  #for (v in colnames(data)) {
+  for (v in names(safe_extractor$vars)) {
 
-    if (! v %in% names(safe_extractor$vars)) { #column with values to be predicted
-      next
-    }
+    # if (! v %in% names(safe_extractor$vars)) { #column with responses or just created new variable
+    #   next
+    # }
 
     var_info <- safe_extractor$vars[[v]] #information on variable extracted from safer object
 
     if (is.null(var_info$new_levels)) { #no transformation available
-      cat(paste0("No transformation for '", v, "' variable.\n"))
+      #cat(paste0("No transformation for '", v, "' variable.\n"))
       next
     }
-
-    cat(paste0("Transforming '", v, "' variable.\n"))
+    # cat(paste0("Transforming '", v, "' variable.\n"))
 
 
 
@@ -56,7 +61,7 @@ transform_data <- function(data, safe_extractor, encoding = "categorical") {
       data[,paste0(v, "_new")] <- sapply(data[,v],
                                          function(x) which.max(x<c(var_info$break_points, Inf)))
 
-      if (encoding == "categorical") { #for categorical encoding intervals implied by breakpoints as factor names
+      if (encoding == "categorical") { #for categorical encoding - intervals implied by breakpoints as factor names
         data[,paste0(v, "_new")] <- sapply(data[,paste0(v, "_new")],
                                            function(x) var_info$new_levels[x])
       }
@@ -74,11 +79,20 @@ transform_data <- function(data, safe_extractor, encoding = "categorical") {
 
     }
 
-    #changing factor names in order to get proper colnames after one-hot encoding
 
+    #changing factor names in order to get proper colnames after one-hot encoding???
+
+    #updating progress bar
+    if (verbose == TRUE) {
+      utils::setTxtProgressBar(pb, which(names(safe_extractor$vars) == v))
+    }
 
   }
 
+  #closing progress bar
+  if (verbose == TRUE) {
+    close(pb)
+  }
 
   data <- data[order(data$row_ind), colnames(data) != "row_ind"] #restoring rows order after merge
   rownames(data) <- 1:nrow(data) #reseting rownames
@@ -89,7 +103,7 @@ transform_data <- function(data, safe_extractor, encoding = "categorical") {
 
     data_recipe <- recipes::recipe(~ ., data = data)
     ref_cell <- data_recipe %>%
-      recipes::step_dummy(ends_with("_new")) %>%
+      recipes::step_dummy(tidyselect::ends_with("_new")) %>%
       recipes::prep(training = data, retain = TRUE)
     data <- as.data.frame(recipes::bake(ref_cell, data))
 
