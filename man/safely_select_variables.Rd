@@ -2,30 +2,37 @@
 % Please edit documentation in R/safely_select_variables.R
 \name{safely_select_variables}
 \alias{safely_select_variables}
-\title{Selecting variables}
+\title{Feature selection on the dataset with transformed variables}
 \usage{
 safely_select_variables(safe_extractor, data, y = NULL, which_y = NULL,
-  encoding = "categorical", verbose = TRUE)
+  encoding = "categorical", verbose = TRUE, class_pred = NULL)
 }
 \arguments{
-\item{safe_extractor}{object containing information about variables transformations created with safe_extractor() function}
+\item{safe_extractor}{object containing information about variables transformations created with safe_extraction() function}
 
-\item{data}{data, with already transformed variables or not, containing response variable or not}
+\item{data}{data, original dataset or the one returned by safely_transform_data() function.
+If data do not contain transformed variables then transformation is done inside this function using 'safe_extractor' argument.
+Data may contain response variable or not - if it does then 'which_y' argument must be given,
+otherwise 'y' argument should be provided.}
 
 \item{y}{vector of responses, must be given if data does not contain it}
 
 \item{which_y}{numeric or character (optional), must be given if data contains response values}
 
-\item{encoding}{method of representing factor variables, one of: "categorical", "one-hot"}
+\item{encoding}{method of representing factor variables in dataset, one of: "categorical", "one-hot"}
 
 \item{verbose}{logical, if progress bar is to be printed}
+
+\item{class_pred}{numeric or character, used only in multi-classification problems.
+If response vector has more than two levels, then 'class_pred' should indicate the class of interest
+which will denote failure - all other classess will stand for success.}
 }
 \value{
 vector of variables names, selected based on AIC values
 }
 \description{
 The safely_select_variables() function selects variables from dataset returned
-by transform_data(). For each original variable:
+by safely_transform_data() function. For each original variable:
 \enumerate{
 \item if encoding = "categorical" then exactly one variable is chosen
 }
@@ -35,6 +42,6 @@ for linear model (regression) or logistic regression (classification).
 }
 \enumerate{
 \item if encoding = "one-hot" then backward feature selection is performed
-on all features
+on all features (using AIC value) and the best set of variables is chosen.
 }
 }

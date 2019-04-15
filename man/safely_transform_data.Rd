@@ -2,13 +2,13 @@
 % Please edit documentation in R/safely_transform_data.R
 \name{safely_transform_data}
 \alias{safely_transform_data}
-\title{Features transformation using PDP plots}
+\title{Performing transformations on all features in the dataset}
 \usage{
 safely_transform_data(safe_extractor, data, encoding = "categorical",
   verbose = TRUE)
 }
 \arguments{
-\item{safe_extractor}{object containing information about variables transformations created with safe_extractor() function}
+\item{safe_extractor}{object containing information about variables transformations created with safe_extraction() function}
 
 \item{data}{data for which features are to be transformed}
 
@@ -20,6 +20,6 @@ safely_transform_data(safe_extractor, data, encoding = "categorical",
 data with extra columns containing newly created variables
 }
 \description{
-The transform_data() function creates new variables in dataset
-using SAFE-extractor object.
+The safely_transform_data() function creates new variables in dataset
+using safe_extractor object.
 }

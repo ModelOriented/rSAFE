@@ -12,9 +12,9 @@ safely_transform_factor(variable, explainer)
 \item{explainer}{DALEX explainer created with explain() function}
 }
 \value{
-list of transformation information on the given variable
+list of information on the transformation of given variable
 }
 \description{
-The transform_factor() function calculates a transformation function
+The safely_transform_factor() function calculates a transformation function
 for the factor variable using the getOptimalPartitionDf() function from factorMerger package.
 }

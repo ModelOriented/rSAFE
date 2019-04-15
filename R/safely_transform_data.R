@@ -1,10 +1,10 @@
-#' Features transformation using PDP plots
+#' Performing transformations on all features in the dataset
 #'
-#' The transform_data() function creates new variables in dataset
-#' using SAFE-extractor object.
+#' The safely_transform_data() function creates new variables in dataset
+#' using safe_extractor object.
 #'
+#' @param safe_extractor object containing information about variables transformations created with safe_extraction() function
 #' @param data data for which features are to be transformed
-#' @param safe_extractor object containing information about variables transformations created with safe_extractor() function
 #' @param encoding method of representing factor variables, one of: "categorical", "one-hot"
 #' @param verbose logical, if progress bar is to be printed
 #'
@@ -19,7 +19,7 @@ safely_transform_data <- function(safe_extractor, data, encoding = "categorical"
     stop(paste0("No applicable method for 'transform_data' applied to an object of class '", class(safe_extractor), "'."))
   }
 
-  row_ind <- data.frame(row_ind = 1:nrow(data)) #column created to maintain rows order
+  row_ind <- data.frame(row_ind = 1:nrow(data)) #column created to maintain rows order after merge
   data <- cbind(row_ind, data)
 
 
@@ -35,10 +35,13 @@ safely_transform_data <- function(safe_extractor, data, encoding = "categorical"
     #   next
     # }
 
-    var_info <- safe_extractor$vars[[v]] #information on variable extracted from safer object
+    var_info <- safe_extractor$vars[[v]] #information on variable extracted from safe_extractor object
 
     if (is.null(var_info$new_levels)) { #no transformation available
       #cat(paste0("No transformation for '", v, "' variable.\n"))
+      if (verbose == TRUE) {
+        utils::setTxtProgressBar(pb, which(names(safe_extractor$vars) == v))
+      }
       next
     }
     # cat(paste0("Transforming '", v, "' variable.\n"))
@@ -80,7 +83,7 @@ safely_transform_data <- function(safe_extractor, data, encoding = "categorical"
     }
 
 
-    #changing factor names in order to get proper colnames after one-hot encoding???
+    #changing factor names in order to get proper colnames after one-hot encoding - TODO???
 
     #updating progress bar
     if (verbose == TRUE) {
@@ -98,7 +101,8 @@ safely_transform_data <- function(safe_extractor, data, encoding = "categorical"
   rownames(data) <- 1:nrow(data) #reseting rownames
 
 
-  #transforming factor variables to one-hot encoding
+  #transforming factor variables to one-hot encoding using recipe package
+  #if intervals are factor levels then binary variables have names that do not look well - change it???
   if (encoding == "one-hot") {
 
     data_recipe <- recipes::recipe(~ ., data = data)

@@ -92,12 +92,12 @@
     </div>
 
     
-    <p>The transform_continuous() function calculates a transformation function
-for the continuous variable using a PDP plot from DALEX package.</p>
+    <p>The safely_transform_continuous() function calculates a transformation function
+for the continuous variable using a PDP plot obtained from black box model.</p>
     
 
     <pre class="usage"><span class='fu'>safely_transform_continuous</span>(<span class='no'>variable</span>, <span class='no'>explainer</span>,
-  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"changepoint.np"</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"pdp"</span>)</pre>
+  <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"changepoint.np"</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -123,7 +123,7 @@ If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strong
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list of transformation information on the given variable</p>
+    <p>list of information on the transformation of given variable</p>
     
 
   </div>

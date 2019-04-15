@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Selecting variables — safely_select_variables • SAFE</title>
+<title>Feature selection on the dataset with transformed variables — safely_select_variables • SAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -48,7 +48,7 @@
 	  <a class = "navbar-mi2logo" href="http://mi2.mini.pw.edu.pl/">
         <img src = "https://github.com/mi2-warsaw/MI2template/blob/master/inst/pkgdown/assets/MI2logo.jpg?raw=true" alt = "MI2" height = 46 title = "MI2">
 	  </a>
-      <a class="navbar-brand navbar-mi2" href="../index.html">Selecting variables</a>
+      <a class="navbar-brand navbar-mi2" href="../index.html">Feature selection on the dataset with transformed variables</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="navbar-mi2 nav navbar-nav">
@@ -88,12 +88,12 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Selecting variables</h1>
+    <h1>Feature selection on the dataset with transformed variables</h1>
     </div>
 
     
     <p>The safely_select_variables() function selects variables from dataset returned
-by transform_data(). For each original variable:</p><ol>
+by safely_transform_data() function. For each original variable:</p><ol>
 <li><p>if encoding = "categorical" then exactly one variable is chosen</p></li>
 </ol>
 <ul>
@@ -102,23 +102,26 @@ for linear model (regression) or logistic regression (classification).</p></li>
 </ul>
 <ol>
 <li><p>if encoding = "one-hot" then backward feature selection is performed
-on all features</p></li>
+on all features (using AIC value) and the best set of variables is chosen.</p></li>
 </ol>
     
 
     <pre class="usage"><span class='fu'>safely_select_variables</span>(<span class='no'>safe_extractor</span>, <span class='no'>data</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>which_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"categorical"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"categorical"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>class_pred</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>safe_extractor</th>
-      <td><p>object containing information about variables transformations created with safe_extractor() function</p></td>
+      <td><p>object containing information about variables transformations created with safe_extraction() function</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>data, with already transformed variables or not, containing response variable or not</p></td>
+      <td><p>data, original dataset or the one returned by safely_transform_data() function.
+If data do not contain transformed variables then transformation is done inside this function using 'safe_extractor' argument.
+Data may contain response variable or not - if it does then 'which_y' argument must be given,
+otherwise 'y' argument should be provided.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -130,11 +133,17 @@ on all features</p></li>
     </tr>
     <tr>
       <th>encoding</th>
-      <td><p>method of representing factor variables, one of: "categorical", "one-hot"</p></td>
+      <td><p>method of representing factor variables in dataset, one of: "categorical", "one-hot"</p></td>
     </tr>
     <tr>
       <th>verbose</th>
       <td><p>logical, if progress bar is to be printed</p></td>
+    </tr>
+    <tr>
+      <th>class_pred</th>
+      <td><p>numeric or character, used only in multi-classification problems.
+If response vector has more than two levels, then 'class_pred' should indicate the class of interest
+which will denote failure - all other classess will stand for success.</p></td>
     </tr>
     </table>
     

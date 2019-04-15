@@ -30,7 +30,7 @@ library(dplyr)
 # library(factorMerger)
 ```
 
-Models fitted to the original dataset - linear model and random forest:
+Fitting models to the original dataset - linear model and random forest:
 
 ```{r, warning = FALSE}
 model_lm1 <- lm(m2.price ~ ., data = apartments)
@@ -50,6 +50,8 @@ safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
 ```{r, warning = FALSE}
 print(safe_extractor)
 ```
+
+In the plot above we can see which points have been chosen to be the breakpoints for particular variable: 
 
 ```{r, fig.width=6, warning = FALSE}
 plot(safe_extractor, "construction.year")
@@ -75,7 +77,7 @@ data1_onehot <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,]
 knitr::kable(head(data1_onehot))
 ```
 
-Feature selection:
+Feature selection using both "categorical" and "one-hot" methods of encoding:
 
 ```{r, fig.width=6, warning = FALSE}
 vars_categorical <- safely_select_variables(safe_extractor, data1_categorical, which_y = 2, encoding = "categorical", verbose = FALSE)
@@ -88,11 +90,13 @@ data1_onehot <- data1_onehot[,c('m2.price', vars_onehot)]
 
 ```
 
+First few rows for data with categorical encoding, after feature selection:
+
 ```{r, echo = FALSE}
 knitr::kable(head(data1_categorical))
 ```
 
-Data for exaplainers:
+Transforming another data that will be used later in explainers:
 
 ```{r, fig.width=6, warning = FALSE}
 data2_categorical <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], encoding = "categorical", verbose = FALSE)[,c('m2.price', vars_categorical)]

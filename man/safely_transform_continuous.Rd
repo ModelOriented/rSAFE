@@ -5,7 +5,7 @@
 \title{Continuous feature transformation using PDP plot}
 \usage{
 safely_transform_continuous(variable, explainer,
-  package = "changepoint.np", response_type = "pdp")
+  package = "changepoint.np", response_type = "ale")
 }
 \arguments{
 \item{variable}{a feature for which the transformation function is to be computed}
@@ -18,9 +18,9 @@ safely_transform_continuous(variable, explainer,
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}
 }
 \value{
-list of transformation information on the given variable
+list of information on the transformation of given variable
 }
 \description{
-The transform_continuous() function calculates a transformation function
-for the continuous variable using a PDP plot from DALEX package.
+The safely_transform_continuous() function calculates a transformation function
+for the continuous variable using a PDP plot obtained from black box model.
 }

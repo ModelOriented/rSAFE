@@ -1,19 +1,25 @@
-#' Selecting variables
+#' Feature selection on the dataset with transformed variables
 #'
 #' The safely_select_variables() function selects variables from dataset returned
-#' by transform_data(). For each original variable:
+#' by safely_transform_data() function. For each original variable:
 #' 1) if encoding = "categorical" then exactly one variable is chosen
 #' - either original one or transformed one. The choice is based on the AIC value
 #' for linear model (regression) or logistic regression (classification).
 #' 2) if encoding = "one-hot" then backward feature selection is performed
-#' on all features
+#' on all features (using AIC value) and the best set of variables is chosen.
 #'
-#' @param safe_extractor object containing information about variables transformations created with safe_extractor() function
-#' @param data data, with already transformed variables or not, containing response variable or not
+#' @param safe_extractor object containing information about variables transformations created with safe_extraction() function
+#' @param data data, original dataset or the one returned by safely_transform_data() function.
+#' If data do not contain transformed variables then transformation is done inside this function using 'safe_extractor' argument.
+#' Data may contain response variable or not - if it does then 'which_y' argument must be given,
+#' otherwise 'y' argument should be provided.
 #' @param y vector of responses, must be given if data does not contain it
 #' @param which_y numeric or character (optional), must be given if data contains response values
-#' @param encoding method of representing factor variables, one of: "categorical", "one-hot"
+#' @param encoding method of representing factor variables in dataset, one of: "categorical", "one-hot"
 #' @param verbose logical, if progress bar is to be printed
+#' @param class_pred numeric or character, used only in multi-classification problems.
+#' If response vector has more than two levels, then 'class_pred' should indicate the class of interest
+#' which will denote failure - all other classess will stand for success.
 #'
 #' @return vector of variables names, selected based on AIC values
 #'
@@ -21,9 +27,7 @@
 #'
 
 
-safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NULL, encoding = "categorical", verbose = TRUE) {
-  #one can either give y explicitly or specify which column in data is response column
-  #data can be transformed or not
+safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NULL, encoding = "categorical", verbose = TRUE, class_pred = NULL) {
 
   if (is.null(y) & is.null(which_y)) {
     stop("Specify either y or which_y argument!")
@@ -59,13 +63,38 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
   diff_var <- setdiff(colnames(data), vars)
 
 
+  #class of interest
+  if (is.factor(y)) {
+    if (! is.null(class_pred)) {
+      if (is.character(class_pred)) {
+        if (! class_pred %in% levels(y)) {
+          cat("There is no such a level in response vector! Using first level instead.")
+          class_pred <- levels(y)[1]
+        }
+      } else {
+        tryCatch(
+          {
+            class_pred <- levels(y)[class_pred]
+          },
+          error = function(cond) {
+            cat("There is no such a level in response vector! Using first level instead.\n")
+            class_pred <- levels(y)[1]
+          }
+        )
+      }
+    } else {
+      class_pred <- levels(y)[1]
+    }
+  }
+
+
   #1) encoding = "categorical"
   if (encoding == "categorical") {
 
     if (length(diff_var) == 0) {
       #there are only original variables, no transformations have been done
       #we will do it now
-      data <- safely_transform_data(data, safe_extractor, encoding = "categorical", verbose = FALSE)
+      data <- safely_transform_data(safe_extractor, data, encoding = "categorical", verbose = FALSE)
     }
     #now data is supposed to contain also transformed variables
 
@@ -76,9 +105,9 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
     #for classification problem -> logistic regression
     if (is.factor(y)) {
       #-> classification
-      #binary model for first factor level
+      #binary model for chosen factor level
       #TOODOO: better solution, maybe different model?
-      model <- stats::glm((y == levels(y)[1]) ~ ., data = as.data.frame(data[,var_best]), family = binomial(link = 'logit'))
+      model <- stats::glm((y == class_pred) ~ ., data = as.data.frame(data[,var_best]), family = binomial(link = 'logit'))
     } else {
       #-> regression
       model <- stats::lm(y ~ ., data = as.data.frame(data[,var_best])) #as.data.frame() - in case of var_best being just one variable
@@ -101,8 +130,8 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
       for (v in vars) {
         if (paste0(v, "_new") %in% colnames(data)) { #checking if there is transformed variable
           var_checked <- c(setdiff(var_best, v), paste0(v, "_new"))
-          model_best <- stats::glm((y == levels(y)[1]) ~ ., data = as.data.frame(data[, var_best]), family = binomial(link = 'logit'))
-          model_checked <- stats::glm((y == levels(y)[1]) ~ ., data = as.data.frame(data[, var_checked]), family = binomial(link = 'logit'))
+          model_best <- stats::glm((y == class_pred) ~ ., data = as.data.frame(data[, var_best]), family = binomial(link = 'logit'))
+          model_checked <- stats::glm((y == class_pred) ~ ., data = as.data.frame(data[, var_checked]), family = binomial(link = 'logit'))
           if (AIC(model_checked) < AIC(model_best)) {
             var_best <- var_checked
           }
@@ -145,7 +174,7 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
     if (length(diff_var) == 0) {
       #there are only original variables, no transformations have been done
       #we will do it now
-      data <- safely_transform_data(data, safe_extractor, encoding = "one-hot", verbose = FALSE)
+      data <- safely_transform_data(safe_extractor, data, encoding = "one-hot", verbose = FALSE)
     }
     #now data is supposed to contain also transformed variables
 
@@ -155,7 +184,7 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
       #-> classification
       #binary model for first factor level
       #TOODOO: better solution, maybe different model?
-      model <- stats::glm((y == levels(y)[1]) ~ ., data = as.data.frame(data), family = binomial(link = 'logit'))
+      model <- stats::glm((y == class_pred) ~ ., data = as.data.frame(data), family = binomial(link = 'logit'))
     } else {
       #-> regression
       model <- stats::lm(y ~ ., data = as.data.frame(data)) #as.data.frame() - in case of var_best being just one variable
@@ -171,8 +200,6 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
 
 
   return(var_best)
-
-
 
 }
 

@@ -1,7 +1,7 @@
 #' Continuous feature transformation using PDP plot
 #'
-#' The transform_continuous() function calculates a transformation function
-#' for the continuous variable using a PDP plot from DALEX package.
+#' The safely_transform_continuous() function calculates a transformation function
+#' for the continuous variable using a PDP plot obtained from black box model.
 #'
 #' @param variable a feature for which the transformation function is to be computed
 #' @param explainer DALEX explainer created with explain() function
@@ -9,12 +9,12 @@
 #' @param response_type character, type of response to be calculated, one of: "pdp", "ale".
 #' If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.
 #'
-#' @return list of transformation information on the given variable
+#' @return list of information on the transformation of given variable
 #'
 #' @export
 
 
-safely_transform_continuous <- function(variable, explainer, package = "changepoint.np", response_type = "pdp") {
+safely_transform_continuous <- function(variable, explainer, package = "changepoint.np", response_type = "ale") {
 
   #calculating average responses of chosen type
   sv <- DALEX::variable_response(explainer, variable, type = response_type)
@@ -24,11 +24,11 @@ safely_transform_continuous <- function(variable, explainer, package = "changepo
   #computing breakpoints
   if (package == "changepoint.np") {
     break_points <- changepoint::cpts(changepoint.np::cpt.np(sv$y, minseglen = min_seg_length))
-  } else if (package == "strucchange") {
+  } else {
     break_points <- strucchange::breakpoints(ts(sv$y) ~ 1, h = min_seg_length)$breakpoints
   }
 
-  if (length(break_points) == 0) {
+  if (length(break_points) == 0) { #no significant changes have been found
     break_points <- NULL
     new_levels <- NULL
   } else {

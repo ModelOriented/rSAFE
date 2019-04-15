@@ -1,6 +1,6 @@
-#' Creating SAFE-extractor
+#' Creating SAFE extractor - an object used for surrogate-assisted feature extraction
 #'
-#' The safe_extractor() function creates a SAFE-extractor object which may be used later
+#' The safe_extractiob() function creates a SAFE-extractor object which may be used later
 #' for surrogate feature extraction.
 #'
 #' @param explainer DALEX explainer created with explain() function
@@ -10,7 +10,7 @@
 #' If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.
 #' @param verbose logical, if progress bar is to be printed
 #'
-#' @return SAFE-extractor object containing information about variables transformations
+#' @return safe_extractor object containing information about variables transformation
 #'
 #' @export
 #'
@@ -19,7 +19,7 @@
 safe_extraction <- function(explainer, package = "changepoint.np", response_type = "ale", verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
-    stop(paste0("No applicable method for 'safer' applied to an object of class '", class(explainer), "'."))
+    stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
   }
   if (! package %in% c("changepoint.np", "strucchange")) {
     warning("Wrong package - using default one.")
@@ -27,22 +27,21 @@ safe_extraction <- function(explainer, package = "changepoint.np", response_type
   }
   if (! response_type %in% c("pdp", "ale")) {
     warning("Wrong type of response - using default one.")
-    response_type <- "pdp"
+    response_type <- "ale"
   }
 
 
   #explainer$data might contain also a response variable - we use model attributes to get the predictors
   term_names <- attr(explainer$model$terms, "term.labels")
 
-  #p <- ncol(explainer$data)
-  p <- length(term_names)
-  n <- nrow(explainer$data)
+  p <- length(term_names) #number of variables in dataset
+  n <- nrow(explainer$data) #number of observations in dataset
 
   #list with all variables and information on them
   vars <- vector("list", length = p)
-  #names(vars) <- colnames(explainer$data)
   names(vars) <- term_names
 
+  #checking if the feature is categorical or numerical
   for (v in names(vars)) {
     if (is.factor(explainer$data[1,v])) {
       vars[[v]] <- list(type = "categorical")
@@ -98,7 +97,7 @@ safe_extraction <- function(explainer, package = "changepoint.np", response_type
                          )
   class(safe_extractor) <- "safe_extractor"
 
-  safe_extractor
+  return(safe_extractor)
 
 }
 
@@ -107,11 +106,11 @@ safe_extraction <- function(explainer, package = "changepoint.np", response_type
 
 plot.safe_extractor <- function(safe_extractor, variable = NULL) {
 
-  if (is.null(variable)) {
+  if (is.null(variable)) { #argument 'variable' not specified
     cat("Give a variable as an argument!")
     return(NULL)
   }
-  if (! variable %in% names(safe_extractor$vars)) {
+  if (! variable %in% names(safe_extractor$vars)) { #wrong variable name
     return(NULL)
   }
 
@@ -136,14 +135,14 @@ plot.safe_extractor <- function(safe_extractor, variable = NULL) {
 
 print.safe_extractor <- function(safe_extractor, variable = NULL) {
 
-  if (is.null(variable)) {
+  if (is.null(variable)) { #if 'variable' argument is not specified then transformations for all variables are printed
     for (v in names(safe_extractor$vars)) {
       print.safe_extractor(safe_extractor, v)
     }
   } else {
 
     if (! variable %in% names(safe_extractor$vars)) {
-      return(NULL)
+      return(NULL) #wrong variable name
     }
 
     cat(paste0("Variable '", variable, "'"))
@@ -159,6 +158,8 @@ print.safe_extractor <- function(safe_extractor, variable = NULL) {
         cat(" - selected intervals:\n")
         cat(paste0(sapply(var_info$new_levels,
                    function(x) paste0("\t", format(x, digits=2, nsmall=2), "\n"))))
+        # improve printing numbers - TODO!!!
+
 
         # cat(paste0("\t(-Inf, ", format(b[1], digits=2, nsmall=2), ")\n"))
         # if (length(b) > 1) {
@@ -173,7 +174,7 @@ print.safe_extractor <- function(safe_extractor, variable = NULL) {
     } else {
 
       if (is.null(var_info$new_levels)) {
-        cat(" - no transformation suggested.")
+        cat(" - no transformation suggested.\n")
       } else {
         b <- var_info$new_levels
         b <- aggregate(b[,1], by = list(b[,2]), function(x) paste(x))

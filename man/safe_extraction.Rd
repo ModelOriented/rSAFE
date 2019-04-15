@@ -2,7 +2,7 @@
 % Please edit documentation in R/safe_extraction.R
 \name{safe_extraction}
 \alias{safe_extraction}
-\title{Creating SAFE-extractor}
+\title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
 \usage{
 safe_extraction(explainer, package = "changepoint.np",
   response_type = "ale", verbose = TRUE)
@@ -19,9 +19,9 @@ If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strong
 \item{verbose}{logical, if progress bar is to be printed}
 }
 \value{
-SAFE-extractor object containing information about variables transformations
+safe_extractor object containing information about variables transformation
 }
 \description{
-The safe_extractor() function creates a SAFE-extractor object which may be used later
+The safe_extractiob() function creates a SAFE-extractor object which may be used later
 for surrogate feature extraction.
 }
