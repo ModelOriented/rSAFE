@@ -1,6 +1,7 @@
 ---
-title: "SAFE examples - apartments dataset"
+title: "Regression example - apartments dataset"
 author: "Anna Gierlak"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -11,28 +12,23 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
 )
 ```
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
+```{r, echo = FALSE}
 library(SAFE)
 library(DALEX)
-# library(changepoint.np)
-# library(strucchange)
 library(randomForest)
-# library(ggplot2)
 library(gridExtra)
 library(dplyr)
-# library(utils)
-# library(stringr)
-# library(iml)
-# library(factorMerger)
 ```
 
 Fitting models to the original dataset - linear model and random forest:
 
-```{r, warning = FALSE}
+```{r}
 model_lm1 <- lm(m2.price ~ ., data = apartments)
 explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1")
 set.seed(111)
@@ -43,23 +39,23 @@ explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apart
 
 Creating safe_extractor object using SAFE package:
 
-```{r, warning = FALSE}
+```{r}
 safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
 ```
 
-```{r, warning = FALSE}
+```{r}
 print(safe_extractor)
 ```
 
 In the plot above we can see which points have been chosen to be the breakpoints for particular variable: 
 
-```{r, fig.width=6, warning = FALSE}
+```{r, fig.width=6}
 plot(safe_extractor, "construction.year")
 ```
 
 Using created object to extract new features:
 
-```{r, fig.width=6, warning = FALSE}
+```{r}
 data1_categorical <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], encoding = "categorical", verbose = FALSE)
 ```
 
@@ -69,7 +65,7 @@ knitr::kable(head(data1_categorical))
 
 The same with one-hot encoding:
 
-```{r, fig.width=6, warning = FALSE}
+```{r, fig.width=6}
 data1_onehot <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], encoding = "one-hot", verbose = FALSE)
 ```
 
@@ -79,7 +75,7 @@ knitr::kable(head(data1_onehot))
 
 Feature selection using both "categorical" and "one-hot" methods of encoding:
 
-```{r, fig.width=6, warning = FALSE}
+```{r, fig.width=6}
 vars_categorical <- safely_select_variables(safe_extractor, data1_categorical, which_y = 2, encoding = "categorical", verbose = FALSE)
 print(vars_categorical)
 vars_onehot <- safely_select_variables(safe_extractor, data1_onehot, which_y = 2, encoding = "one-hot", verbose = FALSE)
@@ -98,7 +94,7 @@ knitr::kable(head(data1_categorical))
 
 Transforming another data that will be used later in explainers:
 
-```{r, fig.width=6, warning = FALSE}
+```{r, fig.width=6}
 data2_categorical <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], encoding = "categorical", verbose = FALSE)[,c('m2.price', vars_categorical)]
 data2_onehot <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], encoding = "one-hot", verbose = FALSE)[,c('m2.price', vars_onehot)]
 ```
@@ -108,7 +104,7 @@ data2_onehot <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,]
 
 Fitting models to data containg newly created columns:
 
-```{r, warning = FALSE}
+```{r}
 model_lm2_categorical <- lm(m2.price ~ ., data = data1_categorical)
 explainer_lm2_categorical <- explain(model_lm2_categorical, data = data2_categorical, y = apartmentsTest[6001:9000,1], label = "lm2 - categorical")
 
@@ -125,7 +121,7 @@ explainer_rf2_onehot <- explain(model_rf2_onehot, data2_onehot, apartmentsTest[6
 ```
 
 
-```{r, echo = FALSE, warning = FALSE}
+```{r, echo = FALSE}
 mp_lm1 <- model_performance(explainer_lm1)
 mp_rf1 <- model_performance(explainer_rf1)
 mp_lm2_categorical <- model_performance(explainer_lm2_categorical)
@@ -134,7 +130,7 @@ mp_lm2_onehot <- model_performance(explainer_lm2_onehot)
 mp_rf2_onehot <- model_performance(explainer_rf2_onehot)
 ```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6, warning = FALSE}
+```{r, echo = FALSE, fig.width=7, fig.height=6}
 plot(mp_lm1, mp_rf1, mp_lm2_categorical, mp_rf2_categorical, mp_lm2_onehot, mp_rf2_onehot, geom = "boxplot")
 ```
 

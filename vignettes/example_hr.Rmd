@@ -1,0 +1,103 @@
+---
+title: "Classification example - HR dataset"
+author: "Anna Gierlak"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+```{r, echo = FALSE}
+library(SAFE)
+library(DALEX)
+library(randomForest)
+library(gridExtra)
+library(dplyr)
+```
+
+
+In this vignette we show how you can use SAFE package in classification problem on the example of HR dataset.
+
+First, we fit two models to the original HR dataset - random forest as the black-box model and logistic regression as the white-box model. We focus on predicting whether employee was fired or not.
+
+```{r}
+model_glm1 <- glm(factor(status == "fired") ~ ., data = HR, family = binomial(link = "logit"))
+set.seed(111)
+model_rf1 <- randomForest(factor(status) ~ ., data = HR)
+```
+
+Using SAFE package and DALEX explainer we create `safe_extractor` object that will store information on variables proposed transformation:
+
+```{r}
+explainer_rf1 <- explain(model_rf1, data = HR[,1:5], y = HR[,6], label = "rf1", predict_function = function(model, x) predict(model, x, type = "prob")[,1])
+
+safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
+print(safe_extractor)
+```
+
+Below we can see ALE plot for chosen variable `hours` with corresponding breakpoints marked:
+
+```{r, fig.width=6}
+plot(safe_extractor, "hours")
+```
+
+We can use created `safe_extractor` object to produce new features that one might include in white-box model:
+
+```{r}
+data1 <- safely_transform_data(safe_extractor, HR, encoding = "categorical", verbose = FALSE)
+```
+
+```{r, echo = FALSE}
+knitr::kable(head(data1))
+```
+
+There are two additional features in the dataset above in comparison to the original HR data. We could use all the variables while fitting the simpler model or we may want to perform a feature selection first - function `safely_select_variables` returns set of variables such that for each pair {feature, feature_new} exactly one is chosen.
+
+```{r}
+vars <- safely_select_variables(safe_extractor, data1, which_y = "status", encoding = "categorical", verbose = FALSE)
+print(vars)
+```
+
+So here is our dataset after feature selection:
+
+```{r}
+data2 <- data1[,c("status", vars)]
+```
+
+```{r, echo = FALSE}
+knitr::kable(head(data2))
+```
+
+We can now fit logistic regression model to the data above and compare performances of two models on the test set.
+
+```{r}
+model_glm2 <- glm(factor(status == "fired") ~ ., data = data2, family = binomial(link = "logit"))
+
+data_test <- safely_transform_data(safe_extractor, HRTest, encoding = "categorical", verbose = FALSE)
+data_test <- data_test[,c("status", vars)]
+
+y_pred1 <- predict(model_glm1, HRTest[,1:5], type = "response")
+y_pred2 <- predict(model_glm2, data_test[,2:6], type = "response")
+
+pROC::auc((HRTest$status=="fired"), y_pred1)
+pROC::auc((HRTest$status=="fired"), y_pred2)
+```
+
+
+
+
+
+
+
+

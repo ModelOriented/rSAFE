@@ -10,6 +10,9 @@
 #'
 #' @return data with extra columns containing newly created variables
 #'
+#' @import magrittr
+#' @importFrom magrittr "%>%"
+#'
 #' @export
 
 
