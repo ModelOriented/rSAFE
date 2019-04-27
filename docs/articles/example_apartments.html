@@ -70,7 +70,7 @@
       <h1>Regression example - apartments dataset</h1>
                         <h4 class="author">Anna Gierlak</h4>
             
-            <h4 class="date">2019-04-19</h4>
+            <h4 class="date">2019-04-28</h4>
       
       
       <div class="hidden name"><code>example_apartments.Rmd</code></div>
@@ -101,7 +101,9 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <span class="co">#&gt; Variable 'floor' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 4)</span>
 <span class="co">#&gt;      [4, Inf)</span>
-<span class="co">#&gt; Variable 'no.rooms' - no transformation suggested.</span>
+<span class="co">#&gt; Variable 'no.rooms' - selected intervals:</span>
+<span class="co">#&gt;  (-Inf, 3)</span>
+<span class="co">#&gt;      [3, Inf)</span>
 <span class="co">#&gt; Variable 'district' - created levels:</span>
 <span class="co">#&gt;  c("Bemowo", "Bielany", "Praga", "Ursus", "Ursynow", "Wola") -&gt; PragaUrsynowWolaBemowoBielanyUrsus</span>
 <span class="co">#&gt;  Zoliborz -&gt; Zoliborz</span>
@@ -123,6 +125,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <th align="left">construction.year_new</th>
 <th align="left">surface_new</th>
 <th align="left">floor_new</th>
+<th align="left">no.rooms_new</th>
 <th align="left">district_new</th>
 </tr></thead>
 <tbody>
@@ -136,6 +139,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">[1949, 1985)</td>
 <td align="left">(-Inf, 33)</td>
 <td align="left">[4, Inf)</td>
+<td align="left">(-Inf, 3)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
@@ -148,6 +152,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">[1985, Inf)</td>
 <td align="left">[72, 121)</td>
 <td align="left">(-Inf, 4)</td>
+<td align="left">[3, Inf)</td>
 <td align="left">Srodmiescie</td>
 </tr>
 <tr class="odd">
@@ -160,6 +165,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">[1985, Inf)</td>
 <td align="left">[33, 72)</td>
 <td align="left">[4, Inf)</td>
+<td align="left">(-Inf, 3)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
@@ -172,6 +178,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">[1949, 1985)</td>
 <td align="left">(-Inf, 33)</td>
 <td align="left">(-Inf, 4)</td>
+<td align="left">(-Inf, 3)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="odd">
@@ -184,6 +191,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">[1949, 1985)</td>
 <td align="left">[121, Inf)</td>
 <td align="left">(-Inf, 4)</td>
+<td align="left">[3, Inf)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
@@ -196,6 +204,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">[1949, 1985)</td>
 <td align="left">[72, 121)</td>
 <td align="left">[4, Inf)</td>
+<td align="left">[3, Inf)</td>
 <td align="left">MokotowOchota</td>
 </tr>
 </tbody>
@@ -217,6 +226,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <th align="right">surface_new_X3</th>
 <th align="right">surface_new_X4</th>
 <th align="right">floor_new_X2</th>
+<th align="right">no.rooms_new_X2</th>
 <th align="right">district_new_Zoliborz</th>
 <th align="right">district_new_MokotowOchota</th>
 <th align="right">district_new_Srodmiescie</th>
@@ -239,6 +249,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">Srodmiescie</td>
@@ -254,6 +265,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -275,6 +287,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">Ursynow</td>
@@ -285,6 +298,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">2</td>
 <td align="right">0</td>
 <td align="right">1</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -308,6 +322,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
+<td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -326,6 +341,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">1</td>
+<td align="right">1</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
@@ -343,7 +359,7 @@ vars_onehot &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co">#&gt; [3] "surface"                  "floor"                   </span>
 <span class="co">#&gt; [5] "no.rooms"                 "construction.year_new_X2"</span>
 <span class="co">#&gt; [7] "construction.year_new_X3" "construction.year_new_X4"</span>
-<span class="co">#&gt; [9] "surface_new_X4"</span>
+<span class="co">#&gt; [9] "no.rooms_new_X2"</span>
 
 data1_categorical &lt;-<span class="st"> </span>data1_categorical[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'m2.price'</span>, vars_categorical)]
 data1_onehot &lt;-<span class="st"> </span>data1_onehot[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'m2.price'</span>, vars_onehot)]</code></pre></div>
@@ -435,7 +451,7 @@ explainer_rf2_onehot &lt;-<span class="st"> </span><span class="kw">explain</spa
 
 
       <footer><div class="copyright">
-  <p>Developed by Anna Gierlak.</p>
+  <p>Developed by Anna Gierlak, Przemyslaw Biecek.</p>
 </div>
 
 <div class="pkgdown">

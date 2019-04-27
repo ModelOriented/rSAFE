@@ -8,8 +8,21 @@
 \description{
 Surrogate-assisted feature extraction
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://mi2datalab.github.io/SAFE/}
+  \item Report bugs at \url{https://github.com/MI2DataLab/SAFE/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Anna Gierlak \email{anna.gierlak@op.pl}
+
+Authors:
+\itemize{
+  \item Przemyslaw Biecek [thesis advisor]
+}
 
 }
 \keyword{internal}

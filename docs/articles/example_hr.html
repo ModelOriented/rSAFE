@@ -70,7 +70,7 @@
       <h1>Classification example - HR dataset</h1>
                         <h4 class="author">Anna Gierlak</h4>
             
-            <h4 class="date">2019-04-19</h4>
+            <h4 class="date">2019-04-28</h4>
       
       
       <div class="hidden name"><code>example_hr.Rmd</code></div>
@@ -91,16 +91,20 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(safe_extractor)
 <span class="co">#&gt; Variable 'gender' - no transformation suggested.</span>
 <span class="co">#&gt; Variable 'age' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 32.1228028740734)</span>
-<span class="co">#&gt;      [32.1228028740734, 42.0329440198839)</span>
-<span class="co">#&gt;      [42.0329440198839, 49.9592061061412)</span>
-<span class="co">#&gt;      [49.9592061061412, Inf)</span>
+<span class="co">#&gt;  (-Inf, 32.1228)</span>
+<span class="co">#&gt;      [32.1228, 42.03294)</span>
+<span class="co">#&gt;      [42.03294, 49.95921)</span>
+<span class="co">#&gt;      [49.95921, Inf)</span>
 <span class="co">#&gt; Variable 'hours' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 43.991086979084)</span>
-<span class="co">#&gt;      [43.991086979084, 61.2377232315204)</span>
-<span class="co">#&gt;      [61.2377232315204, Inf)</span>
-<span class="co">#&gt; Variable 'evaluation' - no transformation suggested.</span>
-<span class="co">#&gt; Variable 'salary' - no transformation suggested.</span></code></pre></div>
+<span class="co">#&gt;  (-Inf, 43.99109)</span>
+<span class="co">#&gt;      [43.99109, 61.23772)</span>
+<span class="co">#&gt;      [61.23772, Inf)</span>
+<span class="co">#&gt; Variable 'evaluation' - selected intervals:</span>
+<span class="co">#&gt;  (-Inf, 3)</span>
+<span class="co">#&gt;      [3, Inf)</span>
+<span class="co">#&gt; Variable 'salary' - selected intervals:</span>
+<span class="co">#&gt;  (-Inf, 2)</span>
+<span class="co">#&gt;      [2, Inf)</span></code></pre></div>
 <p>Below we can see ALE plot for chosen variable <code>hours</code> with corresponding breakpoints marked:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(safe_extractor, <span class="st">"hours"</span>)</code></pre></div>
 <p><img src="example_hr_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
@@ -116,6 +120,8 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <th align="left">status</th>
 <th align="left">age_new</th>
 <th align="left">hours_new</th>
+<th align="left">evaluation_new</th>
+<th align="left">salary_new</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -125,8 +131,10 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <td align="right">3</td>
 <td align="right">1</td>
 <td align="left">fired</td>
-<td align="left">[32.1228028740734, 42.0329440198839)</td>
-<td align="left">(-Inf, 43.991086979084)</td>
+<td align="left">[32.1228, 42.03294)</td>
+<td align="left">(-Inf, 43.99109)</td>
+<td align="left">[3, Inf)</td>
+<td align="left">(-Inf, 2)</td>
 </tr>
 <tr class="even">
 <td align="left">female</td>
@@ -135,8 +143,10 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <td align="right">2</td>
 <td align="right">5</td>
 <td align="left">fired</td>
-<td align="left">[32.1228028740734, 42.0329440198839)</td>
-<td align="left">(-Inf, 43.991086979084)</td>
+<td align="left">[32.1228, 42.03294)</td>
+<td align="left">(-Inf, 43.99109)</td>
+<td align="left">(-Inf, 3)</td>
+<td align="left">[2, Inf)</td>
 </tr>
 <tr class="odd">
 <td align="left">male</td>
@@ -145,8 +155,10 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <td align="right">3</td>
 <td align="right">0</td>
 <td align="left">fired</td>
-<td align="left">[32.1228028740734, 42.0329440198839)</td>
-<td align="left">(-Inf, 43.991086979084)</td>
+<td align="left">[32.1228, 42.03294)</td>
+<td align="left">(-Inf, 43.99109)</td>
+<td align="left">[3, Inf)</td>
+<td align="left">(-Inf, 2)</td>
 </tr>
 <tr class="even">
 <td align="left">female</td>
@@ -155,8 +167,10 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <td align="right">3</td>
 <td align="right">2</td>
 <td align="left">fired</td>
-<td align="left">(-Inf, 32.1228028740734)</td>
-<td align="left">(-Inf, 43.991086979084)</td>
+<td align="left">(-Inf, 32.1228)</td>
+<td align="left">(-Inf, 43.99109)</td>
+<td align="left">[3, Inf)</td>
+<td align="left">[2, Inf)</td>
 </tr>
 <tr class="odd">
 <td align="left">male</td>
@@ -165,8 +179,10 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <td align="right">5</td>
 <td align="right">3</td>
 <td align="left">promoted</td>
-<td align="left">(-Inf, 32.1228028740734)</td>
-<td align="left">[61.2377232315204, Inf)</td>
+<td align="left">(-Inf, 32.1228)</td>
+<td align="left">[61.23772, Inf)</td>
+<td align="left">[3, Inf)</td>
+<td align="left">[2, Inf)</td>
 </tr>
 <tr class="even">
 <td align="left">male</td>
@@ -175,15 +191,17 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <td align="right">2</td>
 <td align="right">0</td>
 <td align="left">fired</td>
-<td align="left">[32.1228028740734, 42.0329440198839)</td>
-<td align="left">[61.2377232315204, Inf)</td>
+<td align="left">[32.1228, 42.03294)</td>
+<td align="left">[61.23772, Inf)</td>
+<td align="left">(-Inf, 3)</td>
+<td align="left">(-Inf, 2)</td>
 </tr>
 </tbody>
 </table>
 <p>There are two additional features in the dataset above in comparison to the original HR data. We could use all the variables while fitting the simpler model or we may want to perform a feature selection first - function <code>safely_select_variables</code> returns set of variables such that for each pair {feature, feature_new} exactly one is chosen.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safely_select_variables.html">safely_select_variables</a></span>(safe_extractor, data1, <span class="dt">which_y =</span> <span class="st">"status"</span>, <span class="dt">encoding =</span> <span class="st">"categorical"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(vars)
-<span class="co">#&gt; [1] "gender"     "evaluation" "salary"     "age_new"    "hours_new"</span></code></pre></div>
+<span class="co">#&gt; [1] "gender"     "evaluation" "age_new"    "hours_new"  "salary_new"</span></code></pre></div>
 <p>So here is our dataset after feature selection:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"status"</span>, vars)]</code></pre></div>
 <table class="table">
@@ -191,58 +209,58 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 <th align="left">status</th>
 <th align="left">gender</th>
 <th align="right">evaluation</th>
-<th align="right">salary</th>
 <th align="left">age_new</th>
 <th align="left">hours_new</th>
+<th align="left">salary_new</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td align="left">fired</td>
 <td align="left">male</td>
 <td align="right">3</td>
-<td align="right">1</td>
-<td align="left">[32.1228028740734, 42.0329440198839)</td>
-<td align="left">(-Inf, 43.991086979084)</td>
+<td align="left">[32.1228, 42.03294)</td>
+<td align="left">(-Inf, 43.99109)</td>
+<td align="left">(-Inf, 2)</td>
 </tr>
 <tr class="even">
 <td align="left">fired</td>
 <td align="left">female</td>
 <td align="right">2</td>
-<td align="right">5</td>
-<td align="left">[32.1228028740734, 42.0329440198839)</td>
-<td align="left">(-Inf, 43.991086979084)</td>
+<td align="left">[32.1228, 42.03294)</td>
+<td align="left">(-Inf, 43.99109)</td>
+<td align="left">[2, Inf)</td>
 </tr>
 <tr class="odd">
 <td align="left">fired</td>
 <td align="left">male</td>
 <td align="right">3</td>
-<td align="right">0</td>
-<td align="left">[32.1228028740734, 42.0329440198839)</td>
-<td align="left">(-Inf, 43.991086979084)</td>
+<td align="left">[32.1228, 42.03294)</td>
+<td align="left">(-Inf, 43.99109)</td>
+<td align="left">(-Inf, 2)</td>
 </tr>
 <tr class="even">
 <td align="left">fired</td>
 <td align="left">female</td>
 <td align="right">3</td>
-<td align="right">2</td>
-<td align="left">(-Inf, 32.1228028740734)</td>
-<td align="left">(-Inf, 43.991086979084)</td>
+<td align="left">(-Inf, 32.1228)</td>
+<td align="left">(-Inf, 43.99109)</td>
+<td align="left">[2, Inf)</td>
 </tr>
 <tr class="odd">
 <td align="left">promoted</td>
 <td align="left">male</td>
 <td align="right">5</td>
-<td align="right">3</td>
-<td align="left">(-Inf, 32.1228028740734)</td>
-<td align="left">[61.2377232315204, Inf)</td>
+<td align="left">(-Inf, 32.1228)</td>
+<td align="left">[61.23772, Inf)</td>
+<td align="left">[2, Inf)</td>
 </tr>
 <tr class="even">
 <td align="left">fired</td>
 <td align="left">male</td>
 <td align="right">2</td>
-<td align="right">0</td>
-<td align="left">[32.1228028740734, 42.0329440198839)</td>
-<td align="left">[61.2377232315204, Inf)</td>
+<td align="left">[32.1228, 42.03294)</td>
+<td align="left">[61.23772, Inf)</td>
+<td align="left">(-Inf, 2)</td>
 </tr>
 </tbody>
 </table>
@@ -258,7 +276,7 @@ y_pred2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdoc
 pROC<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/pROC/topics/auc">auc</a></span>((HRTest<span class="op">$</span>status<span class="op">==</span><span class="st">"fired"</span>), y_pred1)
 <span class="co">#&gt; Area under the curve: 0.8063</span>
 pROC<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/pROC/topics/auc">auc</a></span>((HRTest<span class="op">$</span>status<span class="op">==</span><span class="st">"fired"</span>), y_pred2)
-<span class="co">#&gt; Area under the curve: 0.8111</span></code></pre></div>
+<span class="co">#&gt; Area under the curve: 0.8242</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -268,7 +286,7 @@ pROC<span class="op">::</span><span class="kw"><a href="https://www.rdocumentati
 
 
       <footer><div class="copyright">
-  <p>Developed by Anna Gierlak.</p>
+  <p>Developed by Anna Gierlak, Przemyslaw Biecek.</p>
 </div>
 
 <div class="pkgdown">

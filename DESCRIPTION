@@ -2,12 +2,10 @@ Package: SAFE
 Title: Surrogate-assisted feature extraction
 Version: 0.0.0.9000
 Authors@R:
-    person(given = "Anna",
-           family = "Gierlak",
-           role = c("aut", "cre"),
-           email = "anna.gierlak@op.pl")
+    c(person("Anna", "Gierlak", role = c("aut", "cre"), email = "anna.gierlak@op.pl"),
+      person("Przemyslaw", "Biecek", role = c("aut", "ths")))
 Description: Surrogate-assisted feature extraction
-License: What license it uses
+License: GPL
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -20,9 +18,11 @@ Imports:
     recipes,
     ggplot2,
     magrittr,
-    reticulate,
-    tidyselect
+    reticulate
 Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://mi2datalab.github.io/SAFE/
+BugReports: https://github.com/MI2DataLab/SAFE/issues
+
