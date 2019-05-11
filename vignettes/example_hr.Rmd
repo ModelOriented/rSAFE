@@ -23,7 +23,6 @@ library(SAFE)
 library(DALEX)
 library(randomForest)
 library(gridExtra)
-library(dplyr)
 ```
 
 
@@ -42,7 +41,7 @@ Using SAFE package and DALEX explainer we create `safe_extractor` object that wi
 ```{r}
 explainer_rf1 <- explain(model_rf1, data = HR[,1:5], y = HR[,6], label = "rf1", predict_function = function(model, x) predict(model, x, type = "prob")[,1])
 
-safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
+safe_extractor <- safe_extraction(explainer_rf1, no_segments = 3, verbose = FALSE)
 print(safe_extractor)
 ```
 
@@ -62,7 +61,7 @@ data1 <- safely_transform_data(safe_extractor, HR, encoding = "categorical", ver
 knitr::kable(head(data1))
 ```
 
-There are two additional features in the dataset above in comparison to the original HR data. We could use all the variables while fitting the simpler model or we may want to perform a feature selection first - function `safely_select_variables` returns set of variables such that for each pair {feature, feature_new} exactly one is chosen.
+There are four additional features in the dataset above in comparison to the original HR data. We could use all the variables while fitting the simpler model or we may want to perform a feature selection first - function `safely_select_variables` returns set of variables such that for each pair {feature, feature_new} exactly one is chosen.
 
 ```{r}
 vars <- safely_select_variables(safe_extractor, data1, which_y = "status", encoding = "categorical", verbose = FALSE)

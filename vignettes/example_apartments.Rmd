@@ -23,7 +23,6 @@ library(SAFE)
 library(DALEX)
 library(randomForest)
 library(gridExtra)
-library(dplyr)
 ```
 
 Fitting models to the original dataset - linear model and random forest:
@@ -47,7 +46,7 @@ safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
 print(safe_extractor)
 ```
 
-In the plot above we can see which points have been chosen to be the breakpoints for particular variable: 
+In the plot below we can see which points have been chosen to be the breakpoints for particular variable: 
 
 ```{r, fig.width=6}
 plot(safe_extractor, "construction.year")

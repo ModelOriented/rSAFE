@@ -18,11 +18,10 @@ Imports:
     recipes,
     ggplot2,
     magrittr,
-    reticulate
+    breakpoint
 Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-URL: https://mi2datalab.github.io/SAFE/
+URL: https://github.com/MI2DataLab/SAFE
 BugReports: https://github.com/MI2DataLab/SAFE/issues
-

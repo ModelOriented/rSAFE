@@ -11,7 +11,7 @@ Surrogate-assisted feature extraction
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://mi2datalab.github.io/SAFE/}
+  \item \url{https://github.com/MI2DataLab/SAFE}
   \item Report bugs at \url{https://github.com/MI2DataLab/SAFE/issues}
 }
 

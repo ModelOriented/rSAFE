@@ -5,9 +5,10 @@
 #'
 #' @param explainer DALEX explainer created with explain() function
 #' @param package character, a package used to compute breakpoints in case of continuous variables,
-#' one of: "changepoint.np", "strucchange"
+#' one of: "breakpoint", "strucchange"
 #' @param response_type character, type of response to be calculated, one of: "pdp", "ale".
 #' If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.
+#' @param no_segments numeric, a number of segments variable is to be divided into in case of founding no breakpoints
 #' @param verbose logical, if progress bar is to be printed
 #'
 #' @return safe_extractor object containing information about variables transformation
@@ -16,14 +17,14 @@
 #'
 #'
 
-safe_extraction <- function(explainer, package = "changepoint.np", response_type = "ale", verbose = TRUE) {
+safe_extraction <- function(explainer, package = "breakpoint", response_type = "ale", no_segments = 2, verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
   }
-  if (! package %in% c("changepoint.np", "strucchange")) {
+  if (! package %in% c("breakpoint", "strucchange")) {
     warning("Wrong package - using default one.")
-    package <- "changepoint.np"
+    package <- "breakpoint"
   }
   if (! response_type %in% c("pdp", "ale")) {
     warning("Wrong type of response - using default one.")
@@ -70,7 +71,7 @@ safe_extraction <- function(explainer, package = "changepoint.np", response_type
       trans_prop <- safely_transform_factor(v, explainer)
       vars[[v]]$new_levels <- trans_prop$new_levels
     } else {
-      trans_prop <- safely_transform_continuous(v, explainer, package, response_type)
+      trans_prop <- safely_transform_continuous(v, explainer, package, response_type, no_segments)
       vars[[v]]$break_points <- trans_prop$break_points
       vars[[v]]$new_levels <- trans_prop$new_levels
     }

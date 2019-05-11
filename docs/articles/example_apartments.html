@@ -55,7 +55,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/MI2DataLab/SAFE">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -70,9 +77,9 @@
       <h1>Regression example - apartments dataset</h1>
                         <h4 class="author">Anna Gierlak</h4>
             
-            <h4 class="date">2019-04-28</h4>
+            <h4 class="date">2019-05-11</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/MI2DataLab/SAFE/blob/master/vignettes/example_apartments.Rmd"><code>vignettes/example_apartments.Rmd</code></a></small>
       <div class="hidden name"><code>example_apartments.Rmd</code></div>
 
     </div>
@@ -89,18 +96,22 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safe_extraction.html">safe_extraction</a></span>(explainer_rf1, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(safe_extractor)
 <span class="co">#&gt; Variable 'construction.year' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 1931)</span>
-<span class="co">#&gt;      [1931, 1949)</span>
-<span class="co">#&gt;      [1949, 1985)</span>
-<span class="co">#&gt;      [1985, Inf)</span>
+<span class="co">#&gt;  (-Inf, 1936)</span>
+<span class="co">#&gt;      [1936, 1947)</span>
+<span class="co">#&gt;      [1947, 1985)</span>
+<span class="co">#&gt;      [1985, 1997)</span>
+<span class="co">#&gt;      [1997, Inf)</span>
 <span class="co">#&gt; Variable 'surface' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 33)</span>
-<span class="co">#&gt;      [33, 72)</span>
-<span class="co">#&gt;      [72, 121)</span>
-<span class="co">#&gt;      [121, Inf)</span>
+<span class="co">#&gt;  (-Inf, 36)</span>
+<span class="co">#&gt;      [36, 55)</span>
+<span class="co">#&gt;      [55, 78)</span>
+<span class="co">#&gt;      [78, 94)</span>
+<span class="co">#&gt;      [94, 121)</span>
+<span class="co">#&gt;      [121, 136)</span>
+<span class="co">#&gt;      [136, Inf)</span>
 <span class="co">#&gt; Variable 'floor' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 4)</span>
-<span class="co">#&gt;      [4, Inf)</span>
+<span class="co">#&gt;  (-Inf, 6)</span>
+<span class="co">#&gt;      [6, Inf)</span>
 <span class="co">#&gt; Variable 'no.rooms' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 3)</span>
 <span class="co">#&gt;      [3, Inf)</span>
@@ -109,7 +120,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <span class="co">#&gt;  Zoliborz -&gt; Zoliborz</span>
 <span class="co">#&gt;  c("Mokotow", "Ochota") -&gt; MokotowOchota</span>
 <span class="co">#&gt;  Srodmiescie -&gt; Srodmiescie</span></code></pre></div>
-<p>In the plot above we can see which points have been chosen to be the breakpoints for particular variable:</p>
+<p>In the plot below we can see which points have been chosen to be the breakpoints for particular variable:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(safe_extractor, <span class="st">"construction.year"</span>)</code></pre></div>
 <p><img src="example_apartments_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 <p>Using created object to extract new features:</p>
@@ -136,9 +147,9 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">21</td>
 <td align="right">6</td>
 <td align="right">1</td>
-<td align="left">[1949, 1985)</td>
-<td align="left">(-Inf, 33)</td>
-<td align="left">[4, Inf)</td>
+<td align="left">[1947, 1985)</td>
+<td align="left">(-Inf, 36)</td>
+<td align="left">[6, Inf)</td>
 <td align="left">(-Inf, 3)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
@@ -149,9 +160,9 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">107</td>
 <td align="right">2</td>
 <td align="right">4</td>
-<td align="left">[1985, Inf)</td>
-<td align="left">[72, 121)</td>
-<td align="left">(-Inf, 4)</td>
+<td align="left">[1997, Inf)</td>
+<td align="left">[94, 121)</td>
+<td align="left">(-Inf, 6)</td>
 <td align="left">[3, Inf)</td>
 <td align="left">Srodmiescie</td>
 </tr>
@@ -162,9 +173,9 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">41</td>
 <td align="right">9</td>
 <td align="right">2</td>
-<td align="left">[1985, Inf)</td>
-<td align="left">[33, 72)</td>
-<td align="left">[4, Inf)</td>
+<td align="left">[1985, 1997)</td>
+<td align="left">[36, 55)</td>
+<td align="left">[6, Inf)</td>
 <td align="left">(-Inf, 3)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
@@ -175,9 +186,9 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">28</td>
 <td align="right">2</td>
 <td align="right">2</td>
-<td align="left">[1949, 1985)</td>
-<td align="left">(-Inf, 33)</td>
-<td align="left">(-Inf, 4)</td>
+<td align="left">[1947, 1985)</td>
+<td align="left">(-Inf, 36)</td>
+<td align="left">(-Inf, 6)</td>
 <td align="left">(-Inf, 3)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
@@ -188,9 +199,9 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">146</td>
 <td align="right">3</td>
 <td align="right">6</td>
-<td align="left">[1949, 1985)</td>
-<td align="left">[121, Inf)</td>
-<td align="left">(-Inf, 4)</td>
+<td align="left">[1947, 1985)</td>
+<td align="left">[136, Inf)</td>
+<td align="left">(-Inf, 6)</td>
 <td align="left">[3, Inf)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
@@ -201,9 +212,9 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">97</td>
 <td align="right">8</td>
 <td align="right">3</td>
-<td align="left">[1949, 1985)</td>
-<td align="left">[72, 121)</td>
-<td align="left">[4, Inf)</td>
+<td align="left">[1947, 1985)</td>
+<td align="left">[94, 121)</td>
+<td align="left">[6, Inf)</td>
 <td align="left">[3, Inf)</td>
 <td align="left">MokotowOchota</td>
 </tr>
@@ -222,9 +233,13 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <th align="right">construction.year_new_X2</th>
 <th align="right">construction.year_new_X3</th>
 <th align="right">construction.year_new_X4</th>
+<th align="right">construction.year_new_X5</th>
 <th align="right">surface_new_X2</th>
 <th align="right">surface_new_X3</th>
 <th align="right">surface_new_X4</th>
+<th align="right">surface_new_X5</th>
+<th align="right">surface_new_X6</th>
+<th align="right">surface_new_X7</th>
 <th align="right">floor_new_X2</th>
 <th align="right">no.rooms_new_X2</th>
 <th align="right">district_new_Zoliborz</th>
@@ -245,6 +260,10 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -260,9 +279,13 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">4</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="right">1</td>
 <td align="right">0</td>
 <td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -280,7 +303,11 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
+<td align="right">0</td>
 <td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
@@ -307,6 +334,10 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="left">Ursynow</td>
@@ -317,6 +348,10 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">6</td>
 <td align="right">0</td>
 <td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -338,7 +373,11 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
 <td align="right">1</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -359,7 +398,6 @@ vars_onehot &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <span class="co">#&gt; [3] "surface"                  "floor"                   </span>
 <span class="co">#&gt; [5] "no.rooms"                 "construction.year_new_X2"</span>
 <span class="co">#&gt; [7] "construction.year_new_X3" "construction.year_new_X4"</span>
-<span class="co">#&gt; [9] "no.rooms_new_X2"</span>
 
 data1_categorical &lt;-<span class="st"> </span>data1_categorical[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'m2.price'</span>, vars_categorical)]
 data1_onehot &lt;-<span class="st"> </span>data1_onehot[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'m2.price'</span>, vars_onehot)]</code></pre></div>
@@ -379,7 +417,7 @@ data1_onehot &lt;-<span class="st"> </span>data1_onehot[,<span class="kw"><a hre
 <td align="right">21</td>
 <td align="right">6</td>
 <td align="right">1</td>
-<td align="left">[1949, 1985)</td>
+<td align="left">[1947, 1985)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
@@ -387,7 +425,7 @@ data1_onehot &lt;-<span class="st"> </span>data1_onehot[,<span class="kw"><a hre
 <td align="right">107</td>
 <td align="right">2</td>
 <td align="right">4</td>
-<td align="left">[1985, Inf)</td>
+<td align="left">[1997, Inf)</td>
 <td align="left">Srodmiescie</td>
 </tr>
 <tr class="odd">
@@ -395,7 +433,7 @@ data1_onehot &lt;-<span class="st"> </span>data1_onehot[,<span class="kw"><a hre
 <td align="right">41</td>
 <td align="right">9</td>
 <td align="right">2</td>
-<td align="left">[1985, Inf)</td>
+<td align="left">[1985, 1997)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
@@ -403,7 +441,7 @@ data1_onehot &lt;-<span class="st"> </span>data1_onehot[,<span class="kw"><a hre
 <td align="right">28</td>
 <td align="right">2</td>
 <td align="right">2</td>
-<td align="left">[1949, 1985)</td>
+<td align="left">[1947, 1985)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="odd">
@@ -411,7 +449,7 @@ data1_onehot &lt;-<span class="st"> </span>data1_onehot[,<span class="kw"><a hre
 <td align="right">146</td>
 <td align="right">3</td>
 <td align="right">6</td>
-<td align="left">[1949, 1985)</td>
+<td align="left">[1947, 1985)</td>
 <td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
 </tr>
 <tr class="even">
@@ -419,7 +457,7 @@ data1_onehot &lt;-<span class="st"> </span>data1_onehot[,<span class="kw"><a hre
 <td align="right">97</td>
 <td align="right">8</td>
 <td align="right">3</td>
-<td align="left">[1949, 1985)</td>
+<td align="left">[1947, 1985)</td>
 <td align="left">MokotowOchota</td>
 </tr>
 </tbody>

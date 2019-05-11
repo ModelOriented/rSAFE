@@ -4,17 +4,19 @@
 \alias{safe_extraction}
 \title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
 \usage{
-safe_extraction(explainer, package = "changepoint.np",
-  response_type = "ale", verbose = TRUE)
+safe_extraction(explainer, package = "breakpoint",
+  response_type = "ale", no_segments = 2, verbose = TRUE)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
 
 \item{package}{character, a package used to compute breakpoints in case of continuous variables,
-one of: "changepoint.np", "strucchange"}
+one of: "breakpoint", "strucchange"}
 
 \item{response_type}{character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}
+
+\item{no_segments}{numeric, a number of segments variable is to be divided into in case of founding no breakpoints}
 
 \item{verbose}{logical, if progress bar is to be printed}
 }

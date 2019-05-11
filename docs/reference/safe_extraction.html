@@ -79,7 +79,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/MI2DataLab/SAFE">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -99,8 +104,8 @@
 for surrogate feature extraction.</p>
     
 
-    <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"changepoint.np"</span>,
-  <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"breakpoint"</span>,
+  <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -112,12 +117,16 @@ for surrogate feature extraction.</p>
     <tr>
       <th>package</th>
       <td><p>character, a package used to compute breakpoints in case of continuous variables,
-one of: "changepoint.np", "strucchange"</p></td>
+one of: "breakpoint", "strucchange"</p></td>
     </tr>
     <tr>
       <th>response_type</th>
       <td><p>character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.</p></td>
+    </tr>
+    <tr>
+      <th>no_segments</th>
+      <td><p>numeric, a number of segments variable is to be divided into in case of founding no breakpoints</p></td>
     </tr>
     <tr>
       <th>verbose</th>
