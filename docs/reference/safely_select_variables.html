@@ -71,9 +71,6 @@
     <li>
       <a href="../articles/example_apartments.html">Regression example - apartments dataset</a>
     </li>
-    <li>
-      <a href="../articles/example_hr.html">Classification example - HR dataset</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -115,7 +112,7 @@ on all features (using AIC value) and the best set of variables is chosen.</p></
     
 
     <pre class="usage"><span class='fu'>safely_select_variables</span>(<span class='no'>safe_extractor</span>, <span class='no'>data</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>which_y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>encoding</span> <span class='kw'>=</span> <span class='st'>"categorical"</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>class_pred</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>class_pred</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -140,18 +137,14 @@ otherwise 'y' argument should be provided.</p></td>
       <td><p>numeric or character (optional), must be given if data contains response values</p></td>
     </tr>
     <tr>
-      <th>encoding</th>
-      <td><p>method of representing factor variables in dataset, one of: "categorical", "one-hot"</p></td>
-    </tr>
-    <tr>
-      <th>verbose</th>
-      <td><p>logical, if progress bar is to be printed</p></td>
-    </tr>
-    <tr>
       <th>class_pred</th>
       <td><p>numeric or character, used only in multi-classification problems.
 If response vector has more than two levels, then 'class_pred' should indicate the class of interest
 which will denote failure - all other classess will stand for success.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>logical, if progress bar is to be printed</p></td>
     </tr>
     </table>
     

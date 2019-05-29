@@ -5,7 +5,7 @@
 \title{Feature selection on the dataset with transformed variables}
 \usage{
 safely_select_variables(safe_extractor, data, y = NULL, which_y = NULL,
-  encoding = "categorical", verbose = TRUE, class_pred = NULL)
+  class_pred = NULL, verbose = TRUE)
 }
 \arguments{
 \item{safe_extractor}{object containing information about variables transformations created with safe_extraction() function}
@@ -19,13 +19,11 @@ otherwise 'y' argument should be provided.}
 
 \item{which_y}{numeric or character (optional), must be given if data contains response values}
 
-\item{encoding}{method of representing factor variables in dataset, one of: "categorical", "one-hot"}
-
-\item{verbose}{logical, if progress bar is to be printed}
-
 \item{class_pred}{numeric or character, used only in multi-classification problems.
 If response vector has more than two levels, then 'class_pred' should indicate the class of interest
 which will denote failure - all other classess will stand for success.}
+
+\item{verbose}{logical, if progress bar is to be printed}
 }
 \value{
 vector of variables names, selected based on AIC values

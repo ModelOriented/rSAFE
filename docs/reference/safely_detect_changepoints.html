@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • SAFE</title>
+<title>Identyfying changes using a nonparametric cost function — safely_detect_changepoints • SAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -35,7 +35,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top navbar-mi2" role="navigation">
   <div class="container">
@@ -48,7 +48,7 @@
 	  <a class = "navbar-mi2logo" href="http://mi2.mini.pw.edu.pl/">
         <img src = "https://github.com/mi2-warsaw/MI2template/blob/master/inst/pkgdown/assets/MI2logo.jpg?raw=true" alt = "MI2" height = 46 title = "MI2">
 	  </a>
-      <a class="navbar-brand navbar-mi2" href="../index.html"></a>
+      <a class="navbar-brand navbar-mi2" href="../index.html">Identyfying changes using a nonparametric cost function</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="navbar-mi2 nav navbar-nav">
@@ -93,17 +93,49 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Identyfying changes using a nonparametric cost function</h1>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
+    
+    <p>The safely_detect_changepoints() function calculates the optimal positioning
+and number of changepoints for given data and penalty. It uses a PELT algorithm
+with a nonparametric cost function based on the empirical distribution.</p>
+    
 
-      <ul>
-        <li><a href="example_apartments.html">Regression example - apartments dataset</a></li>
-      </ul>
-    </div>
+    <pre class="usage"><span class='fu'>safely_detect_changepoints</span>(<span class='no'>data</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"MBIC"</span>, <span class='kw'>nquantiles</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>a vector within which you wish to find changepoints</p></td>
+    </tr>
+    <tr>
+      <th>penalty</th>
+      <td><p>penalty for introducing another changepoint,
+one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value</p></td>
+    </tr>
+    <tr>
+      <th>nquantiles</th>
+      <td><p>the number of quantiles used in integral approximation</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a vector of optimal changepoint positions (last observations of each segment)</p>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
+
   </div>
 </div>
 

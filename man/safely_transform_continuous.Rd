@@ -4,18 +4,19 @@
 \alias{safely_transform_continuous}
 \title{Continuous feature transformation using PDP plot}
 \usage{
-safely_transform_continuous(variable, explainer, package = "breakpoint",
-  response_type = "ale", no_segments = 2)
+safely_transform_continuous(variable, explainer, response_type = "ale",
+  penalty = "MBIC", no_segments = 2)
 }
 \arguments{
 \item{variable}{a feature for which the transformation function is to be computed}
 
 \item{explainer}{DALEX explainer created with explain() function}
 
-\item{package}{character, a package used to compute breakpoints, one of: "breakpoint", strucchange"}
-
 \item{response_type}{character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}
+
+\item{penalty}{penalty for introducing another changepoint,
+one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value}
 
 \item{no_segments}{numeric, a number of segments variable is to be divided into in case of founding no breakpoints}
 }

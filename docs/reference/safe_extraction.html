@@ -71,9 +71,6 @@
     <li>
       <a href="../articles/example_apartments.html">Regression example - apartments dataset</a>
     </li>
-    <li>
-      <a href="../articles/example_hr.html">Classification example - HR dataset</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -100,12 +97,13 @@
     </div>
 
     
-    <p>The safe_extractiob() function creates a SAFE-extractor object which may be used later
+    <p>The safe_extraction() function creates a SAFE-extractor object which may be used later
 for surrogate feature extraction.</p>
     
 
-    <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"breakpoint"</span>,
-  <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"MBIC"</span>,
+  <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>interactions</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -115,18 +113,34 @@ for surrogate feature extraction.</p>
       <td><p>DALEX explainer created with explain() function</p></td>
     </tr>
     <tr>
-      <th>package</th>
-      <td><p>character, a package used to compute breakpoints in case of continuous variables,
-one of: "breakpoint", "strucchange"</p></td>
-    </tr>
-    <tr>
       <th>response_type</th>
       <td><p>character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.</p></td>
     </tr>
     <tr>
+      <th>penalty</th>
+      <td><p>penalty for introducing another changepoint,
+one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value</p></td>
+    </tr>
+    <tr>
       <th>no_segments</th>
       <td><p>numeric, a number of segments variable is to be divided into in case of founding no breakpoints</p></td>
+    </tr>
+    <tr>
+      <th>interactions</th>
+      <td><p>logical, if interactions between variables are to be taken into account</p></td>
+    </tr>
+    <tr>
+      <th>inter_param</th>
+      <td><p>numeric, a positive value indicating which of single observation non-additive effects
+are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
+into account</p></td>
+    </tr>
+    <tr>
+      <th>inter_threshold</th>
+      <td><p>numeric, a value from 0,1 interval indicating which interactions should be returned
+as significant. It corresponds to the percentage of observations for which interaction measure is greater
+than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
@@ -138,6 +152,10 @@ If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strong
 
     <p>safe_extractor object containing information about variables transformation</p>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='safely_transform_factor.html'>safely_transform_factor</a>, <a href='safely_transform_continuous.html'>safely_transform_continuous</a>, <a href='safely_detect_interactions.html'>safely_detect_interactions</a></code></p></div>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -146,6 +164,8 @@ If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strong
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

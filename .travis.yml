@@ -1,0 +1,20 @@
+language: R
+sudo: false
+cache: packages
+
+r:
+  - release
+  - devel
+
+notifications:
+  email: false
+
+r_packages:
+  - covr
+
+after_success:
+- Rscript -e 'library(covr); codecov()'
+
+before_install: R -e 'source("https://install-github.me/r-lib/remotes")'
+
+apt_packages: libudunits2-dev

@@ -1,6 +1,6 @@
-#' Factor feature transformation using factorMerger package
+#' @title Factor feature transformation using factorMerger package
 #'
-#' The safely_transform_factor() function calculates a transformation function
+#' @description The safely_transform_factor() function calculates a transformation function
 #' for the factor variable using the getOptimalPartitionDf() function from factorMerger package.
 #'
 #' @param variable a feature for which the transformation function is to be computed
@@ -27,8 +27,10 @@ safely_transform_factor <- function(variable, explainer) {
   return(list(sv = sv,
               new_levels = new_levels))
 
-
 }
+
+
+
 
 
 

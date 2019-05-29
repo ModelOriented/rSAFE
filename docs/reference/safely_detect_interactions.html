@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • SAFE</title>
+<title>Detecting interactions via a permutation approach — safely_detect_interactions • SAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -35,7 +35,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top navbar-mi2" role="navigation">
   <div class="container">
@@ -48,7 +48,7 @@
 	  <a class = "navbar-mi2logo" href="http://mi2.mini.pw.edu.pl/">
         <img src = "https://github.com/mi2-warsaw/MI2template/blob/master/inst/pkgdown/assets/MI2logo.jpg?raw=true" alt = "MI2" height = 46 title = "MI2">
 	  </a>
-      <a class="navbar-brand navbar-mi2" href="../index.html"></a>
+      <a class="navbar-brand navbar-mi2" href="../index.html">Detecting interactions via a permutation approach</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="navbar-mi2 nav navbar-nav">
@@ -93,17 +93,63 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Detecting interactions via a permutation approach</h1>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
+    
+    <p>The safely_detect_interactions() function detects second-order interactions based on predictions
+made by a surrogate model. For each pair of features it performs values permutation in order
+to evaluate their non_additive effect.</p>
+    
 
-      <ul>
-        <li><a href="example_apartments.html">Regression example - apartments dataset</a></li>
-      </ul>
-    </div>
+    <pre class="usage"><span class='fu'>safely_detect_interactions</span>(<span class='no'>explainer</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>explainer</th>
+      <td><p>DALEX explainer created with explain() function</p></td>
+    </tr>
+    <tr>
+      <th>inter_param</th>
+      <td><p>numeric, a positive value indicating which of single observation non-additive effects
+are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
+into account</p></td>
+    </tr>
+    <tr>
+      <th>inter_threshold</th>
+      <td><p>numeric, a value from 0,1 interval indicating which interactions should be returned
+as significant. It corresponds to the percentage of observations for which interaction measure is greater
+than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>logical, if progress bar is to be printed</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>dataframe object containing interactions effects greater than or equal to the specified inter_threshold</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='interaction_measure.html'>interaction_measure</a></code></p></div>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
+
   </div>
 </div>
 

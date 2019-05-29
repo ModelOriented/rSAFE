@@ -19,118 +19,102 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, echo = FALSE}
-library(SAFE)
-library(DALEX)
-library(randomForest)
 library(gridExtra)
 ```
+In this vignette we present an example of an application of `SAFE` package. It is based on `apartments` and `apartmentsTest` dataset from `DALEX` package.
 
-Fitting models to the original dataset - linear model and random forest:
+First we fit two models to the original dataset - linear model (which is going to play the role of white-box model) and random forest (complex model that will serve us as a surrogate model).
 
 ```{r}
+library(DALEX)
 model_lm1 <- lm(m2.price ~ ., data = apartments)
-explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1")
+library(randomForest)
 set.seed(111)
 model_rf1 <- randomForest(m2.price ~ ., data = apartments)
+```
+
+We also create `explainer` objects for both models - we will use them later to create new variables and at the end to compare their performance.
+
+```{r}
+explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1")
 explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "rf1")
 ```
 
-
-Creating safe_extractor object using SAFE package:
+Now, we create a `safe_extractor` object using `SAFE` package and surrogate model. Setting the argument verbose=FALSE stops progress bar from printing.
 
 ```{r}
-safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
+library(SAFE)
+safe_extractor <- safe_extraction(explainer_rf1, penalty = 7, verbose = FALSE)
 ```
+
+Now, let's print summary for the new object we have just created.
 
 ```{r}
 print(safe_extractor)
 ```
 
+We can see transormation propositions for all variables in our dataset. 
+
 In the plot below we can see which points have been chosen to be the breakpoints for particular variable: 
 
 ```{r, fig.width=6}
-plot(safe_extractor, "construction.year")
+library(gridExtra)
+plot(safe_extractor, variable = "construction.year")
 ```
 
-Using created object to extract new features:
+Now we can use our `safe_extractor` object to create new categorical features in the given dataset.
 
 ```{r}
-data1_categorical <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], encoding = "categorical", verbose = FALSE)
+data1 <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], verbose = FALSE)
 ```
 
 ```{r, echo = FALSE}
-knitr::kable(head(data1_categorical))
+knitr::kable(head(data1))
 ```
 
-The same with one-hot encoding:
+We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.
 
 ```{r, fig.width=6}
-data1_onehot <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], encoding = "one-hot", verbose = FALSE)
+vars <- safely_select_variables(safe_extractor, data1, which_y = "m2.price", verbose = FALSE)
+data1 <- data1[,c("m2.price", vars)]
+print(vars)
 ```
+
+It can be observed that for some features the original form was preffered and for others the transformed one.
+
+Here are the first few rows for our data after feature selection:
 
 ```{r, echo = FALSE}
-knitr::kable(head(data1_onehot))
+knitr::kable(head(data1))
 ```
 
-Feature selection using both "categorical" and "one-hot" methods of encoding:
+Now, we perform transformations on another data that will be used later in explainers:
 
 ```{r, fig.width=6}
-vars_categorical <- safely_select_variables(safe_extractor, data1_categorical, which_y = 2, encoding = "categorical", verbose = FALSE)
-print(vars_categorical)
-vars_onehot <- safely_select_variables(safe_extractor, data1_onehot, which_y = 2, encoding = "one-hot", verbose = FALSE)
-print(vars_onehot)
-
-data1_categorical <- data1_categorical[,c('m2.price', vars_categorical)]
-data1_onehot <- data1_onehot[,c('m2.price', vars_onehot)]
-
+data2 <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], verbose = FALSE)[,c('m2.price', vars)]
 ```
 
-First few rows for data with categorical encoding, after feature selection:
-
-```{r, echo = FALSE}
-knitr::kable(head(data1_categorical))
-```
-
-Transforming another data that will be used later in explainers:
-
-```{r, fig.width=6}
-data2_categorical <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], encoding = "categorical", verbose = FALSE)[,c('m2.price', vars_categorical)]
-data2_onehot <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], encoding = "one-hot", verbose = FALSE)[,c('m2.price', vars_onehot)]
-```
-
-
-
-
-Fitting models to data containg newly created columns:
+Let's fit the models to data containg newly created columns:
 
 ```{r}
-model_lm2_categorical <- lm(m2.price ~ ., data = data1_categorical)
-explainer_lm2_categorical <- explain(model_lm2_categorical, data = data2_categorical, y = apartmentsTest[6001:9000,1], label = "lm2 - categorical")
-
-model_lm2_onehot <- lm(m2.price ~ ., data = data1_onehot)
-explainer_lm2_onehot <- explain(model_lm2_onehot, data = data2_onehot, y = apartmentsTest[6001:9000,1], label = "lm2 - onehot")
-
+model_lm2 <- lm(m2.price ~ ., data = data1)
+explainer_lm2 <- explain(model_lm2, data = data2, y = apartmentsTest[6001:9000,1], label = "lm2")
 set.seed(111)
-model_rf2_categorical <- randomForest(m2.price ~ ., data = data1_categorical)
-explainer_rf2_categorical <- explain(model_rf2_categorical, data2_categorical, apartmentsTest[6001:9000,1], label = "rf2 - categorical")
-
-set.seed(111)
-model_rf2_onehot <- randomForest(m2.price ~ ., data = data1_onehot)
-explainer_rf2_onehot <- explain(model_rf2_onehot, data2_onehot, apartmentsTest[6001:9000,1], label = "rf2 - onehot")
+model_rf2 <- randomForest(m2.price ~ ., data = data1)
+explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2")
 ```
 
+Final step is the comparison of all the models we have created.
 
 ```{r, echo = FALSE}
 mp_lm1 <- model_performance(explainer_lm1)
 mp_rf1 <- model_performance(explainer_rf1)
-mp_lm2_categorical <- model_performance(explainer_lm2_categorical)
-mp_rf2_categorical <- model_performance(explainer_rf2_categorical)
-mp_lm2_onehot <- model_performance(explainer_lm2_onehot)
-mp_rf2_onehot <- model_performance(explainer_rf2_onehot)
+mp_lm2 <- model_performance(explainer_lm2)
+mp_rf2 <- model_performance(explainer_rf2)
 ```
 
 ```{r, echo = FALSE, fig.width=7, fig.height=6}
-plot(mp_lm1, mp_rf1, mp_lm2_categorical, mp_rf2_categorical, mp_lm2_onehot, mp_rf2_onehot, geom = "boxplot")
+plot(mp_lm1, mp_rf1, mp_lm2, mp_rf2, geom = "boxplot")
 ```
 
 

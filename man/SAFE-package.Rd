@@ -6,7 +6,11 @@
 \alias{SAFE-package}
 \title{SAFE: Surrogate-assisted feature extraction}
 \description{
-Surrogate-assisted feature extraction
+The SAFE package is a model agnostic tool for making an interpretable
+  white-box model more accurate using alternative black-box model called surrogate model.
+  Based on the complicated model, such as neural network or random forest, new features
+  are being extracted and then used in the process of fitting a simpler interpretable model,
+  improving its overall performance.
 }
 \seealso{
 Useful links:

@@ -4,19 +4,30 @@
 \alias{safe_extraction}
 \title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
 \usage{
-safe_extraction(explainer, package = "breakpoint",
-  response_type = "ale", no_segments = 2, verbose = TRUE)
+safe_extraction(explainer, response_type = "ale", penalty = "MBIC",
+  no_segments = 2, interactions = TRUE, inter_param = 2,
+  inter_threshold = 0.4, verbose = TRUE)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
 
-\item{package}{character, a package used to compute breakpoints in case of continuous variables,
-one of: "breakpoint", "strucchange"}
-
 \item{response_type}{character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}
 
+\item{penalty}{penalty for introducing another changepoint,
+one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value}
+
 \item{no_segments}{numeric, a number of segments variable is to be divided into in case of founding no breakpoints}
+
+\item{interactions}{logical, if interactions between variables are to be taken into account}
+
+\item{inter_param}{numeric, a positive value indicating which of single observation non-additive effects
+are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
+into account}
+
+\item{inter_threshold}{numeric, a value from \link{0,1} interval indicating which interactions should be returned
+as significant. It corresponds to the percentage of observations for which interaction measure is greater
+than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.}
 
 \item{verbose}{logical, if progress bar is to be printed}
 }
@@ -24,6 +35,9 @@ If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strong
 safe_extractor object containing information about variables transformation
 }
 \description{
-The safe_extractiob() function creates a SAFE-extractor object which may be used later
+The safe_extraction() function creates a SAFE-extractor object which may be used later
 for surrogate feature extraction.
+}
+\seealso{
+\code{\link{safely_transform_factor}, \link{safely_transform_continuous}, \link{safely_detect_interactions}}
 }

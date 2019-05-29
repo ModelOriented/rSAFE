@@ -4,15 +4,12 @@
 \alias{safely_transform_data}
 \title{Performing transformations on all features in the dataset}
 \usage{
-safely_transform_data(safe_extractor, data, encoding = "categorical",
-  verbose = TRUE)
+safely_transform_data(safe_extractor, data, verbose = TRUE)
 }
 \arguments{
 \item{safe_extractor}{object containing information about variables transformations created with safe_extraction() function}
 
 \item{data}{data for which features are to be transformed}
-
-\item{encoding}{method of representing factor variables, one of: "categorical", "one-hot"}
 
 \item{verbose}{logical, if progress bar is to be printed}
 }
