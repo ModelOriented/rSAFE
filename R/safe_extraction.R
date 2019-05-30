@@ -13,15 +13,16 @@
 #' @param inter_param numeric, a positive value indicating which of single observation non-additive effects
 #' are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
 #' into account
-#' @param inter_threshold numeric, a value from [0,1] interval indicating which interactions should be returned
+#' @param inter_threshold numeric, a value from `[0,1]` interval indicating which interactions should be returned
 #' as significant. It corresponds to the percentage of observations for which interaction measure is greater
 #' than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.
 #' @param verbose logical, if progress bar is to be printed
 #'
-#' @seealso \code{\link{safely_transform_factor}, \link{safely_transform_continuous}, \link{safely_detect_interactions}}
+#' @seealso \code{\link{safely_transform_factor}}, \code{\link{safely_transform_continuous}}, \code{\link{safely_detect_interactions}}
 #'
 #' @return safe_extractor object containing information about variables transformation
-#'
+#' @importFrom graphics plot
+#' @importFrom stats AIC aggregate binomial quantile
 #' @export
 
 safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", no_segments = 2, interactions = TRUE, inter_param = 2, inter_threshold = 0.4, verbose = TRUE) {

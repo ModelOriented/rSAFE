@@ -14,7 +14,7 @@ safely_detect_interactions(explainer, inter_param = 2,
 are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
 into account}
 
-\item{inter_threshold}{numeric, a value from \link{0,1} interval indicating which interactions should be returned
+\item{inter_threshold}{numeric, a value from \code{[0,1]} interval indicating which interactions should be returned
 as significant. It corresponds to the percentage of observations for which interaction measure is greater
 than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.}
 

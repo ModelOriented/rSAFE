@@ -8,7 +8,7 @@
 #' @param inter_param numeric, a positive value indicating which of single observation non-additive effects
 #' are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
 #' into account
-#' @param inter_threshold numeric, a value from [0,1] interval indicating which interactions should be returned
+#' @param inter_threshold numeric, a value from `[0,1]` interval indicating which interactions should be returned
 #' as significant. It corresponds to the percentage of observations for which interaction measure is greater
 #' than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.
 #' @param verbose logical, if progress bar is to be printed
