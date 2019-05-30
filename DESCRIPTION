@@ -17,13 +17,13 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Imports:
     DALEX,
-    factorMerger,
     ggplot2,
     sets
 Suggests:
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    factorMerger
 VignetteBuilder: knitr
 URL: https://github.com/MI2DataLab/SAFE
 BugReports: https://github.com/MI2DataLab/SAFE/issues
