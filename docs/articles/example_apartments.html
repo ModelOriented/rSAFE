@@ -74,7 +74,7 @@
       <h1>Regression example - apartments dataset</h1>
                         <h4 class="author">Anna Gierlak</h4>
             
-            <h4 class="date">2019-05-29</h4>
+            <h4 class="date">2019-05-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MI2DataLab/SAFE/blob/master/vignettes/example_apartments.Rmd"><code>vignettes/example_apartments.Rmd</code></a></small>
       <div class="hidden name"><code>example_apartments.Rmd</code></div>
@@ -85,49 +85,49 @@
     
 <p>In this vignette we present an example of an application of <code>SAFE</code> package. It is based on <code>apartments</code> and <code>apartmentsTest</code> dataset from <code>DALEX</code> package.</p>
 <p>First we fit two models to the original dataset - linear model (which is going to play the role of white-box model) and random forest (complex model that will serve us as a surrogate model).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(DALEX)
-model_lm1 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartments)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(randomForest)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">111</span>)
-model_rf1 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartments)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(DALEX)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">model_lm1 &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartments)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(randomForest)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">set.seed</span>(<span class="dv">111</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">model_rf1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/randomForest/topics/randomForest">randomForest</a></span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartments)</a></code></pre></div>
 <p>We also create <code>explainer</code> objects for both models - we will use them later to create new variables and at the end to compare their performance.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">explainer_lm1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm1"</span>)
-explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf1"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">explainer_lm1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/DALEX/topics/explain">explain</a></span>(model_lm1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm1"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">explainer_rf1 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/DALEX/topics/explain">explain</a></span>(model_rf1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf1"</span>)</a></code></pre></div>
 <p>Now, we create a <code>safe_extractor</code> object using <code>SAFE</code> package and surrogate model. Setting the argument verbose=FALSE stops progress bar from printing.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(SAFE)
-safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safe_extraction.html">safe_extraction</a></span>(explainer_rf1, <span class="dt">penalty =</span> <span class="dv">7</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">library</span>(SAFE)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safe_extraction.html">safe_extraction</a></span>(explainer_rf1, <span class="dt">penalty =</span> <span class="dv">7</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <p>Now, let’s print summary for the new object we have just created.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(safe_extractor)
-<span class="co">#&gt; Variable 'construction.year' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 1931]</span>
-<span class="co">#&gt;      (1931, 1949]</span>
-<span class="co">#&gt;      (1949, 1983]</span>
-<span class="co">#&gt;      (1983, 1994]</span>
-<span class="co">#&gt;      (1994, Inf)</span>
-<span class="co">#&gt; Variable 'surface' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 33]</span>
-<span class="co">#&gt;      (33, 72]</span>
-<span class="co">#&gt;      (72, 101]</span>
-<span class="co">#&gt;      (101, 123]</span>
-<span class="co">#&gt;      (123, Inf)</span>
-<span class="co">#&gt; Variable 'floor' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 4]</span>
-<span class="co">#&gt;      (4, Inf)</span>
-<span class="co">#&gt; Variable 'no.rooms' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 3]</span>
-<span class="co">#&gt;      (3, Inf)</span>
-<span class="co">#&gt; Variable 'district' - created levels:</span>
-<span class="co">#&gt;  c("Bemowo", "Bielany", "Praga", "Ursus", "Ursynow", "Wola") -&gt; PragaUrsynowWolaBemowoBielanyUrsus</span>
-<span class="co">#&gt;  Zoliborz -&gt; Zoliborz</span>
-<span class="co">#&gt;  c("Mokotow", "Ochota") -&gt; MokotowOchota</span>
-<span class="co">#&gt;  Srodmiescie -&gt; Srodmiescie</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">print</span>(safe_extractor)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; Variable 'construction.year' - selected intervals:</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  (-Inf, 1931]</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;      (1931, 1949]</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;      (1949, 1983]</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;      (1983, 1994]</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt;      (1994, Inf)</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; Variable 'surface' - selected intervals:</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;  (-Inf, 33]</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;      (33, 72]</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;      (72, 101]</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;      (101, 123]</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;      (123, Inf)</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; Variable 'floor' - selected intervals:</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;  (-Inf, 4]</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;      (4, Inf)</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; Variable 'no.rooms' - selected intervals:</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;  (-Inf, 3]</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;      (3, Inf)</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; Variable 'district' - created levels:</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt;  c("Bemowo", "Bielany", "Praga", "Ursus", "Ursynow", "Wola") -&gt; PragaUrsynowWolaBemowoBielanyUrsus</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt;  Zoliborz -&gt; Zoliborz</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt;  c("Mokotow", "Ochota") -&gt; MokotowOchota</span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt;  Srodmiescie -&gt; Srodmiescie</span></a></code></pre></div>
 <p>We can see transormation propositions for all variables in our dataset.</p>
 <p>In the plot below we can see which points have been chosen to be the breakpoints for particular variable:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(gridExtra)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(safe_extractor, <span class="dt">variable =</span> <span class="st">"construction.year"</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(gridExtra)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">plot</span>(safe_extractor, <span class="dt">variable =</span> <span class="st">"construction.year"</span>)</a></code></pre></div>
 <p><img src="example_apartments_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 <p>Now we can use our <code>safe_extractor</code> object to create new categorical features in the given dataset.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span>(safe_extractor, apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,], <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">data1 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span>(safe_extractor, apartmentsTest[<span class="dv">3001</span><span class="op">:</span><span class="dv">6000</span>,], <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">district</th>
@@ -224,11 +224,11 @@ safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../refere
 </tbody>
 </table>
 <p>We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">vars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safely_select_variables.html">safely_select_variables</a></span>(safe_extractor, data1, <span class="dt">which_y =</span> <span class="st">"m2.price"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
-data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"m2.price"</span>, vars)]
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(vars)
-<span class="co">#&gt; [1] "surface"               "floor"                 "no.rooms"             </span>
-<span class="co">#&gt; [4] "construction.year_new" "district_new"</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">vars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safely_select_variables.html">safely_select_variables</a></span>(safe_extractor, data1, <span class="dt">which_y =</span> <span class="st">"m2.price"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">data1 &lt;-<span class="st"> </span>data1[,<span class="kw">c</span>(<span class="st">"m2.price"</span>, vars)]</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw">print</span>(vars)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; [1] "surface"               "floor"                 "no.rooms"             </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [4] "construction.year_new" "district_new"</span></a></code></pre></div>
 <p>It can be observed that for some features the original form was preffered and for others the transformed one.</p>
 <p>Here are the first few rows for our data after feature selection:</p>
 <table class="table">
@@ -292,13 +292,13 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://www
 </tbody>
 </table>
 <p>Now, we perform transformations on another data that will be used later in explainers:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span>(safe_extractor, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,], <span class="dt">verbose =</span> <span class="ot">FALSE</span>)[,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'m2.price'</span>, vars)]</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">data2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span>(safe_extractor, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,], <span class="dt">verbose =</span> <span class="ot">FALSE</span>)[,<span class="kw">c</span>(<span class="st">'m2.price'</span>, vars)]</a></code></pre></div>
 <p>Let’s fit the models to data containg newly created columns:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_lm2 &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lm">lm</a></span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">111</span>)
-model_rf2 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">model_lm2 &lt;-<span class="st"> </span><span class="kw">lm</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">explainer_lm2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/DALEX/topics/explain">explain</a></span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">set.seed</span>(<span class="dv">111</span>)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">model_rf2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/randomForest/topics/randomForest">randomForest</a></span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">explainer_rf2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/DALEX/topics/explain">explain</a></span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)</a></code></pre></div>
 <p>Final step is the comparison of all the models we have created.</p>
 <p><img src="example_apartments_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
   </div>
