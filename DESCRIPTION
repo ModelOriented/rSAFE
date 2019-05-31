@@ -23,6 +23,8 @@ Suggests:
     knitr,
     rmarkdown,
     randomForest,
+    ALEPlot, 
+    pdp,
     testthat,
     factorMerger
 VignetteBuilder: knitr
