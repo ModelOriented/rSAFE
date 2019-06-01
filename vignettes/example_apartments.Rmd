@@ -18,32 +18,28 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, echo = FALSE}
-library(gridExtra)
-```
-In this vignette we present an example of an application of `SAFE` package. It is based on `apartments` and `apartmentsTest` dataset from `DALEX` package.
 
-First we fit two models to the original dataset - linear model (which is going to play the role of white-box model) and random forest (complex model that will serve us as a surrogate model).
+In this vignette we present an example of an application of `SAFE` package. It is based on `apartments` and `apartmentsTest` datasets which come from `DALEX` package but are also available in 'SAFE' package.
+
+First we fit a random forest model to the original 'apartments' dataset - this is our complex model that will serve us as a surrogate.
 
 ```{r}
-library(DALEX)
-model_lm1 <- lm(m2.price ~ ., data = apartments)
+library(SAFE)
 library(randomForest)
 set.seed(111)
 model_rf1 <- randomForest(m2.price ~ ., data = apartments)
 ```
 
-We also create `explainer` objects for both models - we will use them later to create new variables and at the end to compare their performance.
+We also create an `explainer` object that will be used later to create new variables and at the end to compare models performance.
 
 ```{r}
-explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1")
+library(DALEX)
 explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "rf1")
 ```
 
-Now, we create a `safe_extractor` object using `SAFE` package and surrogate model. Setting the argument verbose=FALSE stops progress bar from printing.
+Now, we create a `safe_extractor` object using `SAFE` package and our surrogate model. Setting the argument verbose=FALSE stops progress bar from printing.
 
 ```{r}
-library(SAFE)
 safe_extractor <- safe_extraction(explainer_rf1, penalty = 7, verbose = FALSE)
 ```
 
@@ -58,7 +54,6 @@ We can see transormation propositions for all variables in our dataset.
 In the plot below we can see which points have been chosen to be the breakpoints for particular variable: 
 
 ```{r, fig.width=6}
-library(gridExtra)
 plot(safe_extractor, variable = "construction.year")
 ```
 
@@ -91,7 +86,7 @@ knitr::kable(head(data1))
 Now, we perform transformations on another data that will be used later in explainers:
 
 ```{r, fig.width=6}
-data2 <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], verbose = FALSE)[,c('m2.price', vars)]
+data2 <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], verbose = FALSE)[,c("m2.price", vars)]
 ```
 
 Let's fit the models to data containg newly created columns:
@@ -104,17 +99,28 @@ model_rf2 <- randomForest(m2.price ~ ., data = data1)
 explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2")
 ```
 
+Moreover, we create a linear model based on original 'apartments' dataset and its corresponding explainer in order to check if our methodology improves results.
+
+```{r}
+model_lm1 <- lm(m2.price ~ ., data = apartments)
+explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1")
+```
+
 Final step is the comparison of all the models we have created.
 
-```{r, echo = FALSE}
+```{r}
 mp_lm1 <- model_performance(explainer_lm1)
 mp_rf1 <- model_performance(explainer_rf1)
 mp_lm2 <- model_performance(explainer_lm2)
 mp_rf2 <- model_performance(explainer_rf2)
 ```
 
-```{r, echo = FALSE, fig.width=7, fig.height=6}
+```{r, fig.width=7, fig.height=6}
 plot(mp_lm1, mp_rf1, mp_lm2, mp_rf2, geom = "boxplot")
 ```
+
+In the plot above we can see that the linear model based on transformed features has generally more accurate predictions that the one fitted to the original dataset.
+
+
 
 
