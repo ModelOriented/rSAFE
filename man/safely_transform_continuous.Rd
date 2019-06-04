@@ -4,13 +4,13 @@
 \alias{safely_transform_continuous}
 \title{Continuous feature transformation using PDP plot}
 \usage{
-safely_transform_continuous(variable, explainer, response_type = "ale",
+safely_transform_continuous(explainer, variable, response_type = "ale",
   penalty = "MBIC", no_segments = 2)
 }
 \arguments{
-\item{variable}{a feature for which the transformation function is to be computed}
-
 \item{explainer}{DALEX explainer created with explain() function}
+
+\item{variable}{a feature for which the transformation function is to be computed}
 
 \item{response_type}{character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}

@@ -4,12 +4,12 @@
 \alias{safely_transform_factor}
 \title{Factor feature transformation using factorMerger package}
 \usage{
-safely_transform_factor(variable, explainer)
+safely_transform_factor(explainer, variable)
 }
 \arguments{
-\item{variable}{a feature for which the transformation function is to be computed}
-
 \item{explainer}{DALEX explainer created with explain() function}
+
+\item{variable}{a feature for which the transformation function is to be computed}
 }
 \value{
 list of information on the transformation of given variable
