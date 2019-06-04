@@ -3,8 +3,8 @@
 #' @description The safely_transform_continuous() function calculates a transformation function
 #' for the continuous variable using a PDP plot obtained from black box model.
 #'
-#' @param variable a feature for which the transformation function is to be computed
 #' @param explainer DALEX explainer created with explain() function
+#' @param variable a feature for which the transformation function is to be computed
 #' @param response_type character, type of response to be calculated, one of: "pdp", "ale".
 #' If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.
 #' @param penalty penalty for introducing another changepoint,
@@ -16,7 +16,7 @@
 #' @export
 
 
-safely_transform_continuous <- function(variable, explainer, response_type = "ale", penalty = "MBIC", no_segments = 2) {
+safely_transform_continuous <- function(explainer, variable, response_type = "ale", penalty = "MBIC", no_segments = 2) {
 
   #calculating average responses of chosen type
   sv <- DALEX::variable_response(explainer, variable, type = response_type)

@@ -68,10 +68,10 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
     temp_info <- variables_info[[var_temp]] #information on currently considered variable
 
     if (temp_info$type == "categorical") {
-      trans_prop <- safely_transform_factor(var_temp, explainer)
+      trans_prop <- safely_transform_factor(explainer, var_temp)
       temp_info$new_levels <- trans_prop$new_levels
     } else {
-      trans_prop <- safely_transform_continuous(var_temp, explainer, response_type, penalty, no_segments)
+      trans_prop <- safely_transform_continuous(explainer, var_temp, response_type, penalty, no_segments)
       temp_info$break_points <- trans_prop$break_points
       temp_info$new_levels <- trans_prop$new_levels
     }
@@ -133,7 +133,7 @@ plot.safe_extractor <- function(x, ..., variable = NULL) {
     temp_bp <- temp_info$break_points
     if (!is.null(temp_bp)) {
       for (i in 1:length(temp_bp)) {
-        p <- p + ggplot2::geom_vline(xintercept = temp_bp[i], colour = "blue", size = 1, linetype = "dotted")
+        p <- p + ggplot2::geom_vline(xintercept = temp_bp[i], colour = "red", size = 1, linetype = "dotted")
       }
     }
   }

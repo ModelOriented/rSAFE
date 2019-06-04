@@ -3,15 +3,15 @@
 #' @description The safely_transform_factor() function calculates a transformation function
 #' for the factor variable using the getOptimalPartitionDf() function from factorMerger package.
 #'
-#' @param variable a feature for which the transformation function is to be computed
 #' @param explainer DALEX explainer created with explain() function
+#' @param variable a feature for which the transformation function is to be computed
 #'
 #' @return list of information on the transformation of given variable
 #'
 #' @export
 
 
-safely_transform_factor <- function(variable, explainer) {
+safely_transform_factor <- function(explainer, variable) {
 
   #calculating average responses
   sv <- DALEX::variable_response(explainer, variable, type = "factor")

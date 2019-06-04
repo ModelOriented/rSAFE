@@ -16,4 +16,4 @@ devtools::install_github("MI2DataLab/SAFE")
 * [Python version of SAFE package](https://github.com/ModelOriented/SAFE)
 * [SAFE article](https://arxiv.org/abs/1902.11035) - the article about SAFE algorithm, including benchmark results obtained using Python version of SAFE package
 
-The package was created as a part of master's diploma thesis at the Warsaw University of Technology at the Faculty of Mathematics and Information Science by Anna Gierlak.
+The package was created as a part of master's diploma thesis at Warsaw University of Technology at Faculty of Mathematics and Information Science by Anna Gierlak.
