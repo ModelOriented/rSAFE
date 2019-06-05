@@ -11,16 +11,21 @@
 #'
 #' @export
 
-
 safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
 
   if (class(safe_extractor) != "safe_extractor") {
     stop(paste0("No applicable method for 'transform_data' applied to an object of class '", class(safe_extractor), "'."))
   }
+  if (is.null(data)) {
+    stop("No data provided!")
+  }
 
   row_ind <- data.frame(row_ind = 1:nrow(data)) #column created to maintain rows order after later merge
   data <- cbind(row_ind, data)
   term_names <- names(safe_extractor$variables_info)
+
+  #in case some variables are missing in given dataset we omit them in transformations
+  term_names <- intersect(term_names, colnames(data))
 
   if (verbose == TRUE) {
     #progress bar - to let the user know how many variables have been already processed
@@ -84,8 +89,10 @@ safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
     for (i in 1:nrow(interaction_effects)) {
       var1 <- interaction_effects$variable1[i]
       var2 <- interaction_effects$variable2[i]
-      data[paste0("interaction_", var1, "_", var2)] <-
-        interaction(data[, c(paste0(var1, "_new"), paste0(var2, "_new"))])
+      if (c(paste0(var1, "_new"), paste0(var2, "_new")) %in% colnames(data)) { #checking if both new variables are present in the dataset
+        data[paste0("interaction_", var1, "_", var2)] <-
+          interaction(data[, c(paste0(var1, "_new"), paste0(var2, "_new"))])
+      }
     }
   }
 

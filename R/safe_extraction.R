@@ -35,7 +35,8 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
     response_type <- "ale"
   }
 
-  #explainer$data might contain also a response variable - we use model attributes to get the predictors
+
+  #explainer$data might contain also a response variable - we use model attributes to get only the predictors
   term_names <- attr(explainer$model$terms, "term.labels")
 
   p <- length(term_names) #number of variables in dataset
@@ -47,7 +48,7 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
 
   #checking if the feature is categorical or numerical
   for (var_temp in term_names) {
-    if (is.factor(explainer$data[1,var_temp])) {
+    if (is.factor(explainer$data[,var_temp])) {
       variables_info[[var_temp]] <- list(type = "categorical")
     } else {
       variables_info[[var_temp]] <- list(type = "numerical")
@@ -162,27 +163,20 @@ print.safe_extractor <- function(x, ..., variable = NULL) {
   } else {
 
     if (! variable %in% names(x$variables_info)) {
+      cat("Wrong variable name!")
       return(NULL) #wrong variable name
     }
 
     cat(paste0("Variable '", variable, "'"))
 
     var_info <- x$variables_info[[variable]]
-
-    if (var_info$type == "numerical") {
-
-      if (is.null(var_info$break_points)) {
-        cat(" - no transformation suggested.\n")
-      } else {
+    if (is.null(var_info$new_levels)) {
+      cat(" - no transformation suggested.\n")
+    } else {
+      if (var_info$type == "numerical") {
         cat(" - selected intervals:\n")
         cat(paste0(sapply(var_info$new_levels,
-                          function(x) paste0("\t", format(x, digits=2, nsmall=2), "\n"))))
-      }
-
-    } else {
-
-      if (is.null(var_info$new_levels)) {
-        cat(" - no transformation suggested.\n")
+                          function(x) paste0("\t", x, "\n"))))
       } else {
         b <- var_info$new_levels
         b <- aggregate(b[,1], by = list(b[,2]), function(x) paste(x))
@@ -193,6 +187,7 @@ print.safe_extractor <- function(x, ..., variable = NULL) {
       }
     }
   }
+
 }
 
 

@@ -27,10 +27,15 @@
 
 safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NULL, class_pred = NULL, verbose = TRUE) {
 
+  if (class(safe_extractor) != "safe_extractor") {
+    stop(paste0("No applicable method for 'transform_data' applied to an object of class '", class(safe_extractor), "'."))
+  }
+  if (is.null(data)) {
+    stop("No data provided!")
+  }
   if (is.null(y) & is.null(which_y)) {
     stop("Specify either y or which_y argument!")
   }
-
   if (! is.null(which_y)) {
     #checking correctness of which_y argument
     y <- tryCatch(
@@ -50,12 +55,6 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
       data <- data[, -which_y]
     }
   }
-
-  #checking whether data is already transformed or not
-  term_names <- names(safe_extractor$variables_info)
-  #checking if there are variables different than the ones specified in safe_extractor$vars
-  #assuming that in the dataset there are only variables that were present in the initial black box model
-  diff_var <- setdiff(colnames(data), term_names)
 
   #class of interest
   if (is.factor(y)) {
@@ -81,7 +80,14 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
     }
   }
 
-  if (length(diff_var) == 0) {
+
+  #checking whether data is already transformed or not
+  term_names <- names(safe_extractor$variables_info)
+  term_names_new <- sapply(term_names, function(x) paste0(x, "_new"))
+  #we check whether there is at least one transformed variable in given dataset
+  term_names_new <- intersect(colnames(data), term_names_new)
+
+  if (length(term_names_new) == 0) {
     #there are only original variables, no transformations have been done - we will do it now
     data <- safely_transform_data(safe_extractor, data, verbose = FALSE)
   }

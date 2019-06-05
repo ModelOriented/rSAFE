@@ -13,8 +13,12 @@
 #'
 #' @export
 
-
 safely_detect_changepoints <- function(data, penalty = "MBIC", nquantiles = 10) {
+
+  if (is.null(data)) {
+    cat("No data provided!")
+    return(NULL)
+  }
 
   n <- length(data)
 
@@ -54,7 +58,6 @@ safely_detect_changepoints <- function(data, penalty = "MBIC", nquantiles = 10) 
 #'
 #' @return penalty value
 #'
-#' @export
 penalty_value_choice <- function(penalty, n) {
 
   if (is.character(penalty)) {
@@ -101,8 +104,18 @@ penalty_value_choice <- function(penalty, n) {
 #'
 #' @return a cost of specified data segment
 #'
-#' @export
 cost <- function(data, u, v, sumstat, K) { #function that evaluates cost of data[u:v]
+
+  if (is.null(data)) {
+    stop("No data provided in cost function!")
+    return(NULL)
+  }
+
+  n <- length(data)
+  if (u<1 | v>n | u>v) {
+    stop("Wrong indexes u and v!")
+    return(NULL)
+  }
 
   F_hat <- rep(0, K)
   cost_temp <- rep(0, K)
@@ -111,7 +124,6 @@ cost <- function(data, u, v, sumstat, K) { #function that evaluates cost of data
     cost_temp[k] <- (v-u+1) * (F_hat[k] * log(F_hat[k]) + (1-F_hat[k]) * log(1-F_hat[k])) #cost for k-th quantile
   }
 
-  n <- length(data)
   c_param <- -log(2*n-1)
   cost_final <- 2*c_param/K * sum(cost_temp, na.rm = TRUE)
 
@@ -131,8 +143,12 @@ cost <- function(data, u, v, sumstat, K) { #function that evaluates cost of data
 #' @param K the number of quantiles used in integral approximation, not greater than
 #' the number of all observations in the dataset
 #'
-#' @export
 PELT_algorithm <- function(data, penalty_value, sumstat, K) {
+
+  if (is.null(data)) {
+    stop("No data provided in PELT_algorithm function!")
+    return(NULL)
+  }
 
   epsilon <- 0.000001 #needed later to compare floats
 

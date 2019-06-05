@@ -13,14 +13,25 @@
 #' than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.
 #' @param verbose logical, if progress bar is to be printed
 #'
-#' @seealso \code{\link{interaction_measure}}
-#'
 #' @return dataframe object containing interactions effects greater than or equal to the specified inter_threshold
 #'
 #' @export
 
 
 safely_detect_interactions <- function(explainer, inter_param = 2, inter_threshold = 0.4, verbose = TRUE) {
+
+  if (class(explainer) != "explainer") {
+    stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
+  }
+  if (!is.numeric(inter_param) | inter_param<=0) {
+    warning("Wrong inter_param value - using default one.")
+    inter_param <- 2
+  }
+  if (!is.numeric(inter_threshold) | inter_threshold<0 | inter_threshold>1) {
+    warning("Wrong inter_threshold value - using default one.")
+    inter_threshold <- 0.4
+  }
+
 
   term_names <- attr(explainer$model$terms, "term.labels")
   p <- length(term_names)
@@ -89,13 +100,14 @@ safely_detect_interactions <- function(explainer, inter_param = 2, inter_thresho
 #' are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
 #' into account
 #'
-#' @seealso \code{\link{safely_detect_interactions}}
-#'
 #' @return vector of logical values, each of them corresponding to one observation and
 #' indicating whether for this observation interaction effect was detected
 #'
-#' @export
 interaction_measure <- function(explainer, var1, var2, inter_param) {
+
+  if (class(explainer) != "explainer") {
+    stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
+  }
 
   data <- explainer$data
 

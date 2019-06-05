@@ -15,8 +15,22 @@
 #'
 #' @export
 
-
 safely_transform_continuous <- function(explainer, variable, response_type = "ale", penalty = "MBIC", no_segments = 2) {
+
+  if (class(explainer) != "explainer") {
+    stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
+  }
+  if (! variable %in% colnames(explainer$data)) {
+    stop("Wrong variable name!")
+  }
+  if (! response_type %in% c("pdp", "ale")) {
+    warning("Wrong type of response - using default one.")
+    response_type <- "ale"
+  }
+  if (!is.numeric(no_segments) | no_segments%%1!=0 | no_segments<2) {
+    warning("Wrong number of segments - using default one.")
+    no_segments <- 2
+  }
 
   #calculating average responses of chosen type
   sv <- DALEX::variable_response(explainer, variable, type = response_type)

@@ -2,10 +2,6 @@
 
 S3method(plot,safe_extractor)
 S3method(print,safe_extractor)
-export(PELT_algorithm)
-export(cost)
-export(interaction_measure)
-export(penalty_value_choice)
 export(safe_extraction)
 export(safely_detect_changepoints)
 export(safely_detect_interactions)

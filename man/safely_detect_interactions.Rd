@@ -28,6 +28,3 @@ The safely_detect_interactions() function detects second-order interactions base
 made by a surrogate model. For each pair of features it performs values permutation in order
 to evaluate their non_additive effect.
 }
-\seealso{
-\code{\link{interaction_measure}}
-}

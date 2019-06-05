@@ -10,8 +10,14 @@
 #'
 #' @export
 
-
 safely_transform_factor <- function(explainer, variable) {
+
+  if (class(explainer) != "explainer") {
+    stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
+  }
+  if (! variable %in% colnames(explainer$data)) {
+    stop("Wrong variable name!")
+  }
 
   #calculating average responses
   sv <- DALEX::variable_response(explainer, variable, type = "factor")
