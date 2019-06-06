@@ -108,13 +108,11 @@ cost <- function(data, u, v, sumstat, K) { #function that evaluates cost of data
 
   if (is.null(data)) {
     stop("No data provided in cost function!")
-    return(NULL)
   }
 
   n <- length(data)
   if (u<1 | v>n | u>v) {
     stop("Wrong indexes u and v!")
-    return(NULL)
   }
 
   F_hat <- rep(0, K)
@@ -147,7 +145,6 @@ PELT_algorithm <- function(data, penalty_value, sumstat, K) {
 
   if (is.null(data)) {
     stop("No data provided in PELT_algorithm function!")
-    return(NULL)
   }
 
   epsilon <- 0.000001 #needed later to compare floats
