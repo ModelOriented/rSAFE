@@ -1,13 +1,29 @@
 ---
-title: "Regression example - apartments dataset"
-author: "Anna Gierlak"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: github_document
 ---
+
+
+# SAFE - Surrogate Assisted Feature Extraction
+
+[![Build Status](https://travis-ci.org/MI2DataLab/SAFE.svg?branch=master)](https://travis-ci.org/MI2DataLab/SAFE)
+[![Coverage Status](https://codecov.io/gh/MI2DataLab/SAFE/branch/master/graph/badge.svg)](https://codecov.io/gh/MI2DataLab/SAFE)
+
+The `SAFE` package is a model agnostic tool for making an interpretable white-box model more accurate using alternative black-box model called surrogate model. Based on the complicated model, such as neural network or random forest, new features are being extracted and then used in the process of fitting a simpler interpretable model, improving its overall performance.
+
+
+## Getting started
+
+The package can be installed from GitHub using the code below:
+
+```{r, eval=FALSE}
+install.packages("devtools")
+devtools::install_github("MI2DataLab/SAFE")
+```
+
+
+
+
+## Demo
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
@@ -17,7 +33,6 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 ```
-
 
 In this vignette we present an example of an application of `SAFE` package. It is based on `apartments` and `apartmentsTest` datasets which come from `DALEX` package but are also available in `SAFE` package.
 
@@ -122,5 +137,15 @@ plot(mp_lm1, mp_rf1, mp_lm2, mp_rf2, geom = "boxplot")
 In the plot above we can see that the linear model based on transformed features has generally more accurate predictions that the one fitted to the original dataset.
 
 
+
+
+
+
+## References
+
+* [Python version of SAFE package](https://github.com/ModelOriented/SAFE)
+* [SAFE article](https://arxiv.org/abs/1902.11035) - the article about SAFE algorithm, including benchmark results obtained using Python version of SAFE package
+
+The package was created as a part of master's diploma thesis at Warsaw University of Technology at Faculty of Mathematics and Information Science by Anna Gierlak.
 
 

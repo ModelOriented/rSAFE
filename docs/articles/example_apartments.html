@@ -74,7 +74,7 @@
       <h1>Regression example - apartments dataset</h1>
                         <h4 class="author">Anna Gierlak</h4>
             
-            <h4 class="date">2019-06-05</h4>
+            <h4 class="date">2019-06-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MI2DataLab/SAFE/blob/master/vignettes/example_apartments.Rmd"><code>vignettes/example_apartments.Rmd</code></a></small>
       <div class="hidden name"><code>example_apartments.Rmd</code></div>
@@ -83,7 +83,7 @@
 
     
     
-<p>In this vignette we present an example of an application of <code>SAFE</code> package. It is based on <code>apartments</code> and <code>apartmentsTest</code> datasets which come from <code>DALEX</code> package but are also available in ‘SAFE’ package.</p>
+<p>In this vignette we present an example of an application of <code>SAFE</code> package. It is based on <code>apartments</code> and <code>apartmentsTest</code> datasets which come from <code>DALEX</code> package but are also available in <code>SAFE</code> package.</p>
 <p>First we fit a random forest model to the original ‘apartments’ dataset - this is our complex model that will serve us as a surrogate.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(SAFE)
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(randomForest)
@@ -92,7 +92,7 @@ model_rf1 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.
 <p>We also create an <code>explainer</code> object that will be used later to create new variables and at the end to compare models performance.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DALEX)
 explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf1"</span>)</code></pre></div>
-<p>Now, we create a <code>safe_extractor</code> object using <code>SAFE</code> package and our surrogate model. Setting the argument verbose=FALSE stops progress bar from printing.</p>
+<p>Now, we create a <code>safe_extractor</code> object using <code>SAFE</code> package and our surrogate model. Setting the argument <code>verbose=FALSE</code> stops progress bar from printing.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="../reference/safe_extraction.html">safe_extraction</a></span>(explainer_rf1, <span class="dt">penalty =</span> <span class="dv">7</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>Now, let’s print summary for the new object we have just created.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(safe_extractor)
