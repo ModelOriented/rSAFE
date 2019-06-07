@@ -90,7 +90,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/
 <h2 class="hasAnchor">
 <a href="#demo" class="anchor"></a>Demo</h2>
 <p>In this vignette we present an example of an application of <code>SAFE</code> package. It is based on <code>apartments</code> and <code>apartmentsTest</code> datasets which come from <code>DALEX</code> package but are also available in <code>SAFE</code> package.</p>
-<p>First we fit a random forest model to the original ‘apartments’ dataset - this is our complex model that will serve us as a surrogate.</p>
+<p>First we fit a random forest model to the original <code>apartments</code> dataset - this is our complex model that will serve us as a surrogate.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(SAFE)
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(randomForest)
 <span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">111</span>)
@@ -302,7 +302,7 @@ explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">111</span>)
 model_rf2 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
 explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)</code></pre></div>
-<p>Moreover, we create a linear model based on original ‘apartments’ dataset and its corresponding explainer in order to check if our methodology improves results.</p>
+<p>Moreover, we create a linear model based on original <code>apartments</code> dataset and its corresponding explainer in order to check if our methodology improves results.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_lm1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartments)
 explainer_lm1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm1"</span>)</code></pre></div>
 <p>Final step is the comparison of all the models we have created.</p>
