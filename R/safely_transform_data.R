@@ -89,8 +89,8 @@ safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
     for (i in 1:nrow(interaction_effects)) {
       var1 <- interaction_effects$variable1[i]
       var2 <- interaction_effects$variable2[i]
-      if (c(paste0(var1, "_new"), paste0(var2, "_new")) %in% colnames(data)) { #checking if both new variables are present in the dataset
-        data[paste0("interaction_", var1, "_", var2)] <-
+      if (all(c(paste0(var1, "_new"), paste0(var2, "_new")) %in% colnames(data))) { #checking if both new variables are present in the dataset
+        data[, paste0("interaction_", var1, "_", var2)] <-
           interaction(data[, c(paste0(var1, "_new"), paste0(var2, "_new"))])
       }
     }

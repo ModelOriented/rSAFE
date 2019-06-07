@@ -61,19 +61,14 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
     if (! is.null(class_pred)) {
       if (is.character(class_pred)) {
         if (! class_pred %in% levels(y)) {
-          cat("There is no such a level in response vector! Using first level instead.")
+          cat("There is no such a level in response vector! Using first level instead.\n")
           class_pred <- levels(y)[1]
         }
       } else {
-        class_pred <- tryCatch(
-          {
-            levels(y)[class_pred]
-          },
-          error = function(cond) {
-            cat("There is no such a level in response vector! Using first level instead.\n")
-            levels(y)[1]
-          }
-        )
+        if (! class_pred %in% 1:length(levels(y))) {
+          cat("There is no such a level in response vector! Using first level instead.\n")
+          class_pred <- levels(y)[1]
+        }
       }
     } else {
       class_pred <- levels(y)[1]

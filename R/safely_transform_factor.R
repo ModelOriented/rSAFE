@@ -23,7 +23,7 @@ safely_transform_factor <- function(explainer, variable) {
   sv <- DALEX::variable_response(explainer, variable, type = "factor")
   new_levels <- factorMerger::getOptimalPartitionDf(sv)
 
-  if (length(levels(new_levels$pred)) == 1) { #no appropriate merge methods have been found
+  if (length(levels(new_levels$pred)) %in% c(1, nrow(new_levels))) { #no appropriate merge methods have been found
     new_levels <- NULL
   } else {
     colnames(new_levels) <- c(variable, paste0(variable, "_new"))

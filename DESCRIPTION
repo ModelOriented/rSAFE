@@ -1,6 +1,6 @@
 Package: SAFE
 Title: Surrogate-assisted feature extraction
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R:
     c(person("Anna", "Gierlak", role = c("aut", "cre"), email = "anna.gierlak@op.pl"),
       person("Przemyslaw", "Biecek", role = c("aut", "ths")))

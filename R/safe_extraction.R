@@ -94,6 +94,8 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
 
   if (interactions == TRUE) {
     interaction_effects <- safely_detect_interactions(explainer, inter_param, inter_threshold, verbose)
+  } else {
+    interaction_effects <- NULL
   }
 
 
@@ -119,11 +121,10 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
 plot.safe_extractor <- function(x, ..., variable = NULL) {
 
   if (is.null(variable)) { #argument 'variable' not specified
-    cat("Give a variable as an argument!")
-    return(NULL)
+    stop("Give a variable as an argument!")
   }
   if (! variable %in% names(x$variables_info)) { #wrong variable name
-    return(NULL)
+    stop("Wrong variable name!")
   }
 
   temp_info <- x$variables_info[[variable]]
@@ -163,8 +164,7 @@ print.safe_extractor <- function(x, ..., variable = NULL) {
   } else {
 
     if (! variable %in% names(x$variables_info)) {
-      cat("Wrong variable name!")
-      return(NULL) #wrong variable name
+      stop("Wrong variable name!") #wrong variable name
     }
 
     cat(paste0("Variable '", variable, "'"))

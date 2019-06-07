@@ -4,8 +4,8 @@ source("objects_for_tests.R")
 
 
 test_that("safely_detect_changepoints", {
-  expect_equal(safely_detect_changepoints(v1), 4)
-  expect_is(safely_detect_changepoints(v1), "integer")
+  expect_equal(safely_detect_changepoints(c(2,2,2,2,6,6,6,6,6)), 4)
+  expect_is(safely_detect_changepoints(c(2,2,2,2,6,6,6,6,6)), "integer")
   expect_equal(safely_detect_changepoints(data = NULL), NULL)
 })
 

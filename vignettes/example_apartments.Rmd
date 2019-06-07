@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 In this vignette we present an example of an application of `SAFE` package. It is based on `apartments` and `apartmentsTest` datasets which come from `DALEX` package but are also available in `SAFE` package.
 
-First we fit a random forest model to the original 'apartments' dataset - this is our complex model that will serve us as a surrogate.
+First we fit a random forest model to the original `apartments` dataset - this is our complex model that will serve us as a surrogate.
 
 ```{r}
 library(SAFE)
@@ -99,7 +99,7 @@ model_rf2 <- randomForest(m2.price ~ ., data = data1)
 explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2")
 ```
 
-Moreover, we create a linear model based on original 'apartments' dataset and its corresponding explainer in order to check if our methodology improves results.
+Moreover, we create a linear model based on original `apartments` dataset and its corresponding explainer in order to check if our methodology improves results.
 
 ```{r}
 model_lm1 <- lm(m2.price ~ ., data = apartments)

@@ -47,6 +47,31 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
     break_points <- sv$x[break_points]
   }
 
+  new_levels <- pretty_intervals(break_points)
+
+  return(list(sv = sv,
+              break_points = break_points,
+              new_levels = new_levels))
+
+}
+
+
+
+#' @title Creating good-looking intervals from breakpoints
+#'
+#' @description The pretty_intervals() function creates intervals from given breakpoints.
+#' If possible, it formats numbers using prettyNum() function to make them look better when printing.
+#'
+#' @param break_points a vector of breakpoints from which you wish to create intervals
+#'
+#' @return list of character intervals
+#'
+pretty_intervals <- function(break_points) {
+
+  if (is.null(break_points)) {
+    stop("No data provided!")
+  }
+
   #we use prettyNum() function to nicely format numbers that will be displeyed during intervals printing
   bp_pretty <- unique(prettyNum(break_points))
 
@@ -67,11 +92,13 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
     new_levels <- c(first_interval, inner_intervals, last_interval)
   }
 
-  return(list(sv = sv,
-              break_points = break_points,
-              new_levels = new_levels))
+  return(new_levels)
 
 }
+
+
+
+
 
 
 
