@@ -66,10 +66,16 @@ print(safe_extractor)
 
 We can see transormation propositions for all variables in our dataset. 
 
-In the plot below we can see which points have been chosen to be the breakpoints for particular variable: 
+In the plot below we can see which points have been chosen to be the breakpoints for a particular variable: 
 
-```{r, fig.width=6}
+```{r, fig.width=7}
 plot(safe_extractor, variable = "construction.year")
+```
+
+For factor variables we can observe in which order levels have been merged and what is the optimal clustering:
+
+```{r, fig.width=7}
+plot(safe_extractor, variable = "district")
 ```
 
 Now we can use our `safe_extractor` object to create new categorical features in the given dataset.

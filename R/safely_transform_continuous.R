@@ -1,4 +1,4 @@
-#' @title Continuous feature transformation using PDP plot
+#' @title Calculating a transformation of continuous feature using PDP/ALE plot
 #'
 #' @description The safely_transform_continuous() function calculates a transformation function
 #' for the continuous variable using a PDP plot obtained from black box model.

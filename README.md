@@ -73,13 +73,21 @@ print(safe_extractor)
 
 We can see transormation propositions for all variables in our dataset.
 
-In the plot below we can see which points have been chosen to be the breakpoints for particular variable:
+In the plot below we can see which points have been chosen to be the breakpoints for a particular variable:
 
 ``` r
 plot(safe_extractor, variable = "construction.year")
 ```
 
 ![](README_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
+For factor variables we can observe in which order levels have been merged and what is the optimal clustering:
+
+``` r
+plot(safe_extractor, variable = "district")
+```
+
+![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 Now we can use our `safe_extractor` object to create new categorical features in the given dataset.
 
@@ -155,7 +163,7 @@ mp_rf2 <- model_performance(explainer_rf2)
 plot(mp_lm1, mp_rf1, mp_lm2, mp_rf2, geom = "boxplot")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 In the plot above we can see that the linear model based on transformed features has generally more accurate predictions that the one fitted to the original dataset.
 

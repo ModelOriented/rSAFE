@@ -11,6 +11,7 @@ test_that("safe_extraction", {
 
 test_that("plot.safe_extractor", {
   expect_is(plot(safe_extractor, variable = "construction.year"), "ggplot")
+  expect_is(plot(safe_extractor, variable = "district"), "ggplot")
   expect_error(plot(safe_extractor))
   expect_error(plot(safe_extractor, variable = "strange_variable"))
 })

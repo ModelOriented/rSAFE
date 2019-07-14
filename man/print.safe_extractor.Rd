@@ -2,7 +2,7 @@
 % Please edit documentation in R/safe_extraction.R
 \name{print.safe_extractor}
 \alias{print.safe_extractor}
-\title{Printing safe_extractor summary}
+\title{Printing summary of the SAFE extractor object}
 \usage{
 \method{print}{safe_extractor}(x, ..., variable = NULL)
 }
@@ -15,5 +15,5 @@
 is not specified then transformations for all variables are printed}
 }
 \description{
-Printing safe_extractor summary
+Printing summary of the SAFE extractor object
 }

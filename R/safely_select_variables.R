@@ -1,4 +1,4 @@
-#' @title Feature selection on the dataset with transformed variables
+#' @title Performing feature selection on the dataset with transformed variables
 #'
 #' @description The safely_select_variables() function selects variables from dataset returned
 #' by safely_transform_data() function. For each original variable:

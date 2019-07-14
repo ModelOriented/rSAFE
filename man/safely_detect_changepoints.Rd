@@ -2,7 +2,7 @@
 % Please edit documentation in R/safely_detect_changepoints.R
 \name{safely_detect_changepoints}
 \alias{safely_detect_changepoints}
-\title{Identyfying changes using a nonparametric cost function}
+\title{Identyfying changes using PELT algorithm}
 \usage{
 safely_detect_changepoints(data, penalty = "MBIC", nquantiles = 10)
 }

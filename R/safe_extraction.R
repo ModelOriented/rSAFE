@@ -148,7 +148,7 @@ plot.safe_extractor <- function(x, ..., variable = NULL) {
 }
 
 
-#' @title Printing safe_extractor summary
+#' @title Printing summary of the SAFE extractor object
 #'
 #' @param x safe_extractor object containing information about variables transformations created with safe_extraction() function
 #' @param ... other parameters

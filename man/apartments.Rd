@@ -5,7 +5,7 @@
 \alias{apartments}
 \alias{apartments_test}
 \alias{apartmentsTest}
-\title{Apartments Data}
+\title{Apartments data}
 \format{a data frame with 1000 rows and 6 columns}
 \usage{
 data(apartments)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/safely_transform_continuous.R
 \name{safely_transform_continuous}
 \alias{safely_transform_continuous}
-\title{Continuous feature transformation using PDP plot}
+\title{Calculating a transformation of continuous feature using PDP/ALE plot}
 \usage{
 safely_transform_continuous(explainer, variable, response_type = "ale",
   penalty = "MBIC", no_segments = 2)

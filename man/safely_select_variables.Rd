@@ -2,7 +2,7 @@
 % Please edit documentation in R/safely_select_variables.R
 \name{safely_select_variables}
 \alias{safely_select_variables}
-\title{Feature selection on the dataset with transformed variables}
+\title{Performing feature selection on the dataset with transformed variables}
 \usage{
 safely_select_variables(safe_extractor, data, y = NULL, which_y = NULL,
   class_pred = NULL, verbose = TRUE)

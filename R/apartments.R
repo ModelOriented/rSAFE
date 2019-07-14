@@ -1,4 +1,4 @@
-#' Apartments Data
+#' Apartments data
 #'
 #' Datasets \code{apartments} and \code{apartments_test} are artificial,
 #' generated form the same model.

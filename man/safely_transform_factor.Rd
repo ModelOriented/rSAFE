@@ -2,10 +2,10 @@
 % Please edit documentation in R/safely_transform_factor.R
 \name{safely_transform_factor}
 \alias{safely_transform_factor}
-\title{Factor feature transformation using hierarchical clustering}
+\title{Calculating a transformation of categorical feature using hierarchical clustering}
 \usage{
 safely_transform_factor(explainer, variable, method = "complete",
-  B = 500, collapse = "")
+  B = 500, collapse = "_")
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}

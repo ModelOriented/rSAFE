@@ -1,4 +1,4 @@
-#' @title Factor feature transformation using hierarchical clustering
+#' @title Calculating a transformation of categorical feature using hierarchical clustering
 #'
 #' @description The safely_transform_factor() function calculates a transformation function
 #' for the factor variable using predictions obtained from black box model and hierarchical clustering.
@@ -17,7 +17,7 @@
 #'
 #' @export
 
-safely_transform_factor <- function(explainer, variable, method = "complete", B = 500, collapse = "") {
+safely_transform_factor <- function(explainer, variable, method = "complete", B = 500, collapse = "_") {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safely_transform_factor' applied to an object of class '", class(explainer), "'."))
@@ -139,7 +139,7 @@ plot_categorical <- function(temp_info) {
   final_cluster_size <- length(unique(temp_info$new_levels[,2]))
   k_colors <- ggpubr:::.get_pal("default", k = final_cluster_size)
   dend <- dendextend::set(dend, "labels_cex", 4)
-  dend <- dendextend::set(dend, "branches_lwd", 0.8)
+  dend <- dendextend::set(dend, "branches_lwd", 0.5)
   dend <- dendextend::set(dend, "branches_k_color", k = final_cluster_size, value = k_colors)
   dend <- dendextend::set(dend, "labels_col", k = final_cluster_size, value = k_colors)
   max_height <- max(dendextend::get_branches_heights(dend))
@@ -159,18 +159,22 @@ plot_categorical <- function(temp_info) {
   p <- ggplot()
   p <- p + geom_segment(data = data$segments,
                         aes_string(x = "x", y = "y", xend = "xend", yend = "yend",
-                                   colour = "col", linetype = "lty", size = "lwd"), lineend = "square") +
+                                   colour = "col", linetype = "lty", size = "lwd"),
+                        lineend = "square") +
     guides(linetype = FALSE, col = FALSE) +
-    scale_size_identity() + scale_linetype_identity()
+    scale_size_identity() +
+    scale_linetype_identity()
+  p <- p + scale_colour_identity()
   p <- p + ggpubr::geom_exec(geom_text, data = data$labels,
                              x = "x", y = "y", label = "label", color = "col", size = "cex",
                              angle = "angle", hjust = "hjust", vjust = "vjust")
-  p <- ggpubr::ggpar(p, ggtheme = theme_gray()) +
-    theme(panel.grid.major = element_blank(), axis.line = element_blank(), panel.grid.minor = element_blank())
-  p <- p + coord_flip() + scale_y_reverse() +
+  p <- p + theme_drwhy()
+  p <- p + coord_flip() +
+    scale_y_reverse() +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
-          axis.text.x = element_blank(), axis.ticks.x = element_blank())
-  p <- p + expand_limits(y = -labels_track_height) + labs(title = names(temp_info$new_levels)[1], x = '', y = '')
+          axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
+    expand_limits(y = -labels_track_height) +
+    labs(title = names(temp_info$new_levels)[1], x = '', y = '')
 
   return(p)
 }
