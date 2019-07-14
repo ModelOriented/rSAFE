@@ -43,3 +43,6 @@ for linear model (regression) or logistic regression (classification).
 on all features (using AIC value) and the best set of variables is chosen.
 }
 }
+\seealso{
+\code{\link{safely_transform_data}}
+}

@@ -121,10 +121,9 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <span class="co">#&gt;  (-Inf, 3]</span>
 <span class="co">#&gt;      (3, Inf)</span>
 <span class="co">#&gt; Variable 'district' - created levels:</span>
-<span class="co">#&gt;  c("Bemowo", "Bielany", "Praga", "Ursus", "Ursynow", "Wola") -&gt; PragaUrsynowWolaBemowoBielanyUrsus</span>
-<span class="co">#&gt;  Zoliborz -&gt; Zoliborz</span>
-<span class="co">#&gt;  c("Mokotow", "Ochota") -&gt; MokotowOchota</span>
-<span class="co">#&gt;  Srodmiescie -&gt; Srodmiescie</span></code></pre></div>
+<span class="co">#&gt;  Bemowo, Bielany, Ursus, Ursynow, Praga, Wola -&gt;  BemowoBielanyPragaUrsusUrsynowWola </span>
+<span class="co">#&gt;  Zoliborz, Mokotow, Ochota -&gt;  MokotowOchotaZoliborz </span>
+<span class="co">#&gt;  Srodmiescie -&gt;  Srodmiescie</span></code></pre></div>
 <p>We can see transormation propositions for all variables in our dataset.</p>
 <p>In the plot below we can see which points have been chosen to be the breakpoints for particular variable:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(safe_extractor, <span class="dt">variable =</span> <span class="st">"construction.year"</span>)</code></pre></div>
@@ -157,7 +156,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">(-Inf, 33]</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(-Inf, 3]</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">BemowoBielanyPragaUrsusUrsynowWola</td>
 </tr>
 <tr class="even">
 <td align="left">Srodmiescie</td>
@@ -183,7 +182,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">(33, 72]</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(-Inf, 3]</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">BemowoBielanyPragaUrsusUrsynowWola</td>
 </tr>
 <tr class="even">
 <td align="left">Ursynow</td>
@@ -196,7 +195,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">(-Inf, 33]</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(-Inf, 3]</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">BemowoBielanyPragaUrsusUrsynowWola</td>
 </tr>
 <tr class="odd">
 <td align="left">Ursynow</td>
@@ -209,7 +208,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">(123, Inf)</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(3, Inf)</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">BemowoBielanyPragaUrsusUrsynowWola</td>
 </tr>
 <tr class="even">
 <td align="left">Ochota</td>
@@ -222,7 +221,7 @@ explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(mode
 <td align="left">(72, 101]</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(-Inf, 3]</td>
-<td align="left">MokotowOchota</td>
+<td align="left">MokotowOchotaZoliborz</td>
 </tr>
 </tbody>
 </table>
@@ -250,7 +249,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">6</td>
 <td align="right">1</td>
 <td align="left">(1949, 1983]</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">BemowoBielanyPragaUrsusUrsynowWola</td>
 </tr>
 <tr class="even">
 <td align="right">5631</td>
@@ -266,7 +265,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">9</td>
 <td align="right">2</td>
 <td align="left">(1983, 1994]</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">BemowoBielanyPragaUrsusUrsynowWola</td>
 </tr>
 <tr class="even">
 <td align="right">3822</td>
@@ -274,7 +273,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">2</td>
 <td align="right">2</td>
 <td align="left">(1949, 1983]</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">BemowoBielanyPragaUrsusUrsynowWola</td>
 </tr>
 <tr class="odd">
 <td align="right">2337</td>
@@ -282,7 +281,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">3</td>
 <td align="right">6</td>
 <td align="left">(1949, 1983]</td>
-<td align="left">PragaUrsynowWolaBemowoBielanyUrsus</td>
+<td align="left">BemowoBielanyPragaUrsusUrsynowWola</td>
 </tr>
 <tr class="even">
 <td align="right">3381</td>
@@ -290,7 +289,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">8</td>
 <td align="right">3</td>
 <td align="left">(1949, 1983]</td>
-<td align="left">MokotowOchota</td>
+<td align="left">MokotowOchotaZoliborz</td>
 </tr>
 </tbody>
 </table>

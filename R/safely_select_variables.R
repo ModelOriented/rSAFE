@@ -22,13 +22,15 @@
 #'
 #' @return vector of variables names, selected based on AIC values
 #'
+#' @seealso \code{\link{safely_transform_data}}
+#'
 #' @export
 
 
 safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NULL, class_pred = NULL, verbose = TRUE) {
 
   if (class(safe_extractor) != "safe_extractor") {
-    stop(paste0("No applicable method for 'transform_data' applied to an object of class '", class(safe_extractor), "'."))
+    stop(paste0("No applicable method for 'safely_select_variables' applied to an object of class '", class(safe_extractor), "'."))
   }
   if (is.null(data)) {
     stop("No data provided!")
@@ -106,7 +108,7 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
         var_checked <- c(setdiff(var_best, var_temp), paste0(var_temp, "_new"))
         model_best <- stats::glm((y == class_pred) ~ ., data = as.data.frame(data[, var_best]), family = binomial(link = 'logit'))
         model_checked <- stats::glm((y == class_pred) ~ ., data = as.data.frame(data[, var_checked]), family = binomial(link = 'logit'))
-        if (AIC(model_checked) < AIC(model_best)) {
+        if (stats::AIC(model_checked) < stats::AIC(model_best)) {
           var_best <- var_checked
         }
       }
@@ -122,7 +124,7 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
         var_checked <- c(setdiff(var_best, var_temp), paste0(var_temp, "_new"))
         model_best <- stats::lm(y ~ ., data = as.data.frame(data[, var_best]))
         model_checked <- stats::lm(y ~ ., data = as.data.frame(data[, var_checked]))
-        if (AIC(model_checked) < AIC(model_best)) { #comparing AIC to choose better set of variables
+        if (stats::AIC(model_checked) < stats::AIC(model_best)) { #comparing AIC to choose better set of variables
           var_best <- var_checked
         }
       }

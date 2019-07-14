@@ -2,19 +2,31 @@
 % Please edit documentation in R/safely_transform_factor.R
 \name{safely_transform_factor}
 \alias{safely_transform_factor}
-\title{Factor feature transformation using factorMerger package}
+\title{Factor feature transformation using hierarchical clustering}
 \usage{
-safely_transform_factor(explainer, variable)
+safely_transform_factor(explainer, variable, method = "complete",
+  B = 500, collapse = "")
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
 
 \item{variable}{a feature for which the transformation function is to be computed}
+
+\item{method}{the agglomeration method to be used in hierarchical clustering, one of:
+"ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid"}
+
+\item{B}{number of reference datasets used to calculate gap statistics}
+
+\item{collapse}{a character string to separate original levels while combining them to the new one}
 }
 \value{
 list of information on the transformation of given variable
 }
 \description{
 The safely_transform_factor() function calculates a transformation function
-for the factor variable using the getOptimalPartitionDf() function from factorMerger package.
+for the factor variable using predictions obtained from black box model and hierarchical clustering.
+The gap statistic criterion is used to determine the optimal number of clusters.
+}
+\seealso{
+\code{\link{safe_extraction}}
 }

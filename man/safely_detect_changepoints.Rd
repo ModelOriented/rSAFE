@@ -22,3 +22,6 @@ The safely_detect_changepoints() function calculates the optimal positioning
 and number of changepoints for given data and penalty. It uses a PELT algorithm
 with a nonparametric cost function based on the empirical distribution.
 }
+\seealso{
+\code{\link{safely_transform_continuous}}
+}

@@ -18,15 +18,17 @@ RoxygenNote: 6.1.1
 Imports:
     DALEX,
     ggplot2,
-    sets
+    ggpubr,
+    dendextend,
+    sets,
+    stats
 Suggests:
     knitr,
     rmarkdown,
     randomForest,
     ALEPlot, 
     pdp,
-    testthat,
-    factorMerger
+    testthat
 VignetteBuilder: knitr
 URL: https://github.com/MI2DataLab/SAFE
 BugReports: https://github.com/MI2DataLab/SAFE/issues

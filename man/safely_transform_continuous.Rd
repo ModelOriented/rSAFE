@@ -27,3 +27,6 @@ list of information on the transformation of given variable
 The safely_transform_continuous() function calculates a transformation function
 for the continuous variable using a PDP plot obtained from black box model.
 }
+\seealso{
+\code{\link{safe_extraction}}, \code{\link{safely_detect_changepoints}}
+}

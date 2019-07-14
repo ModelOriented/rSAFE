@@ -40,7 +40,7 @@ explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apart
 Now, we create a `safe_extractor` object using `SAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
 
 ``` r
-safe_extractor <- safe_extraction(explainer_rf1, penalty = 7, verbose = FALSE)
+safe_extractor <- safe_extraction(explainer_rf1, penalty = 7, interactions = FALSE, verbose = FALSE)
 ```
 
 Now, let's print summary for the new object we have just created.
@@ -66,10 +66,9 @@ print(safe_extractor)
 #>  (-Inf, 3]
 #>      (3, Inf)
 #> Variable 'district' - created levels:
-#>  c("Bemowo", "Bielany", "Praga", "Ursus", "Ursynow", "Wola") -> PragaUrsynowWolaBemowoBielanyUrsus
-#>  Zoliborz -> Zoliborz
-#>  c("Mokotow", "Ochota") -> MokotowOchota
-#>  Srodmiescie -> Srodmiescie
+#>  Bemowo, Bielany, Ursus, Ursynow, Praga, Wola ->  BemowoBielanyPragaUrsusUrsynowWola 
+#>  Zoliborz, Mokotow, Ochota ->  MokotowOchotaZoliborz 
+#>  Srodmiescie ->  Srodmiescie
 ```
 
 We can see transormation propositions for all variables in our dataset.
@@ -90,12 +89,12 @@ data1 <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], verbo
 
 | district    |  m2.price|  construction.year|  surface|  floor|  no.rooms| construction.year\_new | surface\_new | floor\_new | no.rooms\_new | district\_new                      |
 |:------------|---------:|------------------:|--------:|------:|---------:|:-----------------------|:-------------|:-----------|:--------------|:-----------------------------------|
-| Bielany     |      3542|               1979|       21|      6|         1| (1949, 1983\]          | (-Inf, 33\]  | (4, Inf)   | (-Inf, 3\]    | PragaUrsynowWolaBemowoBielanyUrsus |
+| Bielany     |      3542|               1979|       21|      6|         1| (1949, 1983\]          | (-Inf, 33\]  | (4, Inf)   | (-Inf, 3\]    | BemowoBielanyPragaUrsusUrsynowWola |
 | Srodmiescie |      5631|               1997|      107|      2|         4| (1994, Inf)            | (101, 123\]  | (-Inf, 4\] | (3, Inf)      | Srodmiescie                        |
-| Bielany     |      2989|               1994|       41|      9|         2| (1983, 1994\]          | (33, 72\]    | (4, Inf)   | (-Inf, 3\]    | PragaUrsynowWolaBemowoBielanyUrsus |
-| Ursynow     |      3822|               1968|       28|      2|         2| (1949, 1983\]          | (-Inf, 33\]  | (-Inf, 4\] | (-Inf, 3\]    | PragaUrsynowWolaBemowoBielanyUrsus |
-| Ursynow     |      2337|               1971|      146|      3|         6| (1949, 1983\]          | (123, Inf)   | (-Inf, 4\] | (3, Inf)      | PragaUrsynowWolaBemowoBielanyUrsus |
-| Ochota      |      3381|               1956|       97|      8|         3| (1949, 1983\]          | (72, 101\]   | (4, Inf)   | (-Inf, 3\]    | MokotowOchota                      |
+| Bielany     |      2989|               1994|       41|      9|         2| (1983, 1994\]          | (33, 72\]    | (4, Inf)   | (-Inf, 3\]    | BemowoBielanyPragaUrsusUrsynowWola |
+| Ursynow     |      3822|               1968|       28|      2|         2| (1949, 1983\]          | (-Inf, 33\]  | (-Inf, 4\] | (-Inf, 3\]    | BemowoBielanyPragaUrsusUrsynowWola |
+| Ursynow     |      2337|               1971|      146|      3|         6| (1949, 1983\]          | (123, Inf)   | (-Inf, 4\] | (3, Inf)      | BemowoBielanyPragaUrsusUrsynowWola |
+| Ochota      |      3381|               1956|       97|      8|         3| (1949, 1983\]          | (72, 101\]   | (4, Inf)   | (-Inf, 3\]    | MokotowOchotaZoliborz              |
 
 We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.
 
@@ -113,12 +112,12 @@ Here are the first few rows for our data after feature selection:
 
 |  m2.price|  surface|  floor|  no.rooms| construction.year\_new | district\_new                      |
 |---------:|--------:|------:|---------:|:-----------------------|:-----------------------------------|
-|      3542|       21|      6|         1| (1949, 1983\]          | PragaUrsynowWolaBemowoBielanyUrsus |
+|      3542|       21|      6|         1| (1949, 1983\]          | BemowoBielanyPragaUrsusUrsynowWola |
 |      5631|      107|      2|         4| (1994, Inf)            | Srodmiescie                        |
-|      2989|       41|      9|         2| (1983, 1994\]          | PragaUrsynowWolaBemowoBielanyUrsus |
-|      3822|       28|      2|         2| (1949, 1983\]          | PragaUrsynowWolaBemowoBielanyUrsus |
-|      2337|      146|      3|         6| (1949, 1983\]          | PragaUrsynowWolaBemowoBielanyUrsus |
-|      3381|       97|      8|         3| (1949, 1983\]          | MokotowOchota                      |
+|      2989|       41|      9|         2| (1983, 1994\]          | BemowoBielanyPragaUrsusUrsynowWola |
+|      3822|       28|      2|         2| (1949, 1983\]          | BemowoBielanyPragaUrsusUrsynowWola |
+|      2337|      146|      3|         6| (1949, 1983\]          | BemowoBielanyPragaUrsusUrsynowWola |
+|      3381|       97|      8|         3| (1949, 1983\]          | MokotowOchotaZoliborz              |
 
 Now, we perform transformations on another data that will be used later in explainers:
 

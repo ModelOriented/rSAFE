@@ -11,6 +11,8 @@
 #'
 #' @return a vector of optimal changepoint positions (last observations of each segment)
 #'
+#' @seealso \code{\link{safely_transform_continuous}}
+#'
 #' @export
 
 safely_detect_changepoints <- function(data, penalty = "MBIC", nquantiles = 10) {
@@ -48,16 +50,6 @@ safely_detect_changepoints <- function(data, penalty = "MBIC", nquantiles = 10) 
 }
 
 
-#' @title Choosing penalty value
-#'
-#' @description The penalty_value_choice() function sets penalty value.
-#'
-#' @param penalty penalty for introducing another changepoint,
-#' one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
-#' @param n integer, number of observations
-#'
-#' @return penalty value
-#'
 penalty_value_choice <- function(penalty, n) {
 
   if (is.character(penalty)) {
@@ -90,20 +82,6 @@ penalty_value_choice <- function(penalty, n) {
 }
 
 
-#' @title Evaluating a cost of specified data segment
-#'
-#' @description The cost() function evaluates cost for given data and both beginning and
-#' end of the segment.
-#'
-#' @param data vector of numeric values
-#' @param u index of the segment beginning
-#' @param v index of the segment end
-#' @param sumstat matrix of statistics used to calculate empirical distribution function
-#' @param K the number of quantiles used in integral approximation, not greater than
-#' the number of all observations in the dataset
-#'
-#' @return a cost of specified data segment
-#'
 cost <- function(data, u, v, sumstat, K) { #function that evaluates cost of data[u:v]
 
   if (is.null(data)) {
@@ -130,17 +108,6 @@ cost <- function(data, u, v, sumstat, K) { #function that evaluates cost of data
 }
 
 
-#' @title PELT algorithm
-#'
-#' @description The PELT_algorithm function() performs PELT algorithm in order to find
-#' optimal changepoints.
-#'
-#' @param data vector of numeric values
-#' @param penalty_value penalty value returned by penalty_value_choice() function
-#' @param sumstat matrix of statistics used to calculate empirical distribution function
-#' @param K the number of quantiles used in integral approximation, not greater than
-#' the number of all observations in the dataset
-#'
 PELT_algorithm <- function(data, penalty_value, sumstat, K) {
 
   if (is.null(data)) {

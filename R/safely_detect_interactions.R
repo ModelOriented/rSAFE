@@ -15,6 +15,8 @@
 #'
 #' @return dataframe object containing interactions effects greater than or equal to the specified inter_threshold
 #'
+#' @seealso \code{\link{safe_extraction}}
+#'
 #' @export
 
 
@@ -85,24 +87,6 @@ safely_detect_interactions <- function(explainer, inter_param = 2, inter_thresho
 }
 
 
-#' @title Detecting interactions via a permutation approach
-#'
-#' @description The safely_detect_interactions() function detects second-order interactions based on predictions
-#' made by a surrogate model. For each pair of features it performs values permutation in order
-#' to evaluate their non_additive effect.
-#'
-#' @param explainer DALEX explainer created with explain() function
-#' @param var1 character, first of the names of variables for which wa want to evaluate
-#' interaction effect
-#' @param var2 character, second of the names of variables for which wa want to evaluate
-#' interaction effect
-#' @param inter_param numeric, a positive value indicating which of single observation non-additive effects
-#' are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
-#' into account
-#'
-#' @return vector of logical values, each of them corresponding to one observation and
-#' indicating whether for this observation interaction effect was detected
-#'
 interaction_measure <- function(explainer, var1, var2, inter_param) {
 
   if (class(explainer) != "explainer") {

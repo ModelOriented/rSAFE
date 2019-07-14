@@ -5,8 +5,9 @@
 \title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
 \usage{
 safe_extraction(explainer, response_type = "ale", penalty = "MBIC",
-  no_segments = 2, interactions = TRUE, inter_param = 2,
-  inter_threshold = 0.4, verbose = TRUE)
+  no_segments = 2, method = "complete", B = 500, collapse = "",
+  interactions = TRUE, inter_param = 2, inter_threshold = 0.4,
+  verbose = TRUE)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
@@ -18,6 +19,13 @@ If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strong
 one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value}
 
 \item{no_segments}{numeric, a number of segments variable is to be divided into in case of founding no breakpoints}
+
+\item{method}{the agglomeration method to be used in hierarchical clustering, one of:
+"ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid"}
+
+\item{B}{number of reference datasets used to calculate gap statistics}
+
+\item{collapse}{a character string to separate original levels while combining them to the new one}
 
 \item{interactions}{logical, if interactions between variables are to be taken into account}
 
@@ -39,5 +47,5 @@ The safe_extraction() function creates a SAFE-extractor object which may be used
 for surrogate feature extraction.
 }
 \seealso{
-\code{\link{safely_transform_factor}}, \code{\link{safely_transform_continuous}}, \code{\link{safely_detect_interactions}}
+\code{\link{safely_transform_factor}}, \code{\link{safely_transform_continuous}}, \code{\link{safely_detect_interactions}}, \code{\link{safely_transform_data}}
 }

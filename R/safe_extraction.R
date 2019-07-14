@@ -9,6 +9,10 @@
 #' @param penalty penalty for introducing another changepoint,
 #' one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
 #' @param no_segments numeric, a number of segments variable is to be divided into in case of founding no breakpoints
+#' @param method the agglomeration method to be used in hierarchical clustering, one of:
+#' "ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid"
+#' @param B number of reference datasets used to calculate gap statistics
+#' @param collapse a character string to separate original levels while combining them to the new one
 #' @param interactions logical, if interactions between variables are to be taken into account
 #' @param inter_param numeric, a positive value indicating which of single observation non-additive effects
 #' are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
@@ -18,14 +22,16 @@
 #' than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.
 #' @param verbose logical, if progress bar is to be printed
 #'
-#' @seealso \code{\link{safely_transform_factor}}, \code{\link{safely_transform_continuous}}, \code{\link{safely_detect_interactions}}
-#'
 #' @return safe_extractor object containing information about variables transformation
+#'
+#' @seealso \code{\link{safely_transform_factor}}, \code{\link{safely_transform_continuous}}, \code{\link{safely_detect_interactions}}, \code{\link{safely_transform_data}}
+#'
 #' @importFrom graphics plot
 #' @importFrom stats AIC aggregate binomial quantile
+#'
 #' @export
 
-safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", no_segments = 2, interactions = TRUE, inter_param = 2, inter_threshold = 0.4, verbose = TRUE) {
+safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", no_segments = 2, method = "complete", B = 500, collapse = "", interactions = TRUE, inter_param = 2, inter_threshold = 0.4, verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
@@ -69,14 +75,15 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
     temp_info <- variables_info[[var_temp]] #information on currently considered variable
 
     if (temp_info$type == "categorical") {
-      trans_prop <- safely_transform_factor(explainer, var_temp)
+      trans_prop <- safely_transform_factor(explainer, var_temp, method, B, collapse)
+      temp_info$clustering <- trans_prop$clustering
       temp_info$new_levels <- trans_prop$new_levels
     } else {
       trans_prop <- safely_transform_continuous(explainer, var_temp, response_type, penalty, no_segments)
+      temp_info$sv <- trans_prop$sv
       temp_info$break_points <- trans_prop$break_points
       temp_info$new_levels <- trans_prop$new_levels
     }
-    temp_info$sv <- trans_prop$sv
 
     #updating progress bar
     if (verbose == TRUE) {
@@ -118,6 +125,8 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
 #' @return a plot object
 #'
 #' @export
+#'
+#' @import ggplot2
 plot.safe_extractor <- function(x, ..., variable = NULL) {
 
   if (is.null(variable)) { #argument 'variable' not specified
@@ -128,16 +137,10 @@ plot.safe_extractor <- function(x, ..., variable = NULL) {
   }
 
   temp_info <- x$variables_info[[variable]]
-  p <- plot(temp_info$sv)
-
-  # adding breakpoints to the pdp/ale plot
   if (temp_info$type == "numerical") {
-    temp_bp <- temp_info$break_points
-    if (!is.null(temp_bp)) {
-      for (i in 1:length(temp_bp)) {
-        p <- p + ggplot2::geom_vline(xintercept = temp_bp[i], colour = "red", size = 1, linetype = "dotted")
-      }
-    }
+    p <- plot_numerical(temp_info)
+  } else {
+    p <- plot_categorical(temp_info)
   }
 
   return(p)
@@ -182,7 +185,8 @@ print.safe_extractor <- function(x, ..., variable = NULL) {
         b <- aggregate(b[,1], by = list(b[,2]), function(x) paste(x))
         cat(" - created levels:\n")
         for (i in 1:nrow(b)) {
-          cat(paste0("\t", b[i,2], " -> ", b[i,1], "\n"))
+          cat("\t")
+          cat(cat(b$x[[i]], sep = ", "), "-> ", b$Group.1[i], "\n")
         }
       }
     }

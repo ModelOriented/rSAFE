@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Factor feature transformation using factorMerger package — safely_transform_factor • SAFE</title>
+<title>Factor feature transformation using hierarchical clustering — safely_transform_factor • SAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -48,7 +48,7 @@
 	  <a class = "navbar-mi2logo" href="http://DrWhy.AI/">
         <img src = "https://github.com/ModelOriented/DrWhyTemplate/blob/master/inst/pkgdown/assets/drwhy_znak_violet_small.jpg?raw=true" alt = "MI2" height = 46 title = "MI2">
 	  </a>
-      <a class="navbar-brand navbar-mi2" href="../index.html">Factor feature transformation using factorMerger package</a>
+      <a class="navbar-brand navbar-mi2" href="../index.html">Factor feature transformation using hierarchical clustering</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="navbar-mi2 nav navbar-nav">
@@ -93,15 +93,17 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Factor feature transformation using factorMerger package</h1>
+    <h1>Factor feature transformation using hierarchical clustering</h1>
     </div>
 
     
     <p>The safely_transform_factor() function calculates a transformation function
-for the factor variable using the getOptimalPartitionDf() function from factorMerger package.</p>
+for the factor variable using predictions obtained from black box model and hierarchical clustering.
+The gap statistic criterion is used to determine the optimal number of clusters.</p>
     
 
-    <pre class="usage"><span class='fu'>safely_transform_factor</span>(<span class='no'>explainer</span>, <span class='no'>variable</span>)</pre>
+    <pre class="usage"><span class='fu'>safely_transform_factor</span>(<span class='no'>explainer</span>, <span class='no'>variable</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"complete"</span>,
+  <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -114,11 +116,28 @@ for the factor variable using the getOptimalPartitionDf() function from factorMe
       <th>variable</th>
       <td><p>a feature for which the transformation function is to be computed</p></td>
     </tr>
+    <tr>
+      <th>method</th>
+      <td><p>the agglomeration method to be used in hierarchical clustering, one of:
+"ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid"</p></td>
+    </tr>
+    <tr>
+      <th>B</th>
+      <td><p>number of reference datasets used to calculate gap statistics</p></td>
+    </tr>
+    <tr>
+      <th>collapse</th>
+      <td><p>a character string to separate original levels while combining them to the new one</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>list of information on the transformation of given variable</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='safe_extraction.html'>safe_extraction</a></code></p></div>
     
 
   </div>
@@ -128,6 +147,8 @@ for the factor variable using the getOptimalPartitionDf() function from factorMe
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#see-also">See also</a></li>
           </ul>
 
   </div>

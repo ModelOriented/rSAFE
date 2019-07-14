@@ -13,12 +13,14 @@
 #'
 #' @return list of information on the transformation of given variable
 #'
+#' @seealso \code{\link{safe_extraction}}, \code{\link{safely_detect_changepoints}}
+#'
 #' @export
 
 safely_transform_continuous <- function(explainer, variable, response_type = "ale", penalty = "MBIC", no_segments = 2) {
 
   if (class(explainer) != "explainer") {
-    stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
+    stop(paste0("No applicable method for 'safely_transform_continuous' applied to an object of class '", class(explainer), "'."))
   }
   if (! variable %in% colnames(explainer$data)) {
     stop("Wrong variable name!")
@@ -56,16 +58,6 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
 }
 
 
-
-#' @title Creating good-looking intervals from breakpoints
-#'
-#' @description The pretty_intervals() function creates intervals from given breakpoints.
-#' If possible, it formats numbers using prettyNum() function to make them look better when printing.
-#'
-#' @param break_points a vector of breakpoints from which you wish to create intervals
-#'
-#' @return list of character intervals
-#'
 pretty_intervals <- function(break_points) {
 
   if (is.null(break_points)) {
@@ -95,6 +87,23 @@ pretty_intervals <- function(break_points) {
   return(new_levels)
 
 }
+
+
+plot_numerical <- function(temp_info) {
+  p <- plot(temp_info$sv)
+  #adding breakpoints to the pdp/ale plot
+  temp_bp <- temp_info$break_points
+  if (!is.null(temp_bp)) {
+    for (i in 1:length(temp_bp)) {
+      p <- p + geom_vline(xintercept = temp_bp[i], colour = "red", size = 1, linetype = "dotted")
+    }
+  }
+  return(p)
+}
+
+
+
+
 
 
 

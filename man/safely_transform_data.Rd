@@ -20,3 +20,6 @@ data with extra columns containing newly created variables
 The safely_transform_data() function creates new variables in dataset
 using safe_extractor object.
 }
+\seealso{
+\code{\link{safe_extraction}}, \code{\link{safely_select_variables}}
+}

@@ -9,12 +9,14 @@
 #'
 #' @return data with extra columns containing newly created variables
 #'
+#' @seealso \code{\link{safe_extraction}}, \code{\link{safely_select_variables}}
+#'
 #' @export
 
 safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
 
   if (class(safe_extractor) != "safe_extractor") {
-    stop(paste0("No applicable method for 'transform_data' applied to an object of class '", class(safe_extractor), "'."))
+    stop(paste0("No applicable method for 'safely_transform_data' applied to an object of class '", class(safe_extractor), "'."))
   }
   if (is.null(data)) {
     stop("No data provided!")

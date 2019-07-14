@@ -102,8 +102,9 @@ for surrogate feature extraction.</p>
     
 
     <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"MBIC"</span>,
-  <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>interactions</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"complete"</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>interactions</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -125,6 +126,19 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
     <tr>
       <th>no_segments</th>
       <td><p>numeric, a number of segments variable is to be divided into in case of founding no breakpoints</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>the agglomeration method to be used in hierarchical clustering, one of:
+"ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid"</p></td>
+    </tr>
+    <tr>
+      <th>B</th>
+      <td><p>number of reference datasets used to calculate gap statistics</p></td>
+    </tr>
+    <tr>
+      <th>collapse</th>
+      <td><p>a character string to separate original levels while combining them to the new one</p></td>
     </tr>
     <tr>
       <th>interactions</th>
@@ -154,7 +168,7 @@ than inter_param - if this percentage is less than inter_threshold then interact
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='safely_transform_factor.html'>safely_transform_factor</a></code>, <code><a href='safely_transform_continuous.html'>safely_transform_continuous</a></code>, <code><a href='safely_detect_interactions.html'>safely_detect_interactions</a></code></p></div>
+    <div class='dont-index'><p><code><a href='safely_transform_factor.html'>safely_transform_factor</a></code>, <code><a href='safely_transform_continuous.html'>safely_transform_continuous</a></code>, <code><a href='safely_detect_interactions.html'>safely_detect_interactions</a></code>, <code><a href='safely_transform_data.html'>safely_transform_data</a></code></p></div>
     
 
   </div>
