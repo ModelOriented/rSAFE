@@ -1,4 +1,4 @@
-#' @title Identyfying changes using PELT algorithm
+#' @title Identyfying changes in a series using PELT algorithm
 #'
 #' @description The safely_detect_changepoints() function calculates the optimal positioning
 #' and number of changepoints for given data and penalty. It uses a PELT algorithm

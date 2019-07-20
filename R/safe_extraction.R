@@ -44,6 +44,12 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
 
   #explainer$data might contain also a response variable - we use model attributes to get only the predictors
   term_names <- attr(explainer$model$terms, "term.labels")
+  if (is.null(term_names)) {
+    term_names <- explainer$model$feature_names #xgboost
+  }
+  if (is.null(term_names)) {
+    term_names <- colnames(explainer$data) #we take column names from dataset (the output variable should not be there)
+  }
 
   p <- length(term_names) #number of variables in dataset
   n <- nrow(explainer$data) #number of observations in dataset
@@ -67,7 +73,7 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
       cat("Single variables processing...\n")
     }
     #progress bar - to let the user know how many variables have been already processed
-    pb <- utils::txtProgressBar(min = 0, max = length(term_names), style = 3)
+    pb <- utils::txtProgressBar(min = 0, max = p, style = 3)
   }
 
   for (var_temp in term_names) {
@@ -116,7 +122,7 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
 }
 
 
-#' @title safe_extractor plot
+#' @title Plotting transformations of the SAFE extractor object
 #'
 #' @param x safe_extractor object containing information about variables transformations created with safe_extraction() function
 #' @param ... other parameters
@@ -138,9 +144,9 @@ plot.safe_extractor <- function(x, ..., variable = NULL) {
 
   temp_info <- x$variables_info[[variable]]
   if (temp_info$type == "numerical") {
-    p <- plot_numerical(temp_info)
+    p <- plot_numerical(temp_info, variable)
   } else {
-    p <- plot_categorical(temp_info)
+    p <- plot_categorical(temp_info, variable)
   }
 
   return(p)

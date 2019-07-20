@@ -82,11 +82,12 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
   term_names <- names(safe_extractor$variables_info)
   term_names_new <- sapply(term_names, function(x) paste0(x, "_new"))
   #we check whether there is at least one transformed variable in given dataset
-  term_names_new <- intersect(colnames(data), term_names_new)
+  term_names_new_present <- intersect(colnames(data), term_names_new)
 
-  if (length(term_names_new) == 0) {
+  if (length(term_names_new_present) == 0) {
     #there are only original variables, no transformations have been done - we will do it now
     data <- safely_transform_data(safe_extractor, data, verbose = FALSE)
+    term_names_new_present <- intersect(colnames(data), term_names_new)
   }
   #now data is supposed to contain also transformed variables
 

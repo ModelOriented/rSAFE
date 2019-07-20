@@ -2,7 +2,7 @@
 % Please edit documentation in R/safe_extraction.R
 \name{plot.safe_extractor}
 \alias{plot.safe_extractor}
-\title{safe_extractor plot}
+\title{Plotting transformations of the SAFE extractor object}
 \usage{
 \method{plot}{safe_extractor}(x, ..., variable = NULL)
 }
@@ -17,5 +17,5 @@
 a plot object
 }
 \description{
-safe_extractor plot
+Plotting transformations of the SAFE extractor object
 }

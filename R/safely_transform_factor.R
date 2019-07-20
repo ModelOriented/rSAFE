@@ -30,17 +30,17 @@ safely_transform_factor <- function(explainer, variable, method = "complete", B 
   lev <- levels(factor(data[,variable]))
   n <- length(lev)
 
-  if (n < 3) { #1 cluster and n clusters can be omitted in our problem
-    return(list(clustering = NULL,
-                new_levels = NULL))
-  }
-
   preds_agg <- levels_mean_agg(explainer, variable)
 
   #WSS
   wss_result <- WSS_all(preds_agg, method = method)
   wss <- log(wss_result$wss)
   clustering <- wss_result$clustering
+
+  if (n < 3) { #1 cluster and n clusters can be omitted in our problem
+    return(list(clustering = clustering,
+                new_levels = NULL))
+  }
 
   #reference distribution
   ref_values <- matrix(rep(0, (n-2)*B), ncol = B)
@@ -134,9 +134,13 @@ WSS_all <- function(data, method) {
   return(list(wss = wss, clustering = clustering))
 }
 
-plot_categorical <- function(temp_info) {
+plot_categorical <- function(temp_info, variable) {
   dend <- stats::as.dendrogram(temp_info$clustering)
-  final_cluster_size <- length(unique(temp_info$new_levels[,2]))
+  if (!is.null(temp_info$new_levels)) {
+    final_cluster_size <- length(unique(temp_info$new_levels[,2]))
+  } else {
+    final_cluster_size <- 1
+  }
   k_colors <- ggpubr:::.get_pal("default", k = final_cluster_size)
   dend <- dendextend::set(dend, "labels_cex", 4)
   dend <- dendextend::set(dend, "branches_lwd", 0.5)
@@ -174,8 +178,11 @@ plot_categorical <- function(temp_info) {
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
           axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
     expand_limits(y = -labels_track_height) +
-    labs(title = names(temp_info$new_levels)[1], x = '', y = '')
+    labs(title = variable, x = '', y = '')
 
+  if (is.null(temp_info$new_levels)) {
+    cat(paste0("No transformation for '", variable, "'."))
+  }
   return(p)
 }
 

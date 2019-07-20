@@ -23,7 +23,7 @@
 safely_detect_interactions <- function(explainer, inter_param = 2, inter_threshold = 0.4, verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
-    stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
+    stop(paste0("No applicable method for 'safely_detect_interactions' applied to an object of class '", class(explainer), "'."))
   }
   if (!is.numeric(inter_param) | inter_param<=0) {
     warning("Wrong inter_param value - using default one.")
@@ -35,7 +35,15 @@ safely_detect_interactions <- function(explainer, inter_param = 2, inter_thresho
   }
 
 
+  #explainer$data might contain also a response variable - we use model attributes to get only the predictors
   term_names <- attr(explainer$model$terms, "term.labels")
+  if (is.null(term_names)) {
+    term_names <- explainer$model$feature_names #xgboost
+  }
+  if (is.null(term_names)) {
+    term_names <- colnames(explainer$data) #we take column names from dataset (the output variable should not be there)
+  }
+
   p <- length(term_names)
 
   #creating all 2-elements subsets of term_names vector
@@ -80,6 +88,8 @@ safely_detect_interactions <- function(explainer, inter_param = 2, inter_thresho
   if (nrow(interactions_strength) == 0) {
     interactions_strength <- NULL
   } else {
+    #sorting interactions by their strength
+    interactions_strength <- interactions_strength[order(interactions_strength$strength, decreasing = TRUE),]
     rownames(interactions_strength) <- 1:nrow(interactions_strength)
   }
   return(interactions_strength)
@@ -89,17 +99,13 @@ safely_detect_interactions <- function(explainer, inter_param = 2, inter_thresho
 
 interaction_measure <- function(explainer, var1, var2, inter_param) {
 
-  if (class(explainer) != "explainer") {
-    stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
-  }
-
   data <- explainer$data
 
   #permutations of var1 and var2 columns
   set.seed(123)
-  var1_permutation <- sample(unlist(data[var1]))
+  var1_permutation <- sample(data[,var1])
   set.seed(123)
-  var2_permutation <- sample(unlist(data[var2]))
+  var2_permutation <- sample(data[,var2])
 
   pred_function <- explainer$predict_function
   model <- explainer$model
@@ -109,20 +115,20 @@ interaction_measure <- function(explainer, var1, var2, inter_param) {
 
   #the difference in predictions after var1 was permuted
   data_perm1 <- data
-  data_perm1[var1] <- var1_permutation
+  data_perm1[,var1] <- var1_permutation
   y_pred_perm1 <- pred_function(model, data_perm1)
   diff_pred_perm1 <- y_pred_perm1 - y_pred
 
   #the difference in predictions after var2 was permuted
   data_perm2 <- data
-  data_perm2[var2] <- var2_permutation
+  data_perm2[,var2] <- var2_permutation
   y_pred_perm2 <- pred_function(model, data_perm2)
   diff_pred_perm2 <- y_pred_perm2 - y_pred
 
   #the difference in predictions after both var1 and var2 were permuted
   data_perm12 <- data
-  data_perm12[var1] <- var1_permutation
-  data_perm12[var2] <- var2_permutation
+  data_perm12[,var1] <- var1_permutation
+  data_perm12[,var2] <- var2_permutation
   y_pred_perm12 <- pred_function(model, data_perm12)
   diff_pred_perm12 <- y_pred_perm12 - y_pred
 

@@ -37,13 +37,20 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
   #calculating average responses of chosen type
   sv <- DALEX::variable_response(explainer, variable, type = response_type)
 
+  #if the variable is a factor with two values (but is regarded as a continuous feature) we do not transform it
+  if (length(sv$x) <= 2) {
+    return(list(sv = sv,
+                break_points = NULL,
+                new_levels = NULL))
+  }
+
   #computing breakpoints
   break_points <- safely_detect_changepoints(sv$y, penalty, nquantiles = 10)
 
   if (length(break_points) == 0) { #no significant changes have been found
     #in this case we take a median as a breakpoint and create two intervals (as deafult)
     #or if no_segments arguments is specified then we take (no_segments-1) different quantiles and create no_segments intervals
-    var_quantiles <- quantile(explainer$data[[variable]], probs = seq(0, 1, length.out = no_segments+1))
+    var_quantiles <- quantile(explainer$data[,variable], probs = seq(0, 1, length.out = no_segments+1))
     break_points <- unique(as.vector(var_quantiles)[2:no_segments]) #removing first, last and repeating values
   } else {
     break_points <- sv$x[break_points]
@@ -89,7 +96,7 @@ pretty_intervals <- function(break_points) {
 }
 
 
-plot_numerical <- function(temp_info) {
+plot_numerical <- function(temp_info, variable) {
   p <- plot(temp_info$sv)
   #adding breakpoints to the pdp/ale plot
   temp_bp <- temp_info$break_points
@@ -97,6 +104,8 @@ plot_numerical <- function(temp_info) {
     for (i in 1:length(temp_bp)) {
       p <- p + geom_vline(xintercept = temp_bp[i], colour = "red", size = 1, linetype = "dotted")
     }
+  } else {
+    cat(paste0("No transformation for '", variable, "'."))
   }
   return(p)
 }
