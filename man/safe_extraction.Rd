@@ -6,7 +6,7 @@
 \usage{
 safe_extraction(explainer, response_type = "ale", penalty = "MBIC",
   no_segments = 2, method = "complete", B = 500, collapse = "",
-  interactions = TRUE, inter_param = 2, inter_threshold = 0.4,
+  interactions = FALSE, inter_param = 2, inter_threshold = 0.4,
   verbose = TRUE)
 }
 \arguments{

@@ -46,7 +46,7 @@ safely_transform_factor <- function(explainer, variable, method = "complete", B 
   ref_values <- matrix(rep(0, (n-2)*B), ncol = B)
   set.seed(123)
   for (b in 1:B) { #B reference datasets
-    uni_data <- runif(n, min = min(preds_agg), max = max(preds_agg))
+    uni_data <- stats::runif(n, min = min(preds_agg), max = max(preds_agg))
     ref_values[,b] <- log(WSS_all(uni_data, method = method)$wss)
   }
   exp_log_Wk <- apply(ref_values, 1, mean)
@@ -141,7 +141,8 @@ plot_categorical <- function(temp_info, variable) {
   } else {
     final_cluster_size <- 1
   }
-  k_colors <- ggpubr:::.get_pal("default", k = final_cluster_size)
+  hues <- seq(15, 375, length = final_cluster_size + 1)
+  k_colors <- grDevices::hcl(h = hues, l = 65, c = 100, alpha = 1)[1:final_cluster_size]
   dend <- dendextend::set(dend, "labels_cex", 4)
   dend <- dendextend::set(dend, "branches_lwd", 0.5)
   dend <- dendextend::set(dend, "branches_k_color", k = final_cluster_size, value = k_colors)
@@ -172,7 +173,7 @@ plot_categorical <- function(temp_info, variable) {
   p <- p + ggpubr::geom_exec(geom_text, data = data$labels,
                              x = "x", y = "y", label = "label", color = "col", size = "cex",
                              angle = "angle", hjust = "hjust", vjust = "vjust")
-  p <- p + theme_drwhy()
+  p <- p + DALEX::theme_drwhy()
   p <- p + coord_flip() +
     scale_y_reverse() +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),

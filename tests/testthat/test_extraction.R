@@ -4,9 +4,10 @@ source("objects_for_tests.R")
 
 
 test_that("safe_extraction", {
-  expect_is(safe_extraction(explainer_rf), "safe_extractor")
+  expect_is(safe_extraction(explainer_rf, interactions = TRUE), "safe_extractor")
   expect_error(safe_extraction(1:10))
   expect_warning(safe_extraction(explainer_rf, response_type = "strange_type"), "Wrong type of response - using default one.")
+  expect_is(safe_extraction(explainer_xgb), "safe_extractor")
 })
 
 test_that("plot.safe_extractor", {
@@ -14,6 +15,7 @@ test_that("plot.safe_extractor", {
   expect_is(plot(safe_extractor, variable = "district"), "ggplot")
   expect_error(plot(safe_extractor))
   expect_error(plot(safe_extractor, variable = "strange_variable"))
+  expect_is(plot(safe_extractor_xgb, variable = "salesIT"), "ggplot")
 })
 
 test_that("print.safe_extractor", {

@@ -45,7 +45,7 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
         data[,which_y]
       },
       error = function(cond) {
-        print("The 'y' variable is not in the dataset!")
+        stop("The 'y' variable is not in the dataset!")
         message(cond)
       }
     )
