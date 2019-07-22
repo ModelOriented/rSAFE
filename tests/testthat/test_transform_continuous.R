@@ -5,7 +5,7 @@ source("objects_for_tests.R")
 
 test_that("safely_transform_continuous", {
   expect_is(safely_transform_continuous(explainer_rf, "floor"), "list")
-  expect_is(safely_transform_continuous(explainer_rf, "floor", penalty = 99999), "list")
+  expect_is(safely_transform_continuous(explainer_rf, "floor", penalty = 99999, response_type = "pdp"), "list")
   expect_error(safely_transform_continuous(1:10, "surface"))
   expect_error(safely_transform_continuous(explainer_rf, "strange_variable"), "Wrong variable name!")
   expect_warning(safely_transform_continuous(explainer_rf, "surface", response_type = 'strange_type'), "Wrong type of response - using default one.")

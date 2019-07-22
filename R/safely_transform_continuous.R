@@ -35,17 +35,21 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
   }
 
   #calculating average responses of chosen type
-  sv <- DALEX::variable_response(explainer, variable, type = response_type)
+  if (response_type == "ale") {
+    sv <- ingredients::accumulated_dependency(explainer, variables = variable, N = 100)
+  } else {
+    sv <- ingredients::partial_dependency(explainer, variables = variable, N = 100)
+  }
 
   #if the variable is a factor with two values (but is regarded as a continuous feature) we do not transform it
-  if (length(sv$x) <= 2) {
+  if (length(sv$`_x_`) <= 2) {
     return(list(sv = sv,
                 break_points = NULL,
                 new_levels = NULL))
   }
 
   #computing breakpoints
-  break_points <- safely_detect_changepoints(sv$y, penalty, nquantiles = 10)
+  break_points <- safely_detect_changepoints(sv$`_yhat_`, penalty, nquantiles = 10)
 
   if (length(break_points) == 0) { #no significant changes have been found
     #in this case we take a median as a breakpoint and create two intervals (as deafult)
@@ -53,7 +57,7 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
     var_quantiles <- quantile(explainer$data[,variable], probs = seq(0, 1, length.out = no_segments+1))
     break_points <- unique(as.vector(var_quantiles)[2:no_segments]) #removing first, last and repeating values
   } else {
-    break_points <- sv$x[break_points]
+    break_points <- sv$`_x_`[break_points]
   }
 
   new_levels <- pretty_intervals(break_points)

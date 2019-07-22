@@ -49,9 +49,6 @@
 <li>
       <a href="articles/example_apartments.html">Regression example - apartments dataset</a>
     </li>
-    <li>
-      <a href="articles/example_hr.html">Classification example - HR dataset</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -132,21 +129,24 @@ explainer_rf1
 <h2 class="hasAnchor">
 <a href="#creating-a-safe_extractor" class="anchor"></a>Creating a safe_extractor</h2>
 <p>Now, we create a <code>safe_extractor</code> object using <code>SAFE</code> package and our surrogate model. Setting the argument <code>verbose=FALSE</code> stops progress bar from printing.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="reference/safe_extraction.html">safe_extraction</a></span>(explainer_rf1, <span class="dt">penalty =</span> <span class="dv">7</span>, <span class="dt">collapse =</span> <span class="st">"_"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="reference/safe_extraction.html">safe_extraction</a></span>(explainer_rf1, <span class="dt">collapse =</span> <span class="st">"_"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>Now, let’s print summary for the new object we have just created.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(safe_extractor)
 <span class="co">#&gt; Variable 'construction.year' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 1931]</span>
-<span class="co">#&gt;      (1931, 1949]</span>
-<span class="co">#&gt;      (1949, 1983]</span>
-<span class="co">#&gt;      (1983, 1994]</span>
+<span class="co">#&gt;  (-Inf, 1926]</span>
+<span class="co">#&gt;      (1926, 1936.82]</span>
+<span class="co">#&gt;      (1936.82, 1952]</span>
+<span class="co">#&gt;      (1952, 1971]</span>
+<span class="co">#&gt;      (1971, 1978]</span>
+<span class="co">#&gt;      (1978, 1994]</span>
 <span class="co">#&gt;      (1994, Inf)</span>
 <span class="co">#&gt; Variable 'surface' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 33]</span>
-<span class="co">#&gt;      (33, 72]</span>
+<span class="co">#&gt;  (-Inf, 28]</span>
+<span class="co">#&gt;      (28, 44]</span>
+<span class="co">#&gt;      (44, 72]</span>
 <span class="co">#&gt;      (72, 101]</span>
-<span class="co">#&gt;      (101, 123]</span>
-<span class="co">#&gt;      (123, Inf)</span>
+<span class="co">#&gt;      (101, 129]</span>
+<span class="co">#&gt;      (129, Inf)</span>
 <span class="co">#&gt; Variable 'floor' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 4]</span>
 <span class="co">#&gt;      (4, Inf)</span>
@@ -192,8 +192,8 @@ explainer_rf1
 <td align="right">21</td>
 <td align="right">6</td>
 <td align="right">1</td>
-<td align="left">(1949, 1983]</td>
-<td align="left">(-Inf, 33]</td>
+<td align="left">(1978, 1994]</td>
+<td align="left">(-Inf, 28]</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(-Inf, 3]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
@@ -206,7 +206,7 @@ explainer_rf1
 <td align="right">2</td>
 <td align="right">4</td>
 <td align="left">(1994, Inf)</td>
-<td align="left">(101, 123]</td>
+<td align="left">(101, 129]</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(3, Inf)</td>
 <td align="left">Srodmiescie</td>
@@ -218,8 +218,8 @@ explainer_rf1
 <td align="right">41</td>
 <td align="right">9</td>
 <td align="right">2</td>
-<td align="left">(1983, 1994]</td>
-<td align="left">(33, 72]</td>
+<td align="left">(1978, 1994]</td>
+<td align="left">(28, 44]</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(-Inf, 3]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
@@ -231,8 +231,8 @@ explainer_rf1
 <td align="right">28</td>
 <td align="right">2</td>
 <td align="right">2</td>
-<td align="left">(1949, 1983]</td>
-<td align="left">(-Inf, 33]</td>
+<td align="left">(1952, 1971]</td>
+<td align="left">(-Inf, 28]</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(-Inf, 3]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
@@ -244,8 +244,8 @@ explainer_rf1
 <td align="right">146</td>
 <td align="right">3</td>
 <td align="right">6</td>
-<td align="left">(1949, 1983]</td>
-<td align="left">(123, Inf)</td>
+<td align="left">(1952, 1971]</td>
+<td align="left">(129, Inf)</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(3, Inf)</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
@@ -257,7 +257,7 @@ explainer_rf1
 <td align="right">97</td>
 <td align="right">8</td>
 <td align="right">3</td>
-<td align="left">(1949, 1983]</td>
+<td align="left">(1952, 1971]</td>
 <td align="left">(72, 101]</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(-Inf, 3]</td>
@@ -288,7 +288,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">21</td>
 <td align="right">6</td>
 <td align="right">1</td>
-<td align="left">(1949, 1983]</td>
+<td align="left">(1978, 1994]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
 </tr>
 <tr class="even">
@@ -304,7 +304,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">41</td>
 <td align="right">9</td>
 <td align="right">2</td>
-<td align="left">(1983, 1994]</td>
+<td align="left">(1978, 1994]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
 </tr>
 <tr class="even">
@@ -312,7 +312,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">28</td>
 <td align="right">2</td>
 <td align="right">2</td>
-<td align="left">(1949, 1983]</td>
+<td align="left">(1952, 1971]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
 </tr>
 <tr class="odd">
@@ -320,7 +320,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">146</td>
 <td align="right">3</td>
 <td align="right">6</td>
-<td align="left">(1949, 1983]</td>
+<td align="left">(1952, 1971]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
 </tr>
 <tr class="even">
@@ -328,7 +328,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">97</td>
 <td align="right">8</td>
 <td align="right">3</td>
-<td align="left">(1949, 1983]</td>
+<td align="left">(1952, 1971]</td>
 <td align="left">Mokotow_Ochota_Zoliborz</td>
 </tr>
 </tbody>

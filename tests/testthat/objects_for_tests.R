@@ -25,11 +25,6 @@ explainer_rf_hr <- explain(model_rf_hr, data = HR[1:3000,1:5], y = HR[1:3000,6],
 safe_extractor_hr <- safe_extraction(explainer_rf_hr, no_segments = 3, verbose = FALSE)
 data_hr <- safely_transform_data(safe_extractor_hr, HR[1:500,], verbose = FALSE)
 
-data_hr_mm <- stats::model.matrix(left ~ ., data = HR_data)[,-1]
-data_hr_dm <- xgb.DMatrix(data_hr_mm, label = (HR_data$left == "1"))
-model_xgb <- xgb.train(params = list(objective = "binary:logistic"), data = data_hr_dm, nrounds = 100)
-explainer_xgb <- explain(model_xgb, data = data_hr_mm, y = HR_data$left, label = "xgb")
-safe_extractor_xgb <- safe_extraction(explainer_xgb, verbose = FALSE)
 
 
 

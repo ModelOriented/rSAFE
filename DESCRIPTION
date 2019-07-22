@@ -16,7 +16,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Imports:
-    DALEX,
+    ingredients,
     sets,
     stats,
     ggplot2,
@@ -26,6 +26,7 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
+    DALEX,
     randomForest,
     xgboost,
     ALEPlot, 
