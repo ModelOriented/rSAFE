@@ -5,8 +5,8 @@
 \title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
 \usage{
 safe_extraction(explainer, response_type = "ale", penalty = "MBIC",
-  no_segments = 2, method = "complete", B = 500, collapse = "",
-  interactions = FALSE, inter_param = 2, inter_threshold = 0.4,
+  no_segments = 2, method = "complete", B = 500, collapse = "_",
+  interactions = FALSE, inter_param = 0.25, inter_threshold = 0.25,
   verbose = TRUE)
 }
 \arguments{
@@ -45,6 +45,22 @@ safe_extractor object containing information about variables transformation
 \description{
 The safe_extraction() function creates a SAFE-extractor object which may be used later
 for surrogate feature extraction.
+}
+\examples{
+
+library(DALEX)
+library(randomForest)
+library(SAFE)
+
+data <- apartments[1:500,]
+set.seed(111)
+model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+                           no.rooms + district, data = data)
+explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+safe_extractor <- safe_extraction(explainer_rf, verbose = FALSE)
+print(safe_extractor)
+plot(safe_extractor, variable = "construction.year")
+
 }
 \seealso{
 \code{\link{safely_transform_factor}}, \code{\link{safely_transform_continuous}}, \code{\link{safely_detect_interactions}}, \code{\link{safely_transform_data}}

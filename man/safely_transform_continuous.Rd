@@ -27,6 +27,20 @@ list of information on the transformation of given variable
 The safely_transform_continuous() function calculates a transformation function
 for the continuous variable using a PDP plot obtained from black box model.
 }
+\examples{
+
+library(DALEX)
+library(randomForest)
+library(SAFE)
+
+data <- apartments[1:500,]
+set.seed(111)
+model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+                           no.rooms + district, data = data)
+explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+safely_transform_continuous(explainer_rf, "construction.year")
+
+}
 \seealso{
 \code{\link{safe_extraction}}, \code{\link{safely_detect_changepoints}}
 }

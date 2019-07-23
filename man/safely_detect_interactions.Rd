@@ -4,8 +4,8 @@
 \alias{safely_detect_interactions}
 \title{Detecting interactions via a permutation approach}
 \usage{
-safely_detect_interactions(explainer, inter_param = 2,
-  inter_threshold = 0.4, verbose = TRUE)
+safely_detect_interactions(explainer, inter_param = 0.25,
+  inter_threshold = 0.25, verbose = TRUE)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
@@ -27,6 +27,21 @@ dataframe object containing interactions effects greater than or equal to the sp
 The safely_detect_interactions() function detects second-order interactions based on predictions
 made by a surrogate model. For each pair of features it performs values permutation in order
 to evaluate their non_additive effect.
+}
+\examples{
+
+library(DALEX)
+library(randomForest)
+library(SAFE)
+
+data <- apartments[1:500,]
+set.seed(111)
+model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+                           no.rooms + district, data = data)
+explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+safely_detect_interactions <- function(explainer_rf, inter_param = 0.25,
+                                       inter_threshold = 0.2, verbose = TRUE)
+
 }
 \seealso{
 \code{\link{safe_extraction}}

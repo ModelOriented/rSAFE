@@ -13,6 +13,17 @@
 #'
 #' @seealso \code{\link{safely_transform_continuous}}
 #'
+#' @examples
+#'
+#' library(SAFE)
+#'
+#' data <- rep(c(2,7), each=10)
+#' safely_detect_changepoints(data)
+#'
+#' data <- c(rnorm(20, 0), rnorm(30, 1), rnorm(40, 8))
+#' safely_detect_changepoints(data)
+#' safely_detect_changepoints(data, penalty = 15)
+#'
 #' @export
 
 safely_detect_changepoints <- function(data, penalty = "MBIC", nquantiles = 10) {

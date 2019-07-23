@@ -22,6 +22,18 @@ The safely_detect_changepoints() function calculates the optimal positioning
 and number of changepoints for given data and penalty. It uses a PELT algorithm
 with a nonparametric cost function based on the empirical distribution.
 }
+\examples{
+
+library(SAFE)
+
+data <- rep(c(2,7), each=10)
+safely_detect_changepoints(data)
+
+data <- c(rnorm(20, 0), rnorm(30, 1), rnorm(40, 8))
+safely_detect_changepoints(data)
+safely_detect_changepoints(data, penalty = 15)
+
+}
 \seealso{
 \code{\link{safely_transform_continuous}}
 }

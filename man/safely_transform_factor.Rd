@@ -27,6 +27,20 @@ The safely_transform_factor() function calculates a transformation function
 for the factor variable using predictions obtained from black box model and hierarchical clustering.
 The gap statistic criterion is used to determine the optimal number of clusters.
 }
+\examples{
+
+library(DALEX)
+library(randomForest)
+library(SAFE)
+
+data <- apartments[1:500,]
+set.seed(111)
+model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+                           no.rooms + district, data = data)
+explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+safely_transform_factor(explainer_rf, "district")
+
+}
 \seealso{
 \code{\link{safe_extraction}}
 }

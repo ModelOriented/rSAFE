@@ -20,6 +20,21 @@ data with extra columns containing newly created variables
 The safely_transform_data() function creates new variables in dataset
 using safe_extractor object.
 }
+\examples{
+
+library(DALEX)
+library(randomForest)
+library(SAFE)
+
+data <- apartments[1:500,]
+set.seed(111)
+model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+                           no.rooms + district, data = data)
+explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+safe_extractor <- safe_extraction(explainer_rf, verbose = FALSE)
+safely_transform_data(safe_extractor, data, verbose = FALSE)
+
+}
 \seealso{
 \code{\link{safe_extraction}}, \code{\link{safely_select_variables}}
 }

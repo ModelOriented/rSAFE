@@ -17,10 +17,24 @@
 #'
 #' @seealso \code{\link{safe_extraction}}
 #'
+#' @examples
+#'
+#' library(DALEX)
+#' library(randomForest)
+#' library(SAFE)
+#'
+#' data <- apartments[1:500,]
+#' set.seed(111)
+#' model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+#'                            no.rooms + district, data = data)
+#' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+#' safely_detect_interactions <- function(explainer_rf, inter_param = 0.25,
+#'                                        inter_threshold = 0.2, verbose = TRUE)
+#'
 #' @export
 
 
-safely_detect_interactions <- function(explainer, inter_param = 2, inter_threshold = 0.4, verbose = TRUE) {
+safely_detect_interactions <- function(explainer, inter_param = 0.25, inter_threshold = 0.25, verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safely_detect_interactions' applied to an object of class '", class(explainer), "'."))
@@ -69,11 +83,11 @@ safely_detect_interactions <- function(explainer, inter_param = 2, inter_thresho
       #percentage of observations for which interaction measure is greater than inter_param
       interaction_values[i,] <- mean(temp_interaction)
       interactions_strength[i,] <- c(term_names[j1], term_names[j2])
-      i <- i + 1
       #updating progress bar
       if (verbose == TRUE) {
         utils::setTxtProgressBar(pb, i)
       }
+      i <- i + 1
     }
   }
 
@@ -100,15 +114,14 @@ safely_detect_interactions <- function(explainer, inter_param = 2, inter_thresho
 interaction_measure <- function(explainer, var1, var2, inter_param) {
 
   data <- explainer$data
+  pred_function <- explainer$predict_function
+  model <- explainer$model
 
   #permutations of var1 and var2 columns
   set.seed(123)
   var1_permutation <- sample(data[,var1])
   set.seed(123)
   var2_permutation <- sample(data[,var2])
-
-  pred_function <- explainer$predict_function
-  model <- explainer$model
 
   #predictions for original data
   y_pred <- pred_function(model, data)

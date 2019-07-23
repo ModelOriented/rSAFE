@@ -50,7 +50,7 @@ explainer_rf1
 Now, we create a `safe_extractor` object using `SAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
 
 ```{r}
-safe_extractor <- safe_extraction(explainer_rf1, collapse = "_", verbose = FALSE)
+safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
 ```
 
 Now, let's print summary for the new object we have just created.

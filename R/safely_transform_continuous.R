@@ -15,6 +15,19 @@
 #'
 #' @seealso \code{\link{safe_extraction}}, \code{\link{safely_detect_changepoints}}
 #'
+#' @examples
+#'
+#' library(DALEX)
+#' library(randomForest)
+#' library(SAFE)
+#'
+#' data <- apartments[1:500,]
+#' set.seed(111)
+#' model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+#'                            no.rooms + district, data = data)
+#' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+#' safely_transform_continuous(explainer_rf, "construction.year")
+#'
 #' @export
 
 safely_transform_continuous <- function(explainer, variable, response_type = "ale", penalty = "MBIC", no_segments = 2) {
@@ -36,9 +49,9 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
 
   #calculating average responses of chosen type
   if (response_type == "ale") {
-    sv <- ingredients::accumulated_dependency(explainer, variables = variable, N = 100)
+    sv <- ingredients::accumulated_dependency(explainer, variables = variable, N = 50)
   } else {
-    sv <- ingredients::partial_dependency(explainer, variables = variable, N = 100)
+    sv <- ingredients::partial_dependency(explainer, variables = variable, N = 50)
   }
 
   #if the variable is a factor with two values (but is regarded as a continuous feature) we do not transform it

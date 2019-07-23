@@ -43,6 +43,21 @@ for linear model (regression) or logistic regression (classification).
 on all features (using AIC value) and the best set of variables is chosen.
 }
 }
+\examples{
+
+library(DALEX)
+library(randomForest)
+library(SAFE)
+
+data <- apartments[1:500,]
+set.seed(111)
+model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+                           no.rooms + district, data = data)
+explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+safe_extractor <- safe_extraction(explainer_rf, verbose = FALSE)
+safely_select_variables(safe_extractor, data, which_y = "m2.price", verbose = FALSE)
+
+}
 \seealso{
 \code{\link{safely_transform_data}}
 }

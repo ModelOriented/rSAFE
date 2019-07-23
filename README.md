@@ -67,7 +67,7 @@ Creating a safe\_extractor
 Now, we create a `safe_extractor` object using `SAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
 
 ``` r
-safe_extractor <- safe_extraction(explainer_rf1, collapse = "_", verbose = FALSE)
+safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
 ```
 
 Now, let's print summary for the new object we have just created.
@@ -75,19 +75,18 @@ Now, let's print summary for the new object we have just created.
 ``` r
 print(safe_extractor)
 #> Variable 'construction.year' - selected intervals:
-#>  (-Inf, 1926]
-#>      (1926, 1936.82]
-#>      (1936.82, 1952]
+#>  (-Inf, 1930]
+#>      (1930, 1952]
 #>      (1952, 1971]
 #>      (1971, 1978]
 #>      (1978, 1994]
 #>      (1994, Inf)
 #> Variable 'surface' - selected intervals:
 #>  (-Inf, 28]
-#>      (28, 44]
-#>      (44, 72]
-#>      (72, 101]
-#>      (101, 129]
+#>      (28, 40]
+#>      (40, 72]
+#>      (72, 98]
+#>      (98, 129]
 #>      (129, Inf)
 #> Variable 'floor' - selected intervals:
 #>  (-Inf, 4]
@@ -131,11 +130,11 @@ data1 <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], verbo
 | district    |  m2.price|  construction.year|  surface|  floor|  no.rooms| construction.year\_new | surface\_new | floor\_new | no.rooms\_new | district\_new                                |
 |:------------|---------:|------------------:|--------:|------:|---------:|:-----------------------|:-------------|:-----------|:--------------|:---------------------------------------------|
 | Bielany     |      3542|               1979|       21|      6|         1| (1978, 1994\]          | (-Inf, 28\]  | (4, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Srodmiescie |      5631|               1997|      107|      2|         4| (1994, Inf)            | (101, 129\]  | (-Inf, 4\] | (3, Inf)      | Srodmiescie                                  |
-| Bielany     |      2989|               1994|       41|      9|         2| (1978, 1994\]          | (28, 44\]    | (4, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Srodmiescie |      5631|               1997|      107|      2|         4| (1994, Inf)            | (98, 129\]   | (-Inf, 4\] | (3, Inf)      | Srodmiescie                                  |
+| Bielany     |      2989|               1994|       41|      9|         2| (1978, 1994\]          | (40, 72\]    | (4, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
 | Ursynow     |      3822|               1968|       28|      2|         2| (1952, 1971\]          | (-Inf, 28\]  | (-Inf, 4\] | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
 | Ursynow     |      2337|               1971|      146|      3|         6| (1952, 1971\]          | (129, Inf)   | (-Inf, 4\] | (3, Inf)      | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Ochota      |      3381|               1956|       97|      8|         3| (1952, 1971\]          | (72, 101\]   | (4, Inf)   | (-Inf, 3\]    | Mokotow\_Ochota\_Zoliborz                    |
+| Ochota      |      3381|               1956|       97|      8|         3| (1952, 1971\]          | (72, 98\]    | (4, Inf)   | (-Inf, 3\]    | Mokotow\_Ochota\_Zoliborz                    |
 
 We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.
 

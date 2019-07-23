@@ -29,9 +29,24 @@
 #' @importFrom graphics plot
 #' @importFrom stats AIC aggregate binomial quantile
 #'
+#' @examples
+#'
+#' library(DALEX)
+#' library(randomForest)
+#' library(SAFE)
+#'
+#' data <- apartments[1:500,]
+#' set.seed(111)
+#' model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
+#'                            no.rooms + district, data = data)
+#' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
+#' safe_extractor <- safe_extraction(explainer_rf, verbose = FALSE)
+#' print(safe_extractor)
+#' plot(safe_extractor, variable = "construction.year")
+#'
 #' @export
 
-safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", no_segments = 2, method = "complete", B = 500, collapse = "", interactions = FALSE, inter_param = 2, inter_threshold = 0.4, verbose = TRUE) {
+safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", no_segments = 2, method = "complete", B = 500, collapse = "_", interactions = FALSE, inter_param = 0.25, inter_threshold = 0.25, verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
