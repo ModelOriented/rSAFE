@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Detecting interactions via a permutation approach — safely_detect_interactions • SAFE</title>
+<title>Detecting interactions via a permutation approach — safely_detect_interactions • rSAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -105,8 +105,8 @@ made by a surrogate model. For each pair of features it performs values permutat
 to evaluate their non_additive effect.</p>
     
 
-    <pre class="usage"><span class='fu'>safely_detect_interactions</span>(<span class='no'>explainer</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.4</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>safely_detect_interactions</span>(<span class='no'>explainer</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+  <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -142,6 +142,27 @@ than inter_param - if this percentage is less than inter_threshold then interact
     <div class='dont-index'><p><code><a href='safe_extraction.html'>safe_extraction</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>DALEX</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: pakiet 'DALEX' został zbudowany w wersji R 3.5.3</span></div><div class='output co'>#&gt; <span class='message'>Welcome to DALEX (version: 0.4.4).</span>
+#&gt; <span class='message'>Find examples and detailed introduction at: https://pbiecek.github.io/PM_VEE/</span>
+#&gt; <span class='message'>Additional features will be available after installation of: iBreakDown.</span>
+#&gt; <span class='message'>Use 'install_dependencies()' to get all suggested dependencies</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>randomForest</span>)</div><div class='output co'>#&gt; <span class='message'>randomForest 4.6-14</span></div><div class='output co'>#&gt; <span class='message'>Type rfNews() to see new features/changes/bug fixes.</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rSAFE</span>)
+
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>500</span>,]
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>111</span>)
+<span class='no'>model_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~ <span class='no'>construction.year</span> + <span class='no'>surface</span> + <span class='no'>floor</span> +
+                           <span class='no'>no.rooms</span> + <span class='no'>district</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
+<span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])
+<span class='fu'>safely_detect_interactions</span>(<span class='no'>explainer_rf</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+                          <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.2</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; Interactions processing...
+#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt;           variable1 variable2 strength
+#&gt; 1 construction.year     floor    0.224
+#&gt; 2 construction.year   surface    0.220
+#&gt; 3             floor  no.rooms    0.216
+#&gt; 4           surface     floor    0.212
+#&gt; 5 construction.year  no.rooms    0.206</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -151,7 +172,9 @@ than inter_param - if this percentage is less than inter_threshold then interact
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

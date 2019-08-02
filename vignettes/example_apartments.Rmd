@@ -18,10 +18,10 @@ knitr::opts_chunk$set(
 )
 ```
 
-In this vignette we present an example of an application of the `SAFE` package in case of regression problems. It is based on `apartments` and `apartmentsTest` datasets which come from the `DALEX` package but are also available in the `SAFE` package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical one.
+In this vignette we present an example of an application of the `rSAFE` package in case of regression problems. It is based on `apartments` and `apartmentsTest` datasets which come from the `DALEX` package but are also available in the `rSAFE` package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical one.
 
 ```{r}
-library(SAFE)
+library(rSAFE)
 head(apartments)
 ```
 
@@ -47,10 +47,10 @@ explainer_rf1
 
 ## Creating a safe_extractor
 
-Now, we create a `safe_extractor` object using `SAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
+Now, we create a `safe_extractor` object using `rSAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
 
 ```{r}
-safe_extractor <- safe_extraction(explainer_rf1, verbose = FALSE)
+safe_extractor <- safe_extraction(explainer_rf1, penalty = 20, verbose = FALSE)
 ```
 
 Now, let's print summary for the new object we have just created.

@@ -24,14 +24,15 @@ with a nonparametric cost function based on the empirical distribution.
 }
 \examples{
 
-library(SAFE)
+library(rSAFE)
 
-data <- rep(c(2,7), each=10)
+data <- rep(c(2,7), each=4)
 safely_detect_changepoints(data)
 
-data <- c(rnorm(20, 0), rnorm(30, 1), rnorm(40, 8))
+set.seed(123)
+data <- c(rnorm(15, 0), rnorm(20, 2), rnorm(30, 8))
 safely_detect_changepoints(data)
-safely_detect_changepoints(data, penalty = 15)
+safely_detect_changepoints(data, penalty = 25)
 
 }
 \seealso{

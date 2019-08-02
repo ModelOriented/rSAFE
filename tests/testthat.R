@@ -1,4 +1,4 @@
 library(testthat)
-library(SAFE)
+library(rSAFE)
 
-test_check("SAFE")
+test_check("rSAFE")

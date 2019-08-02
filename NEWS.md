@@ -1,3 +1,3 @@
-SAFE 0.1.0
+rSAFE 0.1.0
 ----------------------------------------------------------------
-First official version of the `SAFE` package
+First official version of the `rSAFE` package

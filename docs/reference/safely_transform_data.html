@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Performing transformations on all features in the dataset — safely_transform_data • SAFE</title>
+<title>Performing transformations on all features in the dataset — safely_transform_data • rSAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -132,6 +132,1522 @@ using safe_extractor object.</p>
     <div class='dont-index'><p><code><a href='safe_extraction.html'>safe_extraction</a></code>, <code><a href='safely_select_variables.html'>safely_select_variables</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>DALEX</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>randomForest</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rSAFE</span>)
+
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>500</span>,]
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>111</span>)
+<span class='no'>model_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~ <span class='no'>construction.year</span> + <span class='no'>surface</span> + <span class='no'>floor</span> +
+                           <span class='no'>no.rooms</span> + <span class='no'>district</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
+<span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])
+<span class='no'>safe_extractor</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='safe_extraction.html'>safe_extraction</a></span>(<span class='no'>explainer_rf</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>safely_transform_data</span>(<span class='no'>safe_extractor</span>, <span class='no'>data</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;        district m2.price construction.year surface floor no.rooms
+#&gt; 1   Srodmiescie     5897              1953      25     3        1
+#&gt; 2       Bielany     1818              1992     143     9        5
+#&gt; 3         Praga     3643              1937      56     1        2
+#&gt; 4        Ochota     3517              1995      93     7        3
+#&gt; 5       Mokotow     3013              1992     144     6        5
+#&gt; 6   Srodmiescie     5795              1926      61     6        2
+#&gt; 7       Mokotow     2983              1970     127     8        5
+#&gt; 8         Ursus     2346              1985     105     8        4
+#&gt; 9   Srodmiescie     4745              1928     145     6        6
+#&gt; 10  Srodmiescie     4284              1949     112     9        4
+#&gt; 11     Zoliborz     3961              1940      74     5        2
+#&gt; 12      Bielany     2797              1971      75     7        3
+#&gt; 13     Zoliborz     5116              1934      53     1        3
+#&gt; 14     Zoliborz     3337              1985     111     6        5
+#&gt; 15       Ochota     3666              1948      58     9        3
+#&gt; 16         Wola     2841              1975     116     2        4
+#&gt; 17         Wola     3172              1986      53     6        2
+#&gt; 18       Bemowo     3378              1983      37     6        1
+#&gt; 19        Ursus     3274              1992      33     7        2
+#&gt; 20      Mokotow     5267              1935      33     2        2
+#&gt; 21       Ochota     5112              1929      39     3        2
+#&gt; 22      Ursynow     2996              1980      95     3        3
+#&gt; 23  Srodmiescie     5170              1995     148     2        5
+#&gt; 24      Ursynow     3326              1972      42     6        1
+#&gt; 25       Ochota     4482              1963      27     5        1
+#&gt; 26       Ochota     3480              1990     142     1        6
+#&gt; 27       Bemowo     3842              1933      81     2        3
+#&gt; 28      Mokotow     3134              1994     112     8        5
+#&gt; 29         Wola     2225              1956      97    10        4
+#&gt; 30        Ursus     3372              2002      88     6        3
+#&gt; 31       Ochota     3868              1987      33    10        2
+#&gt; 32      Bielany     3085              1945      41     8        2
+#&gt; 33      Bielany     2928              1931     112     7        5
+#&gt; 34      Bielany     2819              1969      78     6        4
+#&gt; 35        Ursus     2201              1977     145     5        5
+#&gt; 36        Praga     2720              1957     123     2        5
+#&gt; 37        Ursus     2957              1985     109     1        5
+#&gt; 38      Bielany     3502              1996      70     7        2
+#&gt; 39     Zoliborz     3342              1931     141     9        5
+#&gt; 40     Zoliborz     2848              1954     145     7        6
+#&gt; 41       Bemowo     3158              1987      84     2        4
+#&gt; 42       Bemowo     3273              1977      48     5        3
+#&gt; 43        Praga     2628              1974     107     5        4
+#&gt; 44      Mokotow     4297              1997      65     8        3
+#&gt; 45      Bielany     3625              1996      43     9        1
+#&gt; 46  Srodmiescie     3769              1944     143    10        6
+#&gt; 47     Zoliborz     3748              1938      75     6        4
+#&gt; 48  Srodmiescie     6387              1923      51     1        2
+#&gt; 49      Mokotow     3330              1945      82    10        3
+#&gt; 50      Ursynow     2929              1926     107     8        4
+#&gt; 51     Zoliborz     4463              2001      49     8        3
+#&gt; 52     Zoliborz     3297              1994     115     6        5
+#&gt; 53         Wola     3337              2005      86     6        4
+#&gt; 54     Zoliborz     4046              1927     115     5        4
+#&gt; 55       Bemowo     2746              1953      90     6        3
+#&gt; 56        Praga     3845              1956      26     2        2
+#&gt; 57       Bemowo     2889              1935     111     2        4
+#&gt; 58       Bemowo     3137              1930      96     7        4
+#&gt; 59        Ursus     3030              1964     102     2        3
+#&gt; 60      Bielany     4477              1927      32     1        2
+#&gt; 61      Ursynow     3567              1948      28     5        1
+#&gt; 62         Wola     2445              1938     101     8        3
+#&gt; 63        Praga     2732              1935      82     7        3
+#&gt; 64       Bemowo     3547              1995      60     7        3
+#&gt; 65       Ochota     3765              1990     108     2        5
+#&gt; 66      Mokotow     2782              1985     147     8        5
+#&gt; 67      Mokotow     3155              1971     139     5        5
+#&gt; 68      Ursynow     3739              2007      36     8        2
+#&gt; 69     Zoliborz     5344              2004      31     2        1
+#&gt; 70      Ursynow     2113              1992     129     8        4
+#&gt; 71     Zoliborz     3797              1929     145     4        5
+#&gt; 72      Ursynow     2834              1992      62     8        3
+#&gt; 73        Ursus     3632              1994      57     1        2
+#&gt; 74     Zoliborz     3227              1973     142     4        5
+#&gt; 75     Zoliborz     4091              2007     121     4        4
+#&gt; 76        Praga     2379              1964     137     4        5
+#&gt; 77      Ursynow     2583              1989     102     6        4
+#&gt; 78      Ursynow     3407              1974      64     2        3
+#&gt; 79      Mokotow     3113              1967     144     5        5
+#&gt; 80      Bielany     3520              1993      43     4        1
+#&gt; 81       Bemowo     2917              1952      63     7        3
+#&gt; 82      Bielany     3045              1965      60     6        3
+#&gt; 83      Mokotow     2965              1968     144     6        6
+#&gt; 84       Ochota     3992              1961      41     8        2
+#&gt; 85      Ursynow     3138              1957      46     7        2
+#&gt; 86       Ochota     4315              1953      44     5        1
+#&gt; 87  Srodmiescie     5054              1927     100     9        3
+#&gt; 88      Bielany     2708              1971     124     2        5
+#&gt; 89     Zoliborz     2982              1972     127     8        5
+#&gt; 90      Mokotow     3341              1968     121     5        5
+#&gt; 91        Ursus     3065              1998      98     8        3
+#&gt; 92      Mokotow     2633              1960     137    10        6
+#&gt; 93      Mokotow     4348              1987      20     7        1
+#&gt; 94     Zoliborz     4167              1938      53     5        2
+#&gt; 95       Bemowo     3775              1971      43     1        2
+#&gt; 96         Wola     2772              1983      58     9        3
+#&gt; 97      Ursynow     2710              1943      69     9        2
+#&gt; 98     Zoliborz     4196              1986      75     2        3
+#&gt; 99     Zoliborz     4047              1989      45     7        2
+#&gt; 100    Zoliborz     3577              1998     147     6        5
+#&gt; 101        Wola     2019              1944     113    10        5
+#&gt; 102     Bielany     2892              1924     131     6        4
+#&gt; 103        Wola     4191              1925      26     5        1
+#&gt; 104     Bielany     2899              1938     110     2        4
+#&gt; 105       Ursus     2514              1951      89     8        4
+#&gt; 106     Ursynow     1733              1946     137    10        6
+#&gt; 107       Praga     3061              1943      84     3        4
+#&gt; 108     Mokotow     4290              1937      26     7        1
+#&gt; 109     Mokotow     3526              1934     142     7        5
+#&gt; 110        Wola     3015              1971      43     9        1
+#&gt; 111     Ursynow     3516              2004      58     8        2
+#&gt; 112      Ochota     3661              1936      64     9        2
+#&gt; 113     Ursynow     2803              1996     140     5        6
+#&gt; 114 Srodmiescie     4952              1960     105     3        4
+#&gt; 115 Srodmiescie     5092              1969      46     8        3
+#&gt; 116      Bemowo     3498              1921     110     2        4
+#&gt; 117        Wola     3854              1930      90     1        3
+#&gt; 118       Ursus     2626              1975     112     4        5
+#&gt; 119       Ursus     2920              1989      53     8        3
+#&gt; 120       Praga     3067              1958      53     7        2
+#&gt; 121       Ursus     2533              1959      82     9        3
+#&gt; 122     Bielany     2344              1951     101     9        3
+#&gt; 123     Bielany     3289              1922      91     6        4
+#&gt; 124       Praga     2957              1940      94     3        4
+#&gt; 125     Bielany     3845              1935      21     3        1
+#&gt; 126       Ursus     2890              1998     141     4        6
+#&gt; 127      Bemowo     3459              1991      44     4        2
+#&gt; 128       Ursus     2813              1922     124     7        5
+#&gt; 129     Ursynow     3566              1931      73     6        2
+#&gt; 130      Bemowo     4578              1932      27     1        1
+#&gt; 131     Bielany     2905              1945     110     2        4
+#&gt; 132      Ochota     4333              2002      47    10        2
+#&gt; 133       Praga     3633              1986      22     5        1
+#&gt; 134     Mokotow     4268              2007      93     5        4
+#&gt; 135 Srodmiescie     5521              1965      38     5        2
+#&gt; 136     Bielany     3433              1950      52     3        3
+#&gt; 137     Bielany     2384              1956     127     5        5
+#&gt; 138       Ursus     3687              1997      76     4        3
+#&gt; 139     Bielany     3143              1946      61     5        3
+#&gt; 140      Bemowo     3257              1974      24     8        2
+#&gt; 141      Ochota     3574              1992     133     2        4
+#&gt; 142     Bielany     2652              1991     125     3        4
+#&gt; 143      Bemowo     3194              2004      66    10        3
+#&gt; 144     Ursynow     1966              1953     123    10        4
+#&gt; 145    Zoliborz     2864              1948     149     7        5
+#&gt; 146      Bemowo     3580              1960      52     2        2
+#&gt; 147        Wola     1882              1954     142     8        6
+#&gt; 148     Bielany     2383              1974     107     7        5
+#&gt; 149        Wola     3800              2009      65     4        3
+#&gt; 150        Wola     3364              1935      54     4        2
+#&gt; 151      Ochota     4582              1999      52     7        2
+#&gt; 152     Ursynow     2537              1927     121    10        5
+#&gt; 153     Mokotow     4037              1931     141     2        5
+#&gt; 154 Srodmiescie     5615              1933      48     9        2
+#&gt; 155    Zoliborz     3990              1983      36     9        1
+#&gt; 156       Ursus     3150              1984      85     2        4
+#&gt; 157       Ursus     2563              1982      79     9        3
+#&gt; 158 Srodmiescie     4916              1985     128     1        4
+#&gt; 159        Wola     3279              2006      57    10        3
+#&gt; 160      Ochota     3434              2001     122    10        5
+#&gt; 161      Bemowo     3144              1933      76     9        4
+#&gt; 162      Bemowo     3280              1990      37     7        1
+#&gt; 163     Mokotow     3211              1957     104     9        3
+#&gt; 164    Zoliborz     3371              1958     118     5        5
+#&gt; 165        Wola     3393              2001      61     9        2
+#&gt; 166      Bemowo     2569              1935     118     4        5
+#&gt; 167     Bielany     3479              1967      47     3        3
+#&gt; 168       Praga     2394              1936     126     5        5
+#&gt; 169        Wola     3127              1946     102     1        3
+#&gt; 170       Ursus     2008              1993     129     9        4
+#&gt; 171     Bielany     4027              1924      62     2        3
+#&gt; 172      Ochota     3669              1938      68     8        3
+#&gt; 173        Wola     3136              1978      81     3        3
+#&gt; 174     Ursynow     2108              1940     114     9        5
+#&gt; 175     Bielany     3577              2008      57     7        3
+#&gt; 176     Mokotow     5015              2006      64     1        3
+#&gt; 177      Ochota     3977              1947      57     6        3
+#&gt; 178        Wola     3357              1984      39     6        1
+#&gt; 179     Mokotow     3819              1997     113     7        5
+#&gt; 180     Ursynow     2784              1963      77     7        3
+#&gt; 181       Ursus     2945              1925      86    10        4
+#&gt; 182      Ochota     4695              1934      21     9        2
+#&gt; 183     Mokotow     2995              1952     120     9        4
+#&gt; 184      Ochota     3156              1965     104     9        4
+#&gt; 185     Bielany     2974              1935     148     3        5
+#&gt; 186      Bemowo     2478              1990     107     6        5
+#&gt; 187      Bemowo     3680              1954      37     3        1
+#&gt; 188      Ochota     3652              1949      90     6        3
+#&gt; 189     Bielany     2881              1991      42    10        2
+#&gt; 190    Zoliborz     3181              1965     132     6        4
+#&gt; 191    Zoliborz     3587              1951      71     9        2
+#&gt; 192     Bielany     3445              1962      46     4        2
+#&gt; 193       Ursus     3576              1947      32     4        2
+#&gt; 194 Srodmiescie     3781              1985     142    10        6
+#&gt; 195      Ochota     4524              2003      58     7        2
+#&gt; 196      Ochota     3506              1956      94     7        3
+#&gt; 197        Wola     1970              1969     138     8        5
+#&gt; 198       Praga     2273              1968     133     6        4
+#&gt; 199     Mokotow     3989              1937      41     8        2
+#&gt; 200      Ochota     3009              1977     119     9        4
+#&gt; 201       Praga     3043              1988     106     1        4
+#&gt; 202      Ochota     3020              1939     133     7        5
+#&gt; 203      Bemowo     3219              1923      83     8        3
+#&gt; 204     Bielany     2721              2003     148     5        6
+#&gt; 205       Praga     3184              1952      57     5        3
+#&gt; 206       Ursus     2095              1977     131     8        4
+#&gt; 207      Ochota     3266              1988     118     6        5
+#&gt; 208 Srodmiescie     5079              1958      72     6        2
+#&gt; 209      Bemowo     3587              1929      31    10        2
+#&gt; 210      Ochota     4726              1989      37     1        2
+#&gt; 211     Ursynow     4121              1926      53     2        3
+#&gt; 212 Srodmiescie     5855              1924      55     6        2
+#&gt; 213        Wola     3437              1961      66     2        2
+#&gt; 214       Ursus     3043              1987      66     6        2
+#&gt; 215       Ursus     3836              1956      31     2        1
+#&gt; 216       Ursus     2118              1946     148     5        6
+#&gt; 217     Mokotow     4451              1929      35    10        2
+#&gt; 218    Zoliborz     4621              1949      23     4        1
+#&gt; 219       Praga     3795              2004      40     7        2
+#&gt; 220     Mokotow     4033              1921     107     6        4
+#&gt; 221      Bemowo     3069              1933      93     8        4
+#&gt; 222     Mokotow     4650              1979      40     2        1
+#&gt; 223      Ochota     3070              1994     113     9        4
+#&gt; 224      Bemowo     3583              2004      47     8        3
+#&gt; 225      Ochota     3640              1991     121     2        5
+#&gt; 226     Mokotow     4136              1997     106     5        4
+#&gt; 227     Ursynow     2197              1994     105     9        5
+#&gt; 228       Ursus     2590              1993      66    10        3
+#&gt; 229     Mokotow     4407              1932     114     1        5
+#&gt; 230      Bemowo     2676              1971      77     8        3
+#&gt; 231 Srodmiescie     5733              1996      32    10        1
+#&gt; 232     Mokotow     4363              1981      69     1        3
+#&gt; 233        Wola     3303              2009     120     3        4
+#&gt; 234    Zoliborz     4235              1924      56    10        2
+#&gt; 235        Wola     2531              1949     147     1        6
+#&gt; 236    Zoliborz     4300              1928     110     3        4
+#&gt; 237       Ursus     2489              1949     131     4        4
+#&gt; 238        Wola     3512              1937      59     2        2
+#&gt; 239     Bielany     3805              1929      94     1        3
+#&gt; 240     Bielany     4336              2005      46     1        2
+#&gt; 241        Wola     1623              1987     148    10        6
+#&gt; 242 Srodmiescie     5086              1995     111     1        4
+#&gt; 243     Ursynow     2458              1977      99     8        3
+#&gt; 244    Zoliborz     4065              1928      83     8        4
+#&gt; 245       Ursus     2711              1983      79     7        4
+#&gt; 246     Ursynow     2507              1959     104     7        3
+#&gt; 247 Srodmiescie     4813              1952      79     7        4
+#&gt; 248       Praga     3318              1923     103     5        3
+#&gt; 249 Srodmiescie     5079              1973      52     8        2
+#&gt; 250       Ursus     2183              1972     127     7        5
+#&gt; 251       Praga     4055              2010      64     2        2
+#&gt; 252     Mokotow     3637              1994      76     7        4
+#&gt; 253        Wola     2779              1977      92     5        4
+#&gt; 254     Mokotow     5303              1925      40     1        2
+#&gt; 255       Praga     2343              1960      96     9        4
+#&gt; 256       Praga     3022              1988      63     6        3
+#&gt; 257 Srodmiescie     5172              1970     103     1        4
+#&gt; 258       Praga     3415              1928      83     6        3
+#&gt; 259        Wola     2567              1971     108     5        5
+#&gt; 260     Mokotow     2691              1984     146     9        5
+#&gt; 261     Ursynow     2007              1957     124     9        5
+#&gt; 262      Ochota     4650              1925      25     9        2
+#&gt; 263       Ursus     3658              1927      24    10        2
+#&gt; 264      Ochota     3786              1922      91    10        4
+#&gt; 265      Ochota     4239              1929     106     4        4
+#&gt; 266 Srodmiescie     5604              1959      25     6        1
+#&gt; 267     Bielany     3449              1970      60     2        3
+#&gt; 268     Bielany     3294              1947      81     1        4
+#&gt; 269    Zoliborz     4018              1988      58     6        2
+#&gt; 270     Bielany     3646              2000      30    10        1
+#&gt; 271     Bielany     4299              1928      50     1        2
+#&gt; 272     Mokotow     4304              1925      50    10        2
+#&gt; 273       Ursus     3308              1921      64     9        3
+#&gt; 274      Bemowo     1990              1993     146     7        5
+#&gt; 275     Bielany     2068              1961     148     6        5
+#&gt; 276       Ursus     2315              1991      88    10        4
+#&gt; 277     Mokotow     3846              1978      80     5        3
+#&gt; 278      Bemowo     1861              1940     129    10        5
+#&gt; 279     Ursynow     3055              1969      24    10        2
+#&gt; 280     Mokotow     4454              1948      50     2        3
+#&gt; 281     Bielany     2671              1927     108    10        5
+#&gt; 282     Mokotow     3616              1981      83     7        3
+#&gt; 283      Ochota     4192              1993      36     7        1
+#&gt; 284        Wola     2807              1958     109     3        4
+#&gt; 285       Praga     1820              1972     148     8        6
+#&gt; 286      Ochota     5311              1926      29     2        2
+#&gt; 287       Praga     4006              1990      24     1        1
+#&gt; 288     Mokotow     2885              1990     122    10        4
+#&gt; 289 Srodmiescie     4713              2005     149     6        6
+#&gt; 290     Ursynow     2219              1964     108     9        4
+#&gt; 291     Mokotow     3486              1964     131     3        4
+#&gt; 292     Ursynow     4222              1927      48     2        2
+#&gt; 293 Srodmiescie     5476              1998      52    10        2
+#&gt; 294     Bielany     2267              1978     113     8        4
+#&gt; 295      Bemowo     3023              1955      33    10        1
+#&gt; 296      Ochota     3916              1952      33    10        1
+#&gt; 297     Mokotow     3559              1967      59    10        3
+#&gt; 298     Ursynow     3574              1924      98     3        3
+#&gt; 299 Srodmiescie     4916              1945      53     9        3
+#&gt; 300       Praga     2425              1956      83    10        3
+#&gt; 301      Bemowo     2076              1948     112    10        4
+#&gt; 302     Bielany     3222              1963      63     4        3
+#&gt; 303     Ursynow     3631              1954      42     3        1
+#&gt; 304      Bemowo     2507              1950      89     8        4
+#&gt; 305    Zoliborz     4255              1989      80     1        3
+#&gt; 306       Praga     2866              1959     108     2        5
+#&gt; 307    Zoliborz     4208              1974      84     1        3
+#&gt; 308     Ursynow     2331              1929     137    10        6
+#&gt; 309       Ursus     2278              1992     127     6        5
+#&gt; 310     Ursynow     3657              1921      29    10        1
+#&gt; 311     Bielany     3281              1959      52     5        2
+#&gt; 312       Ursus     3479              1967      47     3        3
+#&gt; 313       Ursus     3554              1999     105     2        4
+#&gt; 314 Srodmiescie     5982              1926      57     4        3
+#&gt; 315 Srodmiescie     4426              1962     132     5        5
+#&gt; 316      Ochota     3685              1936      56     9        3
+#&gt; 317       Ursus     3121              2003     128     4        4
+#&gt; 318       Ursus     3703              1949      25     4        1
+#&gt; 319       Ursus     3834              2002      62     4        3
+#&gt; 320       Praga     3195              2009     146     1        5
+#&gt; 321 Srodmiescie     6451              1924      35     2        2
+#&gt; 322        Wola     4264              2005      44     2        2
+#&gt; 323     Bielany     2662              1944      84     7        4
+#&gt; 324 Srodmiescie     5396              1948      20     8        2
+#&gt; 325 Srodmiescie     5065              2004     113     7        4
+#&gt; 326    Zoliborz     2836              1984     121    10        5
+#&gt; 327      Bemowo     2250              1950     120     7        5
+#&gt; 328     Ursynow     2836              1975      76     6        4
+#&gt; 329      Ochota     5144              1922      56     1        2
+#&gt; 330      Ochota     4075              1920      68    10        3
+#&gt; 331    Zoliborz     3021              1962     128     8        4
+#&gt; 332     Bielany     2895              1971      55     8        3
+#&gt; 333     Mokotow     2888              1975     121    10        4
+#&gt; 334       Ursus     3451              2005     125     1        4
+#&gt; 335       Praga     3010              1952      84     4        3
+#&gt; 336     Mokotow     4549              1939      30     4        1
+#&gt; 337      Ochota     5056              2000      49     2        3
+#&gt; 338     Bielany     3003              1951      90     3        4
+#&gt; 339     Ursynow     3367              1977      53     4        2
+#&gt; 340       Ursus     3133              1967     102     1        3
+#&gt; 341      Ochota     3820              1956      68     7        2
+#&gt; 342    Zoliborz     3234              1998     147     9        6
+#&gt; 343    Zoliborz     4411              1960      24     6        1
+#&gt; 344 Srodmiescie     4889              1947      86     6        3
+#&gt; 345    Zoliborz     4493              1969      31     4        2
+#&gt; 346    Zoliborz     3940              1990     101     2        3
+#&gt; 347    Zoliborz     3728              1971      97     4        4
+#&gt; 348     Bielany     3944              2005      71     2        3
+#&gt; 349     Ursynow     2114              1978     124     8        5
+#&gt; 350     Bielany     2823              1992     118     2        4
+#&gt; 351     Ursynow     2743              1923     131     7        5
+#&gt; 352      Ochota     3590              1936      76     8        3
+#&gt; 353      Ochota     4109              2003      94     7        3
+#&gt; 354     Mokotow     3947              1946      55     7        2
+#&gt; 355      Bemowo     1921              1957     148     7        6
+#&gt; 356 Srodmiescie     5970              1943      38     1        1
+#&gt; 357       Praga     3371              1973      53     4        2
+#&gt; 358      Ochota     3498              1955      85     8        3
+#&gt; 359      Ochota     3436              1990     126     4        4
+#&gt; 360    Zoliborz     3686              1982     106     3        5
+#&gt; 361 Srodmiescie     5884              1990      42     1        2
+#&gt; 362        Wola     2509              1986     114     5        5
+#&gt; 363 Srodmiescie     4401              1995     105     9        3
+#&gt; 364      Ochota     2961              1977     134     8        4
+#&gt; 365      Ochota     3505              1971      94     7        3
+#&gt; 366      Bemowo     2605              1941     114     4        5
+#&gt; 367    Zoliborz     4163              1938      54     5        2
+#&gt; 368 Srodmiescie     5531              1996      52     9        3
+#&gt; 369    Zoliborz     4159              2005     124     3        4
+#&gt; 370       Ursus     3617              1931      63     6        3
+#&gt; 371     Mokotow     5140              2008      26     4        2
+#&gt; 372 Srodmiescie     5753              1923     105     1        4
+#&gt; 373        Wola     4287              1928      46     1        3
+#&gt; 374       Praga     3626              2009     107     1        4
+#&gt; 375     Ursynow     2331              1944     132     5        5
+#&gt; 376      Ochota     3791              1996     136     5        5
+#&gt; 377     Bielany     3049              1980      40     9        1
+#&gt; 378     Bielany     2536              1943     106     6        4
+#&gt; 379     Bielany     3370              1924     128     1        5
+#&gt; 380     Ursynow     4253              2005      50     1        3
+#&gt; 381       Praga     3252              1940      65     4        2
+#&gt; 382     Mokotow     4636              1946      31     3        1
+#&gt; 383    Zoliborz     3651              1931     145     5        6
+#&gt; 384        Wola     3624              2001      38     9        2
+#&gt; 385       Praga     1987              1949     141     7        6
+#&gt; 386     Ursynow     2653              1956      60    10        3
+#&gt; 387       Ursus     3029              2003     142     3        5
+#&gt; 388      Ochota     4997              2000      20     6        2
+#&gt; 389       Ursus     2734              1947     127     2        4
+#&gt; 390      Bemowo     2637              1967      86     7        4
+#&gt; 391       Ursus     2983              1965      92     3        4
+#&gt; 392     Mokotow     3291              1962      81    10        4
+#&gt; 393     Ursynow     3626              1956      42     3        1
+#&gt; 394     Mokotow     3819              1988      58     8        2
+#&gt; 395       Ursus     2785              1957     116     2        5
+#&gt; 396    Zoliborz     2733              1968     137     9        6
+#&gt; 397 Srodmiescie     5844              1962      21     4        1
+#&gt; 398      Ochota     3574              1989      68     9        3
+#&gt; 399     Mokotow     3727              1961      62     8        3
+#&gt; 400       Praga     2898              1990      40    10        2
+#&gt; 401 Srodmiescie     4935              1995      62     8        3
+#&gt; 402      Ochota     4465              1932      48     8        3
+#&gt; 403        Wola     2768              1985     108     3        5
+#&gt; 404      Bemowo     3535              1942      62     1        3
+#&gt; 405       Praga     3909              1991      24     2        1
+#&gt; 406     Mokotow     3307              1988     144     3        5
+#&gt; 407 Srodmiescie     5201              1946      70     5        2
+#&gt; 408 Srodmiescie     4211              1981     109    10        4
+#&gt; 409     Mokotow     3645              1999     146     5        6
+#&gt; 410        Wola     1783              1957     147     9        5
+#&gt; 411       Praga     3336              2003      76     7        4
+#&gt; 412       Praga     3076              1978      92     2        4
+#&gt; 413      Bemowo     3504              1933      95     4        3
+#&gt; 414     Ursynow     3233              1972      77     2        4
+#&gt; 415 Srodmiescie     4700              1950     100     6        4
+#&gt; 416       Ursus     3151              1934      70    10        3
+#&gt; 417     Bielany     2204              1966     140     5        6
+#&gt; 418      Bemowo     3327              1971      42     6        1
+#&gt; 419      Bemowo     3576              1934      87     4        3
+#&gt; 420      Bemowo     3425              1997      72     7        3
+#&gt; 421       Ursus     2548              1956      80     9        3
+#&gt; 422       Ursus     2961              1987      39    10        1
+#&gt; 423        Wola     2099              1939     105    10        5
+#&gt; 424     Ursynow     2882              1998     127     6        5
+#&gt; 425      Bemowo     3411              1925      64     8        3
+#&gt; 426     Bielany     1872              1950     148     8        5
+#&gt; 427     Mokotow     3261              1970     104     8        4
+#&gt; 428       Praga     3645              1963      40     3        1
+#&gt; 429      Bemowo     3050              1958      75     5        2
+#&gt; 430       Praga     3748              1997      40     8        1
+#&gt; 431       Praga     3298              1928      90     6        4
+#&gt; 432     Mokotow     4384              2006      52     9        2
+#&gt; 433    Zoliborz     4863              2009      69     2        3
+#&gt; 434       Ursus     4075              2008      63     2        2
+#&gt; 435       Praga     2568              1990     118     4        5
+#&gt; 436       Ursus     4296              1997      40     2        2
+#&gt; 437    Zoliborz     3943              1963     101     2        3
+#&gt; 438 Srodmiescie     5001              1939      95     4        3
+#&gt; 439     Mokotow     4162              1931      79     8        3
+#&gt; 440     Ursynow     3784              1999      87     2        3
+#&gt; 441     Bielany     2121              1976     128     8        4
+#&gt; 442    Zoliborz     3992              1984      41     8        2
+#&gt; 443     Mokotow     4251              1997     130     1        5
+#&gt; 444     Mokotow     3923              1966      28    10        2
+#&gt; 445     Bielany     2638              1956     111     4        5
+#&gt; 446 Srodmiescie     5128              1956      72     5        3
+#&gt; 447      Ochota     3743              1996     136     5        6
+#&gt; 448       Praga     3397              1967      25     7        1
+#&gt; 449       Ursus     3742              1952      31     3        1
+#&gt; 450     Ursynow     3354              1948      70     2        3
+#&gt; 451    Zoliborz     4310              2001     129     1        4
+#&gt; 452     Mokotow     3912              1983      84     4        3
+#&gt; 453    Zoliborz     3401              1940     105     7        3
+#&gt; 454      Ochota     3377              1957      92     8        4
+#&gt; 455       Ursus     3068              2007     148     2        5
+#&gt; 456    Zoliborz     4048              1942      90     2        3
+#&gt; 457       Praga     3619              1972      38     3        2
+#&gt; 458     Mokotow     3924              1931     123     5        5
+#&gt; 459     Mokotow     4962              1995      39     5        1
+#&gt; 460       Ursus     3060              1951      34     9        2
+#&gt; 461        Wola     2633              1977      62    10        3
+#&gt; 462        Wola     2755              1950     125     2        4
+#&gt; 463    Zoliborz     2762              1951     139     9        5
+#&gt; 464      Ochota     4839              2007      61     3        3
+#&gt; 465     Ursynow     2545              2000     130     9        5
+#&gt; 466        Wola     1967              1945     123    10        4
+#&gt; 467 Srodmiescie     5530              1944      47     4        2
+#&gt; 468     Ursynow     3397              1958      55     3        3
+#&gt; 469      Ochota     3314              1975     144     3        5
+#&gt; 470     Mokotow     3289              1978      91     9        4
+#&gt; 471 Srodmiescie     5328              1955      57     5        2
+#&gt; 472        Wola     2468              1971     148     2        5
+#&gt; 473    Zoliborz     4573              1927      63     6        2
+#&gt; 474     Bielany     3309              1968      39     6        2
+#&gt; 475       Praga     3643              1949      41     3        1
+#&gt; 476        Wola     3325              1932      72     8        3
+#&gt; 477      Ochota     3567              1984      68     9        3
+#&gt; 478       Praga     2243              1986     106     9        4
+#&gt; 479     Mokotow     4756              1941      39     1        1
+#&gt; 480     Ursynow     2474              1994     148     2        5
+#&gt; 481      Bemowo     2220              1936     123     7        5
+#&gt; 482        Wola     2740              1979      91     6        3
+#&gt; 483        Wola     3802              1965      25     3        1
+#&gt; 484        Wola     3182              1985      57     5        3
+#&gt; 485     Ursynow     2927              1986      97     3        4
+#&gt; 486    Zoliborz     3382              1920     132    10        4
+#&gt; 487     Ursynow     3021              1985      98     2        4
+#&gt; 488      Bemowo     3105              1967      49     7        2
+#&gt; 489        Wola     2011              1949     114    10        5
+#&gt; 490 Srodmiescie     5899              1937      25     3        1
+#&gt; 491       Ursus     2664              1945      94     6        4
+#&gt; 492     Ursynow     3054              1936      95     2        4
+#&gt; 493      Ochota     4061              1992      94     1        4
+#&gt; 494    Zoliborz     4044              1987      46     7        2
+#&gt; 495       Praga     3037              1942      26    10        2
+#&gt; 496       Ursus     2642              1984     111     4        5
+#&gt; 497     Bielany     2336              1981     106     8        4
+#&gt; 498        Wola     2972              1950      63     7        2
+#&gt; 499     Bielany     2656              1994     129     2        5
+#&gt; 500       Praga     3092              1927     106     6        5
+#&gt;     construction.year_new   surface_new floor_new no.rooms_new
+#&gt; 1            (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 2            (1984, 1994]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 3            (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 4             (1994, Inf)     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 5            (1984, 1994]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 6            (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 7            (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 8            (1984, 1994]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 9            (-Inf, 1929]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 10           (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 11           (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 12           (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 13           (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 14           (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 15           (1929, 1950]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 16           (1974, 1984]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 17           (1984, 1994]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 18           (1974, 1984]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 19           (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 20           (1929, 1950]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 21           (-Inf, 1929]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 22           (1974, 1984]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 23            (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 24           (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 25           (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 26           (1984, 1994]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 27           (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 28           (1984, 1994]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 29           (1950, 1974]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 30            (1994, Inf)     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 31           (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 32           (1929, 1950]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 33           (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 34           (1950, 1974]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 35           (1974, 1984]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 36           (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 37           (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 38            (1994, Inf)     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 39           (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 40           (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 41           (1984, 1994]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 42           (1974, 1984]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 43           (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 44            (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 45            (1994, Inf)   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 46           (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 47           (1929, 1950]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 48           (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 49           (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 50           (-Inf, 1929]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 51            (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 52           (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 53            (1994, Inf)     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 54           (-Inf, 1929]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 55           (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 56           (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 57           (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 58           (1929, 1950]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 59           (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 60           (-Inf, 1929]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 61           (1929, 1950] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 62           (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 63           (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 64            (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 65           (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 66           (1984, 1994]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 67           (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 68            (1994, Inf)   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 69            (1994, Inf) (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 70           (1984, 1994]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 71           (-Inf, 1929]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 72           (1984, 1994]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 73           (1984, 1994]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 74           (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 75            (1994, Inf)    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 76           (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 77           (1984, 1994]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 78           (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 79           (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 80           (1984, 1994]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 81           (1950, 1974]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 82           (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 83           (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 84           (1950, 1974]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 85           (1950, 1974]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 86           (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 87           (-Inf, 1929]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 88           (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 89           (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 90           (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 91            (1994, Inf)     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 92           (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 93           (1984, 1994] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 94           (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 95           (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 96           (1974, 1984]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 97           (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 98           (1984, 1994]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 99           (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 100           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 101          (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 102          (-Inf, 1929]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 103          (-Inf, 1929] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 104          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 105          (1950, 1974]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 106          (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 107          (1929, 1950]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 108          (1929, 1950] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 109          (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 110          (1950, 1974]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 111           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 112          (1929, 1950]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 113           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 114          (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 115          (1950, 1974]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 116          (-Inf, 1929]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 117          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 118          (1974, 1984]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 119          (1984, 1994]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 120          (1950, 1974]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 121          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 122          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 123          (-Inf, 1929]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 124          (1929, 1950]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 125          (1929, 1950] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 126           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 127          (1984, 1994]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 128          (-Inf, 1929]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 129          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 130          (1929, 1950] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 131          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 132           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 133          (1984, 1994] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 134           (1994, Inf)     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 135          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 136          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 137          (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 138           (1994, Inf)     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 139          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 140          (1950, 1974] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 141          (1984, 1994]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 142          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 143           (1994, Inf)     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 144          (1950, 1974]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 145          (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 146          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 147          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 148          (1950, 1974]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 149           (1994, Inf)      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 150          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 151           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 152          (-Inf, 1929]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 153          (1929, 1950]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 154          (1929, 1950]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 155          (1974, 1984]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 156          (1974, 1984]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 157          (1974, 1984]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 158          (1984, 1994]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 159           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 160           (1994, Inf)    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 161          (1929, 1950]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 162          (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 163          (1950, 1974]    (103, 126]  (6, Inf)    (-Inf, 3]
+#&gt; 164          (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 165           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 166          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 167          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 168          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 169          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 170          (1984, 1994]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 171          (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 172          (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 173          (1974, 1984]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 174          (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 175           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 176           (1994, Inf)      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 177          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 178          (1974, 1984]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 179           (1994, Inf)    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 180          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 181          (-Inf, 1929]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 182          (1929, 1950] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 183          (1950, 1974]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 184          (1950, 1974]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 185          (1929, 1950]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 186          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 187          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 188          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 189          (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 190          (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 191          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 192          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 193          (1929, 1950]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 194          (1984, 1994]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 195           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 196          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 197          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 198          (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 199          (1929, 1950]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 200          (1974, 1984]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 201          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 202          (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 203          (-Inf, 1929]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 204           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 205          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 206          (1974, 1984]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 207          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 208          (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 209          (-Inf, 1929] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 210          (1984, 1994]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 211          (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 212          (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 213          (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 214          (1984, 1994]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 215          (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 216          (1929, 1950]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 217          (-Inf, 1929]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 218          (1929, 1950] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 219           (1994, Inf)   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 220          (-Inf, 1929]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 221          (1929, 1950]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 222          (1974, 1984]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 223          (1984, 1994]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 224           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 225          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 226           (1994, Inf)    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 227          (1984, 1994]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 228          (1984, 1994]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 229          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 230          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 231           (1994, Inf)   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 232          (1974, 1984]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 233           (1994, Inf)    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 234          (-Inf, 1929]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 235          (1929, 1950]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 236          (-Inf, 1929]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 237          (1929, 1950]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 238          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 239          (-Inf, 1929]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 240           (1994, Inf)   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 241          (1984, 1994]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 242           (1994, Inf)    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 243          (1974, 1984]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 244          (-Inf, 1929]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 245          (1974, 1984]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 246          (1950, 1974]    (103, 126]  (6, Inf)    (-Inf, 3]
+#&gt; 247          (1950, 1974]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 248          (-Inf, 1929]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 249          (1950, 1974]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 250          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 251           (1994, Inf)      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 252          (1984, 1994]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 253          (1974, 1984]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 254          (-Inf, 1929]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 255          (1950, 1974]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 256          (1984, 1994]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 257          (1950, 1974]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 258          (-Inf, 1929]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 259          (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 260          (1974, 1984]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 261          (1950, 1974]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 262          (-Inf, 1929] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 263          (-Inf, 1929] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 264          (-Inf, 1929]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 265          (-Inf, 1929]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 266          (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 267          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 268          (1929, 1950]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 269          (1984, 1994]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 270           (1994, Inf) (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 271          (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 272          (-Inf, 1929]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 273          (-Inf, 1929]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 274          (1984, 1994]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 275          (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 276          (1984, 1994]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 277          (1974, 1984]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 278          (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 279          (1950, 1974] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 280          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 281          (-Inf, 1929]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 282          (1974, 1984]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 283          (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 284          (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 285          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 286          (-Inf, 1929] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 287          (1984, 1994] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 288          (1984, 1994]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 289           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 290          (1950, 1974]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 291          (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 292          (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 293           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 294          (1974, 1984]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 295          (1950, 1974]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 296          (1950, 1974]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 297          (1950, 1974]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 298          (-Inf, 1929]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 299          (1929, 1950]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 300          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 301          (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 302          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 303          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 304          (1929, 1950]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 305          (1984, 1994]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 306          (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 307          (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 308          (-Inf, 1929]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 309          (1984, 1994]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 310          (-Inf, 1929] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 311          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 312          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 313           (1994, Inf)    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 314          (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 315          (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 316          (1929, 1950]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 317           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 318          (1929, 1950] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 319           (1994, Inf)      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 320           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 321          (-Inf, 1929]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 322           (1994, Inf)   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 323          (1929, 1950]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 324          (1929, 1950] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 325           (1994, Inf)    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 326          (1974, 1984]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 327          (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 328          (1974, 1984]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 329          (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 330          (-Inf, 1929]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 331          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 332          (1950, 1974]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 333          (1974, 1984]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 334           (1994, Inf)    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 335          (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 336          (1929, 1950] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 337           (1994, Inf)      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 338          (1950, 1974]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 339          (1974, 1984]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 340          (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 341          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 342           (1994, Inf)    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 343          (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 344          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 345          (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 346          (1984, 1994]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 347          (1950, 1974]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 348           (1994, Inf)     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 349          (1974, 1984]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 350          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 351          (-Inf, 1929]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 352          (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 353           (1994, Inf)     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 354          (1929, 1950]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 355          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 356          (1929, 1950]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 357          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 358          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 359          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 360          (1974, 1984]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 361          (1984, 1994]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 362          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 363           (1994, Inf)    (103, 126]  (6, Inf)    (-Inf, 3]
+#&gt; 364          (1974, 1984]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 365          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 366          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 367          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 368           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 369           (1994, Inf)    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 370          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 371           (1994, Inf) (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 372          (-Inf, 1929]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 373          (-Inf, 1929]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 374           (1994, Inf)    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 375          (1929, 1950]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 376           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 377          (1974, 1984]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 378          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 379          (-Inf, 1929]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 380           (1994, Inf)      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 381          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 382          (1929, 1950] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 383          (1929, 1950]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 384           (1994, Inf)   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 385          (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 386          (1950, 1974]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 387           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 388           (1994, Inf) (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 389          (1929, 1950]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 390          (1950, 1974]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 391          (1950, 1974]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 392          (1950, 1974]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 393          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 394          (1984, 1994]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 395          (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 396          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 397          (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 398          (1984, 1994]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 399          (1950, 1974]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 400          (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 401           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 402          (1929, 1950]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 403          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 404          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 405          (1984, 1994] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 406          (1984, 1994]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 407          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 408          (1974, 1984]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 409           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 410          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 411           (1994, Inf)     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 412          (1974, 1984]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 413          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 414          (1950, 1974]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 415          (1929, 1950]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 416          (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 417          (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 418          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 419          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 420           (1994, Inf)     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 421          (1950, 1974]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 422          (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 423          (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 424           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 425          (-Inf, 1929]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 426          (1929, 1950]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 427          (1950, 1974]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 428          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 429          (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 430           (1994, Inf)   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 431          (-Inf, 1929]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 432           (1994, Inf)      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 433           (1994, Inf)     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 434           (1994, Inf)      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 435          (1984, 1994]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 436           (1994, Inf)   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 437          (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 438          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 439          (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 440           (1994, Inf)     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 441          (1974, 1984]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 442          (1974, 1984]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 443           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 444          (1950, 1974] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 445          (1950, 1974]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 446          (1950, 1974]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 447           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 448          (1950, 1974] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 449          (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 450          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 451           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 452          (1974, 1984]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 453          (1929, 1950]    (103, 126]  (6, Inf)    (-Inf, 3]
+#&gt; 454          (1950, 1974]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 455           (1994, Inf)    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 456          (1929, 1950]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 457          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 458          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 459           (1994, Inf)   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 460          (1950, 1974]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 461          (1974, 1984]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 462          (1929, 1950]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 463          (1950, 1974]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 464           (1994, Inf)      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 465           (1994, Inf)    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 466          (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 467          (1929, 1950]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 468          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 469          (1974, 1984]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 470          (1974, 1984]     (65, 103]  (6, Inf)     (3, Inf)
+#&gt; 471          (1950, 1974]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 472          (1950, 1974]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 473          (-Inf, 1929]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 474          (1950, 1974]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 475          (1929, 1950]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 476          (1929, 1950]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 477          (1974, 1984]     (65, 103]  (6, Inf)    (-Inf, 3]
+#&gt; 478          (1984, 1994]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 479          (1929, 1950]   (31.92, 46] (-Inf, 6]    (-Inf, 3]
+#&gt; 480          (1984, 1994]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 481          (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 482          (1974, 1984]     (65, 103] (-Inf, 6]    (-Inf, 3]
+#&gt; 483          (1950, 1974] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 484          (1984, 1994]      (46, 65] (-Inf, 6]    (-Inf, 3]
+#&gt; 485          (1984, 1994]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 486          (-Inf, 1929]    (126, Inf)  (6, Inf)     (3, Inf)
+#&gt; 487          (1984, 1994]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 488          (1950, 1974]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 489          (1929, 1950]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 490          (1929, 1950] (-Inf, 31.92] (-Inf, 6]    (-Inf, 3]
+#&gt; 491          (1929, 1950]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 492          (1929, 1950]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 493          (1984, 1994]     (65, 103] (-Inf, 6]     (3, Inf)
+#&gt; 494          (1984, 1994]   (31.92, 46]  (6, Inf)    (-Inf, 3]
+#&gt; 495          (1929, 1950] (-Inf, 31.92]  (6, Inf)    (-Inf, 3]
+#&gt; 496          (1974, 1984]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt; 497          (1974, 1984]    (103, 126]  (6, Inf)     (3, Inf)
+#&gt; 498          (1929, 1950]      (46, 65]  (6, Inf)    (-Inf, 3]
+#&gt; 499          (1984, 1994]    (126, Inf) (-Inf, 6]     (3, Inf)
+#&gt; 500          (-Inf, 1929]    (103, 126] (-Inf, 6]     (3, Inf)
+#&gt;                                district_new
+#&gt; 1                               Srodmiescie
+#&gt; 2   Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 3   Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 4                   Mokotow_Ochota_Zoliborz
+#&gt; 5                   Mokotow_Ochota_Zoliborz
+#&gt; 6                               Srodmiescie
+#&gt; 7                   Mokotow_Ochota_Zoliborz
+#&gt; 8   Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 9                               Srodmiescie
+#&gt; 10                              Srodmiescie
+#&gt; 11                  Mokotow_Ochota_Zoliborz
+#&gt; 12  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 13                  Mokotow_Ochota_Zoliborz
+#&gt; 14                  Mokotow_Ochota_Zoliborz
+#&gt; 15                  Mokotow_Ochota_Zoliborz
+#&gt; 16  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 17  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 18  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 19  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 20                  Mokotow_Ochota_Zoliborz
+#&gt; 21                  Mokotow_Ochota_Zoliborz
+#&gt; 22  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 23                              Srodmiescie
+#&gt; 24  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 25                  Mokotow_Ochota_Zoliborz
+#&gt; 26                  Mokotow_Ochota_Zoliborz
+#&gt; 27  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 28                  Mokotow_Ochota_Zoliborz
+#&gt; 29  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 30  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 31                  Mokotow_Ochota_Zoliborz
+#&gt; 32  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 33  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 34  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 35  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 36  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 37  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 38  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 39                  Mokotow_Ochota_Zoliborz
+#&gt; 40                  Mokotow_Ochota_Zoliborz
+#&gt; 41  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 42  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 43  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 44                  Mokotow_Ochota_Zoliborz
+#&gt; 45  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 46                              Srodmiescie
+#&gt; 47                  Mokotow_Ochota_Zoliborz
+#&gt; 48                              Srodmiescie
+#&gt; 49                  Mokotow_Ochota_Zoliborz
+#&gt; 50  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 51                  Mokotow_Ochota_Zoliborz
+#&gt; 52                  Mokotow_Ochota_Zoliborz
+#&gt; 53  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 54                  Mokotow_Ochota_Zoliborz
+#&gt; 55  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 56  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 57  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 58  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 59  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 60  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 61  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 62  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 63  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 64  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 65                  Mokotow_Ochota_Zoliborz
+#&gt; 66                  Mokotow_Ochota_Zoliborz
+#&gt; 67                  Mokotow_Ochota_Zoliborz
+#&gt; 68  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 69                  Mokotow_Ochota_Zoliborz
+#&gt; 70  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 71                  Mokotow_Ochota_Zoliborz
+#&gt; 72  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 73  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 74                  Mokotow_Ochota_Zoliborz
+#&gt; 75                  Mokotow_Ochota_Zoliborz
+#&gt; 76  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 77  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 78  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 79                  Mokotow_Ochota_Zoliborz
+#&gt; 80  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 81  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 82  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 83                  Mokotow_Ochota_Zoliborz
+#&gt; 84                  Mokotow_Ochota_Zoliborz
+#&gt; 85  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 86                  Mokotow_Ochota_Zoliborz
+#&gt; 87                              Srodmiescie
+#&gt; 88  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 89                  Mokotow_Ochota_Zoliborz
+#&gt; 90                  Mokotow_Ochota_Zoliborz
+#&gt; 91  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 92                  Mokotow_Ochota_Zoliborz
+#&gt; 93                  Mokotow_Ochota_Zoliborz
+#&gt; 94                  Mokotow_Ochota_Zoliborz
+#&gt; 95  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 96  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 97  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 98                  Mokotow_Ochota_Zoliborz
+#&gt; 99                  Mokotow_Ochota_Zoliborz
+#&gt; 100                 Mokotow_Ochota_Zoliborz
+#&gt; 101 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 102 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 103 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 104 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 105 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 106 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 107 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 108                 Mokotow_Ochota_Zoliborz
+#&gt; 109                 Mokotow_Ochota_Zoliborz
+#&gt; 110 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 111 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 112                 Mokotow_Ochota_Zoliborz
+#&gt; 113 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 114                             Srodmiescie
+#&gt; 115                             Srodmiescie
+#&gt; 116 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 117 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 118 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 119 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 120 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 121 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 122 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 123 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 124 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 125 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 126 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 127 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 128 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 129 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 130 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 131 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 132                 Mokotow_Ochota_Zoliborz
+#&gt; 133 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 134                 Mokotow_Ochota_Zoliborz
+#&gt; 135                             Srodmiescie
+#&gt; 136 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 137 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 138 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 139 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 140 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 141                 Mokotow_Ochota_Zoliborz
+#&gt; 142 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 143 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 144 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 145                 Mokotow_Ochota_Zoliborz
+#&gt; 146 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 147 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 148 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 149 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 150 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 151                 Mokotow_Ochota_Zoliborz
+#&gt; 152 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 153                 Mokotow_Ochota_Zoliborz
+#&gt; 154                             Srodmiescie
+#&gt; 155                 Mokotow_Ochota_Zoliborz
+#&gt; 156 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 157 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 158                             Srodmiescie
+#&gt; 159 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 160                 Mokotow_Ochota_Zoliborz
+#&gt; 161 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 162 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 163                 Mokotow_Ochota_Zoliborz
+#&gt; 164                 Mokotow_Ochota_Zoliborz
+#&gt; 165 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 166 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 167 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 168 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 169 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 170 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 171 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 172                 Mokotow_Ochota_Zoliborz
+#&gt; 173 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 174 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 175 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 176                 Mokotow_Ochota_Zoliborz
+#&gt; 177                 Mokotow_Ochota_Zoliborz
+#&gt; 178 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 179                 Mokotow_Ochota_Zoliborz
+#&gt; 180 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 181 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 182                 Mokotow_Ochota_Zoliborz
+#&gt; 183                 Mokotow_Ochota_Zoliborz
+#&gt; 184                 Mokotow_Ochota_Zoliborz
+#&gt; 185 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 186 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 187 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 188                 Mokotow_Ochota_Zoliborz
+#&gt; 189 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 190                 Mokotow_Ochota_Zoliborz
+#&gt; 191                 Mokotow_Ochota_Zoliborz
+#&gt; 192 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 193 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 194                             Srodmiescie
+#&gt; 195                 Mokotow_Ochota_Zoliborz
+#&gt; 196                 Mokotow_Ochota_Zoliborz
+#&gt; 197 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 198 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 199                 Mokotow_Ochota_Zoliborz
+#&gt; 200                 Mokotow_Ochota_Zoliborz
+#&gt; 201 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 202                 Mokotow_Ochota_Zoliborz
+#&gt; 203 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 204 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 205 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 206 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 207                 Mokotow_Ochota_Zoliborz
+#&gt; 208                             Srodmiescie
+#&gt; 209 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 210                 Mokotow_Ochota_Zoliborz
+#&gt; 211 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 212                             Srodmiescie
+#&gt; 213 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 214 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 215 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 216 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 217                 Mokotow_Ochota_Zoliborz
+#&gt; 218                 Mokotow_Ochota_Zoliborz
+#&gt; 219 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 220                 Mokotow_Ochota_Zoliborz
+#&gt; 221 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 222                 Mokotow_Ochota_Zoliborz
+#&gt; 223                 Mokotow_Ochota_Zoliborz
+#&gt; 224 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 225                 Mokotow_Ochota_Zoliborz
+#&gt; 226                 Mokotow_Ochota_Zoliborz
+#&gt; 227 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 228 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 229                 Mokotow_Ochota_Zoliborz
+#&gt; 230 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 231                             Srodmiescie
+#&gt; 232                 Mokotow_Ochota_Zoliborz
+#&gt; 233 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 234                 Mokotow_Ochota_Zoliborz
+#&gt; 235 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 236                 Mokotow_Ochota_Zoliborz
+#&gt; 237 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 238 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 239 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 240 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 241 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 242                             Srodmiescie
+#&gt; 243 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 244                 Mokotow_Ochota_Zoliborz
+#&gt; 245 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 246 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 247                             Srodmiescie
+#&gt; 248 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 249                             Srodmiescie
+#&gt; 250 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 251 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 252                 Mokotow_Ochota_Zoliborz
+#&gt; 253 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 254                 Mokotow_Ochota_Zoliborz
+#&gt; 255 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 256 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 257                             Srodmiescie
+#&gt; 258 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 259 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 260                 Mokotow_Ochota_Zoliborz
+#&gt; 261 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 262                 Mokotow_Ochota_Zoliborz
+#&gt; 263 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 264                 Mokotow_Ochota_Zoliborz
+#&gt; 265                 Mokotow_Ochota_Zoliborz
+#&gt; 266                             Srodmiescie
+#&gt; 267 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 268 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 269                 Mokotow_Ochota_Zoliborz
+#&gt; 270 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 271 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 272                 Mokotow_Ochota_Zoliborz
+#&gt; 273 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 274 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 275 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 276 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 277                 Mokotow_Ochota_Zoliborz
+#&gt; 278 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 279 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 280                 Mokotow_Ochota_Zoliborz
+#&gt; 281 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 282                 Mokotow_Ochota_Zoliborz
+#&gt; 283                 Mokotow_Ochota_Zoliborz
+#&gt; 284 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 285 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 286                 Mokotow_Ochota_Zoliborz
+#&gt; 287 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 288                 Mokotow_Ochota_Zoliborz
+#&gt; 289                             Srodmiescie
+#&gt; 290 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 291                 Mokotow_Ochota_Zoliborz
+#&gt; 292 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 293                             Srodmiescie
+#&gt; 294 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 295 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 296                 Mokotow_Ochota_Zoliborz
+#&gt; 297                 Mokotow_Ochota_Zoliborz
+#&gt; 298 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 299                             Srodmiescie
+#&gt; 300 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 301 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 302 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 303 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 304 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 305                 Mokotow_Ochota_Zoliborz
+#&gt; 306 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 307                 Mokotow_Ochota_Zoliborz
+#&gt; 308 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 309 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 310 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 311 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 312 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 313 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 314                             Srodmiescie
+#&gt; 315                             Srodmiescie
+#&gt; 316                 Mokotow_Ochota_Zoliborz
+#&gt; 317 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 318 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 319 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 320 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 321                             Srodmiescie
+#&gt; 322 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 323 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 324                             Srodmiescie
+#&gt; 325                             Srodmiescie
+#&gt; 326                 Mokotow_Ochota_Zoliborz
+#&gt; 327 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 328 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 329                 Mokotow_Ochota_Zoliborz
+#&gt; 330                 Mokotow_Ochota_Zoliborz
+#&gt; 331                 Mokotow_Ochota_Zoliborz
+#&gt; 332 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 333                 Mokotow_Ochota_Zoliborz
+#&gt; 334 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 335 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 336                 Mokotow_Ochota_Zoliborz
+#&gt; 337                 Mokotow_Ochota_Zoliborz
+#&gt; 338 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 339 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 340 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 341                 Mokotow_Ochota_Zoliborz
+#&gt; 342                 Mokotow_Ochota_Zoliborz
+#&gt; 343                 Mokotow_Ochota_Zoliborz
+#&gt; 344                             Srodmiescie
+#&gt; 345                 Mokotow_Ochota_Zoliborz
+#&gt; 346                 Mokotow_Ochota_Zoliborz
+#&gt; 347                 Mokotow_Ochota_Zoliborz
+#&gt; 348 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 349 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 350 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 351 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 352                 Mokotow_Ochota_Zoliborz
+#&gt; 353                 Mokotow_Ochota_Zoliborz
+#&gt; 354                 Mokotow_Ochota_Zoliborz
+#&gt; 355 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 356                             Srodmiescie
+#&gt; 357 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 358                 Mokotow_Ochota_Zoliborz
+#&gt; 359                 Mokotow_Ochota_Zoliborz
+#&gt; 360                 Mokotow_Ochota_Zoliborz
+#&gt; 361                             Srodmiescie
+#&gt; 362 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 363                             Srodmiescie
+#&gt; 364                 Mokotow_Ochota_Zoliborz
+#&gt; 365                 Mokotow_Ochota_Zoliborz
+#&gt; 366 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 367                 Mokotow_Ochota_Zoliborz
+#&gt; 368                             Srodmiescie
+#&gt; 369                 Mokotow_Ochota_Zoliborz
+#&gt; 370 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 371                 Mokotow_Ochota_Zoliborz
+#&gt; 372                             Srodmiescie
+#&gt; 373 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 374 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 375 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 376                 Mokotow_Ochota_Zoliborz
+#&gt; 377 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 378 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 379 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 380 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 381 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 382                 Mokotow_Ochota_Zoliborz
+#&gt; 383                 Mokotow_Ochota_Zoliborz
+#&gt; 384 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 385 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 386 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 387 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 388                 Mokotow_Ochota_Zoliborz
+#&gt; 389 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 390 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 391 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 392                 Mokotow_Ochota_Zoliborz
+#&gt; 393 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 394                 Mokotow_Ochota_Zoliborz
+#&gt; 395 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 396                 Mokotow_Ochota_Zoliborz
+#&gt; 397                             Srodmiescie
+#&gt; 398                 Mokotow_Ochota_Zoliborz
+#&gt; 399                 Mokotow_Ochota_Zoliborz
+#&gt; 400 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 401                             Srodmiescie
+#&gt; 402                 Mokotow_Ochota_Zoliborz
+#&gt; 403 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 404 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 405 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 406                 Mokotow_Ochota_Zoliborz
+#&gt; 407                             Srodmiescie
+#&gt; 408                             Srodmiescie
+#&gt; 409                 Mokotow_Ochota_Zoliborz
+#&gt; 410 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 411 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 412 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 413 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 414 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 415                             Srodmiescie
+#&gt; 416 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 417 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 418 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 419 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 420 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 421 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 422 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 423 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 424 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 425 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 426 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 427                 Mokotow_Ochota_Zoliborz
+#&gt; 428 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 429 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 430 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 431 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 432                 Mokotow_Ochota_Zoliborz
+#&gt; 433                 Mokotow_Ochota_Zoliborz
+#&gt; 434 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 435 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 436 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 437                 Mokotow_Ochota_Zoliborz
+#&gt; 438                             Srodmiescie
+#&gt; 439                 Mokotow_Ochota_Zoliborz
+#&gt; 440 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 441 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 442                 Mokotow_Ochota_Zoliborz
+#&gt; 443                 Mokotow_Ochota_Zoliborz
+#&gt; 444                 Mokotow_Ochota_Zoliborz
+#&gt; 445 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 446                             Srodmiescie
+#&gt; 447                 Mokotow_Ochota_Zoliborz
+#&gt; 448 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 449 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 450 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 451                 Mokotow_Ochota_Zoliborz
+#&gt; 452                 Mokotow_Ochota_Zoliborz
+#&gt; 453                 Mokotow_Ochota_Zoliborz
+#&gt; 454                 Mokotow_Ochota_Zoliborz
+#&gt; 455 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 456                 Mokotow_Ochota_Zoliborz
+#&gt; 457 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 458                 Mokotow_Ochota_Zoliborz
+#&gt; 459                 Mokotow_Ochota_Zoliborz
+#&gt; 460 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 461 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 462 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 463                 Mokotow_Ochota_Zoliborz
+#&gt; 464                 Mokotow_Ochota_Zoliborz
+#&gt; 465 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 466 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 467                             Srodmiescie
+#&gt; 468 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 469                 Mokotow_Ochota_Zoliborz
+#&gt; 470                 Mokotow_Ochota_Zoliborz
+#&gt; 471                             Srodmiescie
+#&gt; 472 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 473                 Mokotow_Ochota_Zoliborz
+#&gt; 474 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 475 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 476 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 477                 Mokotow_Ochota_Zoliborz
+#&gt; 478 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 479                 Mokotow_Ochota_Zoliborz
+#&gt; 480 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 481 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 482 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 483 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 484 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 485 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 486                 Mokotow_Ochota_Zoliborz
+#&gt; 487 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 488 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 489 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 490                             Srodmiescie
+#&gt; 491 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 492 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 493                 Mokotow_Ochota_Zoliborz
+#&gt; 494                 Mokotow_Ochota_Zoliborz
+#&gt; 495 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 496 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 497 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 498 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 499 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola
+#&gt; 500 Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -141,7 +1657,9 @@ using safe_extractor object.</p>
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

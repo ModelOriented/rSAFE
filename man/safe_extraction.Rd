@@ -50,7 +50,7 @@ for surrogate feature extraction.
 
 library(DALEX)
 library(randomForest)
-library(SAFE)
+library(rSAFE)
 
 data <- apartments[1:500,]
 set.seed(111)

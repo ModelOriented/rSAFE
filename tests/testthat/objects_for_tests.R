@@ -1,4 +1,4 @@
-library(SAFE)
+library(rSAFE)
 library(DALEX)
 library(randomForest)
 library(xgboost)

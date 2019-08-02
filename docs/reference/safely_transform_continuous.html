@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculating a transformation of continuous feature using PDP/ALE plot — safely_transform_continuous • SAFE</title>
+<title>Calculating a transformation of continuous feature using PDP/ALE plot — safely_transform_continuous • rSAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -143,6 +143,205 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
     <div class='dont-index'><p><code><a href='safe_extraction.html'>safe_extraction</a></code>, <code><a href='safely_detect_changepoints.html'>safely_detect_changepoints</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>DALEX</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>randomForest</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rSAFE</span>)
+
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='no'>apartments</span>[<span class='fl'>1</span>:<span class='fl'>500</span>,]
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>111</span>)
+<span class='no'>model_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~ <span class='no'>construction.year</span> + <span class='no'>surface</span> + <span class='no'>floor</span> +
+                           <span class='no'>no.rooms</span> + <span class='no'>district</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
+<span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])
+<span class='fu'>safely_transform_continuous</span>(<span class='no'>explainer_rf</span>, <span class='st'>"construction.year"</span>)</div><div class='output co'>#&gt; $sv
+#&gt;                                                  _vname_      _label_     _x_
+#&gt; construction.year.randomForest.1920    construction.year randomForest 1920.00
+#&gt; construction.year.randomForest.1921    construction.year randomForest 1921.00
+#&gt; construction.year.randomForest.1922.98 construction.year randomForest 1922.98
+#&gt; construction.year.randomForest.1923.97 construction.year randomForest 1923.97
+#&gt; construction.year.randomForest.1924    construction.year randomForest 1924.00
+#&gt; construction.year.randomForest.1925    construction.year randomForest 1925.00
+#&gt; construction.year.randomForest.1926    construction.year randomForest 1926.00
+#&gt; construction.year.randomForest.1927    construction.year randomForest 1927.00
+#&gt; construction.year.randomForest.1928    construction.year randomForest 1928.00
+#&gt; construction.year.randomForest.1929    construction.year randomForest 1929.00
+#&gt; construction.year.randomForest.1931    construction.year randomForest 1931.00
+#&gt; construction.year.randomForest.1932.86 construction.year randomForest 1932.86
+#&gt; construction.year.randomForest.1933.85 construction.year randomForest 1933.85
+#&gt; construction.year.randomForest.1934.84 construction.year randomForest 1934.84
+#&gt; construction.year.randomForest.1935    construction.year randomForest 1935.00
+#&gt; construction.year.randomForest.1936    construction.year randomForest 1936.00
+#&gt; construction.year.randomForest.1937    construction.year randomForest 1937.00
+#&gt; construction.year.randomForest.1938    construction.year randomForest 1938.00
+#&gt; construction.year.randomForest.1939    construction.year randomForest 1939.00
+#&gt; construction.year.randomForest.1940    construction.year randomForest 1940.00
+#&gt; construction.year.randomForest.1941    construction.year randomForest 1941.00
+#&gt; construction.year.randomForest.1943    construction.year randomForest 1943.00
+#&gt; construction.year.randomForest.1944    construction.year randomForest 1944.00
+#&gt; construction.year.randomForest.1945    construction.year randomForest 1945.00
+#&gt; construction.year.randomForest.1946    construction.year randomForest 1946.00
+#&gt; construction.year.randomForest.1947    construction.year randomForest 1947.00
+#&gt; construction.year.randomForest.1948    construction.year randomForest 1948.00
+#&gt; construction.year.randomForest.1949    construction.year randomForest 1949.00
+#&gt; construction.year.randomForest.1950    construction.year randomForest 1950.00
+#&gt; construction.year.randomForest.1951    construction.year randomForest 1951.00
+#&gt; construction.year.randomForest.1951.65 construction.year randomForest 1951.65
+#&gt; construction.year.randomForest.1952    construction.year randomForest 1952.00
+#&gt; construction.year.randomForest.1953    construction.year randomForest 1953.00
+#&gt; construction.year.randomForest.1954.62 construction.year randomForest 1954.62
+#&gt; construction.year.randomForest.1956    construction.year randomForest 1956.00
+#&gt; construction.year.randomForest.1956.59 construction.year randomForest 1956.59
+#&gt; construction.year.randomForest.1957    construction.year randomForest 1957.00
+#&gt; construction.year.randomForest.1958    construction.year randomForest 1958.00
+#&gt; construction.year.randomForest.1959    construction.year randomForest 1959.00
+#&gt; construction.year.randomForest.1960    construction.year randomForest 1960.00
+#&gt; construction.year.randomForest.1961    construction.year randomForest 1961.00
+#&gt; construction.year.randomForest.1962    construction.year randomForest 1962.00
+#&gt; construction.year.randomForest.1963    construction.year randomForest 1963.00
+#&gt; construction.year.randomForest.1964    construction.year randomForest 1964.00
+#&gt; construction.year.randomForest.1965    construction.year randomForest 1965.00
+#&gt; construction.year.randomForest.1966.49 construction.year randomForest 1966.49
+#&gt; construction.year.randomForest.1967    construction.year randomForest 1967.00
+#&gt; construction.year.randomForest.1968    construction.year randomForest 1968.00
+#&gt; construction.year.randomForest.1969    construction.year randomForest 1969.00
+#&gt; construction.year.randomForest.1970    construction.year randomForest 1970.00
+#&gt; construction.year.randomForest.1971    construction.year randomForest 1971.00
+#&gt; construction.year.randomForest.1972    construction.year randomForest 1972.00
+#&gt; construction.year.randomForest.1972.41 construction.year randomForest 1972.41
+#&gt; construction.year.randomForest.1974    construction.year randomForest 1974.00
+#&gt; construction.year.randomForest.1975    construction.year randomForest 1975.00
+#&gt; construction.year.randomForest.1977    construction.year randomForest 1977.00
+#&gt; construction.year.randomForest.1978    construction.year randomForest 1978.00
+#&gt; construction.year.randomForest.1979    construction.year randomForest 1979.00
+#&gt; construction.year.randomForest.1981    construction.year randomForest 1981.00
+#&gt; construction.year.randomForest.1983    construction.year randomForest 1983.00
+#&gt; construction.year.randomForest.1984    construction.year randomForest 1984.00
+#&gt; construction.year.randomForest.1985    construction.year randomForest 1985.00
+#&gt; construction.year.randomForest.1985.29 construction.year randomForest 1985.29
+#&gt; construction.year.randomForest.1986    construction.year randomForest 1986.00
+#&gt; construction.year.randomForest.1987    construction.year randomForest 1987.00
+#&gt; construction.year.randomForest.1988    construction.year randomForest 1988.00
+#&gt; construction.year.randomForest.1989    construction.year randomForest 1989.00
+#&gt; construction.year.randomForest.1989.24 construction.year randomForest 1989.24
+#&gt; construction.year.randomForest.1990    construction.year randomForest 1990.00
+#&gt; construction.year.randomForest.1991    construction.year randomForest 1991.00
+#&gt; construction.year.randomForest.1992    construction.year randomForest 1992.00
+#&gt; construction.year.randomForest.1993    construction.year randomForest 1993.00
+#&gt; construction.year.randomForest.1994    construction.year randomForest 1994.00
+#&gt; construction.year.randomForest.1995    construction.year randomForest 1995.00
+#&gt; construction.year.randomForest.1996    construction.year randomForest 1996.00
+#&gt; construction.year.randomForest.1997    construction.year randomForest 1997.00
+#&gt; construction.year.randomForest.1998    construction.year randomForest 1998.00
+#&gt; construction.year.randomForest.1999    construction.year randomForest 1999.00
+#&gt; construction.year.randomForest.2000.09 construction.year randomForest 2000.09
+#&gt; construction.year.randomForest.2001.08 construction.year randomForest 2001.08
+#&gt; construction.year.randomForest.2003    construction.year randomForest 2003.00
+#&gt; construction.year.randomForest.2004    construction.year randomForest 2004.00
+#&gt; construction.year.randomForest.2004.05 construction.year randomForest 2004.05
+#&gt; construction.year.randomForest.2005    construction.year randomForest 2005.00
+#&gt; construction.year.randomForest.2006    construction.year randomForest 2006.00
+#&gt; construction.year.randomForest.2007    construction.year randomForest 2007.00
+#&gt; construction.year.randomForest.2009    construction.year randomForest 2009.00
+#&gt; construction.year.randomForest.2010    construction.year randomForest 2010.00
+#&gt;                                              _yhat_ _ids_
+#&gt; construction.year.randomForest.1920       0.0000000     0
+#&gt; construction.year.randomForest.1921      -0.4788188     0
+#&gt; construction.year.randomForest.1922.98   31.9705418     0
+#&gt; construction.year.randomForest.1923.97   28.1298350     0
+#&gt; construction.year.randomForest.1924      28.1298350     0
+#&gt; construction.year.randomForest.1925       5.3191752     0
+#&gt; construction.year.randomForest.1926      10.9890902     0
+#&gt; construction.year.randomForest.1927     -29.6124966     0
+#&gt; construction.year.randomForest.1928     -35.2704262     0
+#&gt; construction.year.randomForest.1929     -45.6703374     0
+#&gt; construction.year.randomForest.1931     -64.0997371     0
+#&gt; construction.year.randomForest.1932.86  -89.4061538     0
+#&gt; construction.year.randomForest.1933.85 -130.6336331     0
+#&gt; construction.year.randomForest.1934.84 -217.6023312     0
+#&gt; construction.year.randomForest.1935    -217.6023312     0
+#&gt; construction.year.randomForest.1936    -261.3474181     0
+#&gt; construction.year.randomForest.1937    -266.3732517     0
+#&gt; construction.year.randomForest.1938    -284.6784415     0
+#&gt; construction.year.randomForest.1939    -296.4874672     0
+#&gt; construction.year.randomForest.1940    -313.9788498     0
+#&gt; construction.year.randomForest.1941    -314.6985854     0
+#&gt; construction.year.randomForest.1943    -318.6016248     0
+#&gt; construction.year.randomForest.1944    -326.0885464     0
+#&gt; construction.year.randomForest.1945    -337.9547047     0
+#&gt; construction.year.randomForest.1946    -342.3743194     0
+#&gt; construction.year.randomForest.1947    -342.2695960     0
+#&gt; construction.year.randomForest.1948    -348.1902896     0
+#&gt; construction.year.randomForest.1949    -356.3818556     0
+#&gt; construction.year.randomForest.1950    -366.8717414     0
+#&gt; construction.year.randomForest.1951    -375.7986459     0
+#&gt; construction.year.randomForest.1951.65 -373.5101570     0
+#&gt; construction.year.randomForest.1952    -373.5101570     0
+#&gt; construction.year.randomForest.1953    -373.4665106     0
+#&gt; construction.year.randomForest.1954.62 -380.7125276     0
+#&gt; construction.year.randomForest.1956    -382.1265747     0
+#&gt; construction.year.randomForest.1956.59 -385.7418306     0
+#&gt; construction.year.randomForest.1957    -385.7418306     0
+#&gt; construction.year.randomForest.1958    -379.1217924     0
+#&gt; construction.year.randomForest.1959    -377.7544264     0
+#&gt; construction.year.randomForest.1960    -373.3014901     0
+#&gt; construction.year.randomForest.1961    -372.6085633     0
+#&gt; construction.year.randomForest.1962    -366.6955434     0
+#&gt; construction.year.randomForest.1963    -374.0320541     0
+#&gt; construction.year.randomForest.1964    -379.3692214     0
+#&gt; construction.year.randomForest.1965    -380.0888870     0
+#&gt; construction.year.randomForest.1966.49 -382.3729279     0
+#&gt; construction.year.randomForest.1967    -383.2203973     0
+#&gt; construction.year.randomForest.1968    -383.3451798     0
+#&gt; construction.year.randomForest.1969    -379.5993249     0
+#&gt; construction.year.randomForest.1970    -379.8155130     0
+#&gt; construction.year.randomForest.1971    -383.7430673     0
+#&gt; construction.year.randomForest.1972    -382.7366701     0
+#&gt; construction.year.randomForest.1972.41 -381.6203356     0
+#&gt; construction.year.randomForest.1974    -384.3715931     0
+#&gt; construction.year.randomForest.1975    -386.7851269     0
+#&gt; construction.year.randomForest.1977    -391.4363263     0
+#&gt; construction.year.randomForest.1978    -391.4449263     0
+#&gt; construction.year.randomForest.1979    -391.3231987     0
+#&gt; construction.year.randomForest.1981    -387.4808022     0
+#&gt; construction.year.randomForest.1983    -384.5683908     0
+#&gt; construction.year.randomForest.1984    -382.8556177     0
+#&gt; construction.year.randomForest.1985    -380.7721432     0
+#&gt; construction.year.randomForest.1985.29 -380.6415431     0
+#&gt; construction.year.randomForest.1986    -378.9190937     0
+#&gt; construction.year.randomForest.1987    -378.4847953     0
+#&gt; construction.year.randomForest.1988    -374.6461611     0
+#&gt; construction.year.randomForest.1989    -363.0140084     0
+#&gt; construction.year.randomForest.1989.24 -362.2166126     0
+#&gt; construction.year.randomForest.1990    -358.1841977     0
+#&gt; construction.year.randomForest.1991    -358.8721647     0
+#&gt; construction.year.randomForest.1992    -359.8441862     0
+#&gt; construction.year.randomForest.1993    -350.1526964     0
+#&gt; construction.year.randomForest.1994    -333.4070579     0
+#&gt; construction.year.randomForest.1995    -102.5121057     0
+#&gt; construction.year.randomForest.1996     -92.6443548     0
+#&gt; construction.year.randomForest.1997     -91.6661631     0
+#&gt; construction.year.randomForest.1998     -95.5823185     0
+#&gt; construction.year.randomForest.1999     -87.7907008     0
+#&gt; construction.year.randomForest.2000.09  -79.9025269     0
+#&gt; construction.year.randomForest.2001.08  -82.2630218     0
+#&gt; construction.year.randomForest.2003     -76.6647112     0
+#&gt; construction.year.randomForest.2004     -55.5155618     0
+#&gt; construction.year.randomForest.2004.05  -49.6940335     0
+#&gt; construction.year.randomForest.2005     -47.6365146     0
+#&gt; construction.year.randomForest.2006     -37.8860250     0
+#&gt; construction.year.randomForest.2007     -34.3066721     0
+#&gt; construction.year.randomForest.2009     -39.3150611     0
+#&gt; construction.year.randomForest.2010     -36.0281145     0
+#&gt; 
+#&gt; $break_points
+#&gt; [1] 1929 1950 1974 1984 1994
+#&gt; 
+#&gt; $new_levels
+#&gt; [1] "(-Inf, 1929]" "(1929, 1950]" "(1950, 1974]" "(1974, 1984]" "(1984, 1994]"
+#&gt; [6] "(1994, Inf)" 
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -152,7 +351,9 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
       <li><a href="#value">Value</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

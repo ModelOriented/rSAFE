@@ -31,7 +31,7 @@ for the continuous variable using a PDP plot obtained from black box model.
 
 library(DALEX)
 library(randomForest)
-library(SAFE)
+library(rSAFE)
 
 data <- apartments[1:500,]
 set.seed(111)

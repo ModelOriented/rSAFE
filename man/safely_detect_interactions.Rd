@@ -32,15 +32,15 @@ to evaluate their non_additive effect.
 
 library(DALEX)
 library(randomForest)
-library(SAFE)
+library(rSAFE)
 
 data <- apartments[1:500,]
 set.seed(111)
 model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
                            no.rooms + district, data = data)
 explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
-safely_detect_interactions <- function(explainer_rf, inter_param = 0.25,
-                                       inter_threshold = 0.2, verbose = TRUE)
+safely_detect_interactions(explainer_rf, inter_param = 0.25,
+                          inter_threshold = 0.2, verbose = TRUE)
 
 }
 \seealso{

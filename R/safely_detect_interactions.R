@@ -21,15 +21,15 @@
 #'
 #' library(DALEX)
 #' library(randomForest)
-#' library(SAFE)
+#' library(rSAFE)
 #'
 #' data <- apartments[1:500,]
 #' set.seed(111)
 #' model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
 #'                            no.rooms + district, data = data)
 #' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
-#' safely_detect_interactions <- function(explainer_rf, inter_param = 0.25,
-#'                                        inter_threshold = 0.2, verbose = TRUE)
+#' safely_detect_interactions(explainer_rf, inter_param = 0.25,
+#'                           inter_threshold = 0.2, verbose = TRUE)
 #'
 #' @export
 
@@ -41,11 +41,11 @@ safely_detect_interactions <- function(explainer, inter_param = 0.25, inter_thre
   }
   if (!is.numeric(inter_param) | inter_param<=0) {
     warning("Wrong inter_param value - using default one.")
-    inter_param <- 2
+    inter_param <- 0.25
   }
   if (!is.numeric(inter_threshold) | inter_threshold<0 | inter_threshold>1) {
     warning("Wrong inter_threshold value - using default one.")
-    inter_threshold <- 0.4
+    inter_threshold <- 0.25
   }
 
 

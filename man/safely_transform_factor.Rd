@@ -31,7 +31,7 @@ The gap statistic criterion is used to determine the optimal number of clusters.
 
 library(DALEX)
 library(randomForest)
-library(SAFE)
+library(rSAFE)
 
 data <- apartments[1:500,]
 set.seed(111)
