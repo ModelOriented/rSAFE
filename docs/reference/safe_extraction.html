@@ -104,10 +104,10 @@
 for surrogate feature extraction.</p>
     
 
-    <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"MBIC"</span>,
-  <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"complete"</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"_"</span>,
-  <span class='kw'>interactions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"MBIC"</span>, <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"complete"</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>500</span>,
+  <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>interactions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+  <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -120,6 +120,10 @@ for surrogate feature extraction.</p>
       <th>response_type</th>
       <td><p>character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.</p></td>
+    </tr>
+    <tr>
+      <th>N</th>
+      <td><p>number of observation used for creating the PD/ALE plot, default 50</p></td>
     </tr>
     <tr>
       <th>penalty</th>

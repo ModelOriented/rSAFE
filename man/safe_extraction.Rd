@@ -4,16 +4,18 @@
 \alias{safe_extraction}
 \title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
 \usage{
-safe_extraction(explainer, response_type = "ale", penalty = "MBIC",
-  no_segments = 2, method = "complete", B = 500, collapse = "_",
-  interactions = FALSE, inter_param = 0.25, inter_threshold = 0.25,
-  verbose = TRUE)
+safe_extraction(explainer, response_type = "ale", N = 50,
+  penalty = "MBIC", no_segments = 2, method = "complete", B = 500,
+  collapse = "_", interactions = FALSE, inter_param = 0.25,
+  inter_threshold = 0.25, verbose = TRUE)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
 
 \item{response_type}{character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}
+
+\item{N}{number of observation used for creating the PD/ALE plot, default 50}
 
 \item{penalty}{penalty for introducing another changepoint,
 one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value}

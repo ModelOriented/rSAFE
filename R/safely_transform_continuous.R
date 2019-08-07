@@ -1,12 +1,13 @@
 #' @title Calculating a transformation of continuous feature using PDP/ALE plot
 #'
 #' @description The safely_transform_continuous() function calculates a transformation function
-#' for the continuous variable using a PDP plot obtained from black box model.
+#' for the continuous variable using a PD/ALE plot obtained from black box model.
 #'
 #' @param explainer DALEX explainer created with explain() function
 #' @param variable a feature for which the transformation function is to be computed
 #' @param response_type character, type of response to be calculated, one of: "pdp", "ale".
 #' If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.
+#' @param N number of observation used for creating the PD/ALE plot, default 50
 #' @param penalty penalty for introducing another changepoint,
 #' one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
 #' @param no_segments numeric, a number of segments variable is to be divided into in case of founding no breakpoints
@@ -30,7 +31,7 @@
 #'
 #' @export
 
-safely_transform_continuous <- function(explainer, variable, response_type = "ale", penalty = "MBIC", no_segments = 2) {
+safely_transform_continuous <- function(explainer, variable, response_type = "ale", N = 50, penalty = "MBIC", no_segments = 2) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safely_transform_continuous' applied to an object of class '", class(explainer), "'."))
@@ -49,9 +50,9 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
 
   #calculating average responses of chosen type
   if (response_type == "ale") {
-    sv <- ingredients::accumulated_dependency(explainer, variables = variable, N = 50)
+    sv <- ingredients::accumulated_dependency(explainer, variables = variable, N = N)
   } else {
-    sv <- ingredients::partial_dependency(explainer, variables = variable, N = 50)
+    sv <- ingredients::partial_dependency(explainer, variables = variable, N = N)
   }
 
   #if the variable is a factor with two values (but is regarded as a continuous feature) we do not transform it

@@ -5,7 +5,7 @@
 \title{Calculating a transformation of continuous feature using PDP/ALE plot}
 \usage{
 safely_transform_continuous(explainer, variable, response_type = "ale",
-  penalty = "MBIC", no_segments = 2)
+  N = 50, penalty = "MBIC", no_segments = 2)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
@@ -14,6 +14,8 @@ safely_transform_continuous(explainer, variable, response_type = "ale",
 
 \item{response_type}{character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}
+
+\item{N}{number of observation used for creating the PD/ALE plot, default 50}
 
 \item{penalty}{penalty for introducing another changepoint,
 one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value}
@@ -25,7 +27,7 @@ list of information on the transformation of given variable
 }
 \description{
 The safely_transform_continuous() function calculates a transformation function
-for the continuous variable using a PDP plot obtained from black box model.
+for the continuous variable using a PD/ALE plot obtained from black box model.
 }
 \examples{
 

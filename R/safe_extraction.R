@@ -6,6 +6,7 @@
 #' @param explainer DALEX explainer created with explain() function
 #' @param response_type character, type of response to be calculated, one of: "pdp", "ale".
 #' If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.
+#' @param N number of observation used for creating the PD/ALE plot, default 50
 #' @param penalty penalty for introducing another changepoint,
 #' one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
 #' @param no_segments numeric, a number of segments variable is to be divided into in case of founding no breakpoints
@@ -46,7 +47,7 @@
 #'
 #' @export
 
-safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", no_segments = 2, method = "complete", B = 500, collapse = "_", interactions = FALSE, inter_param = 0.25, inter_threshold = 0.25, verbose = TRUE) {
+safe_extraction <- function(explainer, response_type = "ale", N = 50, penalty = "MBIC", no_segments = 2, method = "complete", B = 500, collapse = "_", interactions = FALSE, inter_param = 0.25, inter_threshold = 0.25, verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
@@ -100,7 +101,7 @@ safe_extraction <- function(explainer, response_type = "ale", penalty = "MBIC", 
       temp_info$clustering <- trans_prop$clustering
       temp_info$new_levels <- trans_prop$new_levels
     } else {
-      trans_prop <- safely_transform_continuous(explainer, var_temp, response_type, penalty, no_segments)
+      trans_prop <- safely_transform_continuous(explainer, var_temp, response_type, N, penalty, no_segments)
       temp_info$sv <- trans_prop$sv
       temp_info$break_points <- trans_prop$break_points
       temp_info$new_levels <- trans_prop$new_levels
