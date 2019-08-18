@@ -104,10 +104,11 @@
 for surrogate feature extraction.</p>
     
 
-    <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"MBIC"</span>, <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"complete"</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>500</span>,
-  <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>interactions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-  <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>safe_extraction</span>(<span class='no'>explainer</span>, <span class='kw'>response_type</span> <span class='kw'>=</span> <span class='st'>"ale"</span>, <span class='kw'>grid_points</span> <span class='kw'>=</span> <span class='fl'>50</span>,
+  <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"MBIC"</span>, <span class='kw'>nquantiles</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>no_segments</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"complete"</span>, <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"_"</span>,
+  <span class='kw'>interactions</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>inter_param</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='kw'>inter_threshold</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -122,13 +123,21 @@ for surrogate feature extraction.</p>
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.</p></td>
     </tr>
     <tr>
+      <th>grid_points</th>
+      <td><p>number of points on x-axis used for creating the PD/ALE plot, default 50</p></td>
+    </tr>
+    <tr>
       <th>N</th>
-      <td><p>number of observation used for creating the PD/ALE plot, default 50</p></td>
+      <td><p>number of observations from the dataset used for creating the PD/ALE plot, default 200</p></td>
     </tr>
     <tr>
       <th>penalty</th>
       <td><p>penalty for introducing another changepoint,
 one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value</p></td>
+    </tr>
+    <tr>
+      <th>nquantiles</th>
+      <td><p>the number of quantiles used in integral approximation</p></td>
     </tr>
     <tr>
       <th>no_segments</th>
@@ -175,7 +184,7 @@ than inter_param - if this percentage is less than inter_threshold then interact
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='safely_transform_factor.html'>safely_transform_factor</a></code>, <code><a href='safely_transform_continuous.html'>safely_transform_continuous</a></code>, <code><a href='safely_detect_interactions.html'>safely_detect_interactions</a></code>, <code><a href='safely_transform_data.html'>safely_transform_data</a></code></p></div>
+    <div class='dont-index'><p><code><a href='safely_transform_categorical.html'>safely_transform_categorical</a></code>, <code><a href='safely_transform_continuous.html'>safely_transform_continuous</a></code>, <code><a href='safely_detect_interactions.html'>safely_detect_interactions</a></code>, <code><a href='safely_transform_data.html'>safely_transform_data</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -191,21 +200,21 @@ than inter_param - if this percentage is less than inter_threshold then interact
 <span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])
 <span class='no'>safe_extractor</span> <span class='kw'>&lt;-</span> <span class='fu'>safe_extraction</span>(<span class='no'>explainer_rf</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>safe_extractor</span>)</div><div class='output co'>#&gt; Variable 'construction.year' - selected intervals:
-#&gt; 	(-Inf, 1929]
-#&gt;  	(1929, 1950]
-#&gt;  	(1950, 1974]
-#&gt;  	(1974, 1984]
-#&gt;  	(1984, 1994]
+#&gt; 	(-Inf, 1926]
+#&gt;  	(1926, 1940]
+#&gt;  	(1940, 1962]
+#&gt;  	(1962, 1979.878]
+#&gt;  	(1979.878, 1994]
 #&gt;  	(1994, Inf)
 #&gt; Variable 'surface' - selected intervals:
-#&gt; 	(-Inf, 31.92]
-#&gt;  	(31.92, 46]
-#&gt;  	(46, 65]
-#&gt;  	(65, 103]
-#&gt;  	(103, 126]
-#&gt;  	(126, Inf)
+#&gt; 	(-Inf, 32]
+#&gt;  	(32, 64]
+#&gt;  	(64, 100.5102]
+#&gt;  	(100.5102, 125]
+#&gt;  	(125, Inf)
 #&gt; Variable 'floor' - selected intervals:
-#&gt; 	(-Inf, 6]
+#&gt; 	(-Inf, 3]
+#&gt;  	(3, 6]
 #&gt;  	(6, Inf)
 #&gt; Variable 'no.rooms' - selected intervals:
 #&gt; 	(-Inf, 3]

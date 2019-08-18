@@ -1,12 +1,9 @@
 #' @title Performing feature selection on the dataset with transformed variables
 #'
 #' @description The safely_select_variables() function selects variables from dataset returned
-#' by safely_transform_data() function. For each original variable:
-#' 1) if encoding = "categorical" then exactly one variable is chosen
+#' by safely_transform_data() function. For each original variable exactly one variable is chosen
 #' - either original one or transformed one. The choice is based on the AIC value
 #' for linear model (regression) or logistic regression (classification).
-#' 2) if encoding = "one-hot" then backward feature selection is performed
-#' on all features (using AIC value) and the best set of variables is chosen.
 #'
 #' @param safe_extractor object containing information about variables transformations created with safe_extraction() function
 #' @param data data, original dataset or the one returned by safely_transform_data() function.

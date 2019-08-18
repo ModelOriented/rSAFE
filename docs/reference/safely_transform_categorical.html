@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculating a transformation of categorical feature using hierarchical clustering — safely_transform_factor • rSAFE</title>
+<title>Calculating a transformation of categorical feature using hierarchical clustering — safely_transform_categorical • rSAFE</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -100,12 +100,12 @@
     </div>
 
     
-    <p>The safely_transform_factor() function calculates a transformation function
-for the factor variable using predictions obtained from black box model and hierarchical clustering.
+    <p>The safely_transform_categorical() function calculates a transformation function
+for the categorical variable using predictions obtained from black box model and hierarchical clustering.
 The gap statistic criterion is used to determine the optimal number of clusters.</p>
     
 
-    <pre class="usage"><span class='fu'>safely_transform_factor</span>(<span class='no'>explainer</span>, <span class='no'>variable</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"complete"</span>,
+    <pre class="usage"><span class='fu'>safely_transform_categorical</span>(<span class='no'>explainer</span>, <span class='no'>variable</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"complete"</span>,
   <span class='kw'>B</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>"_"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
@@ -154,7 +154,7 @@ The gap statistic criterion is used to determine the optimal number of clusters.
 <span class='no'>model_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~ <span class='no'>construction.year</span> + <span class='no'>surface</span> + <span class='no'>floor</span> +
                            <span class='no'>no.rooms</span> + <span class='no'>district</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
 <span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])
-<span class='fu'>safely_transform_factor</span>(<span class='no'>explainer_rf</span>, <span class='st'>"district"</span>)</div><div class='output co'>#&gt; $clustering
+<span class='fu'>safely_transform_categorical</span>(<span class='no'>explainer_rf</span>, <span class='st'>"district"</span>)</div><div class='output co'>#&gt; $clustering
 #&gt; 
 #&gt; Call:
 #&gt; stats::hclust(d = dist_matrix, method = method)

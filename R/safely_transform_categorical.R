@@ -1,7 +1,7 @@
 #' @title Calculating a transformation of categorical feature using hierarchical clustering
 #'
-#' @description The safely_transform_factor() function calculates a transformation function
-#' for the factor variable using predictions obtained from black box model and hierarchical clustering.
+#' @description The safely_transform_categorical() function calculates a transformation function
+#' for the categorical variable using predictions obtained from black box model and hierarchical clustering.
 #' The gap statistic criterion is used to determine the optimal number of clusters.
 #'
 #' @param explainer DALEX explainer created with explain() function
@@ -26,14 +26,14 @@
 #' model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
 #'                            no.rooms + district, data = data)
 #' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
-#' safely_transform_factor(explainer_rf, "district")
+#' safely_transform_categorical(explainer_rf, "district")
 #'
 #' @export
 
-safely_transform_factor <- function(explainer, variable, method = "complete", B = 500, collapse = "_") {
+safely_transform_categorical <- function(explainer, variable, method = "complete", B = 500, collapse = "_") {
 
   if (class(explainer) != "explainer") {
-    stop(paste0("No applicable method for 'safely_transform_factor' applied to an object of class '", class(explainer), "'."))
+    stop(paste0("No applicable method for 'safely_transform_categorical' applied to an object of class '", class(explainer), "'."))
   }
   if (! variable %in% colnames(explainer$data)) {
     stop("Wrong variable name!")

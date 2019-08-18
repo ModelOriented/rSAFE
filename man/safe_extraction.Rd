@@ -4,10 +4,11 @@
 \alias{safe_extraction}
 \title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
 \usage{
-safe_extraction(explainer, response_type = "ale", N = 50,
-  penalty = "MBIC", no_segments = 2, method = "complete", B = 500,
-  collapse = "_", interactions = FALSE, inter_param = 0.25,
-  inter_threshold = 0.25, verbose = TRUE)
+safe_extraction(explainer, response_type = "ale", grid_points = 50,
+  N = 200, penalty = "MBIC", nquantiles = 10, no_segments = 2,
+  method = "complete", B = 500, collapse = "_",
+  interactions = FALSE, inter_param = 0.25, inter_threshold = 0.25,
+  verbose = TRUE)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
@@ -15,10 +16,14 @@ safe_extraction(explainer, response_type = "ale", N = 50,
 \item{response_type}{character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.}
 
-\item{N}{number of observation used for creating the PD/ALE plot, default 50}
+\item{grid_points}{number of points on x-axis used for creating the PD/ALE plot, default 50}
+
+\item{N}{number of observations from the dataset used for creating the PD/ALE plot, default 200}
 
 \item{penalty}{penalty for introducing another changepoint,
 one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value}
+
+\item{nquantiles}{the number of quantiles used in integral approximation}
 
 \item{no_segments}{numeric, a number of segments variable is to be divided into in case of founding no breakpoints}
 
@@ -65,5 +70,5 @@ plot(safe_extractor, variable = "construction.year")
 
 }
 \seealso{
-\code{\link{safely_transform_factor}}, \code{\link{safely_transform_continuous}}, \code{\link{safely_detect_interactions}}, \code{\link{safely_transform_data}}
+\code{\link{safely_transform_categorical}}, \code{\link{safely_transform_continuous}}, \code{\link{safely_detect_interactions}}, \code{\link{safely_transform_data}}
 }

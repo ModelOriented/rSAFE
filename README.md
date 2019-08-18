@@ -19,7 +19,7 @@ devtools::install_github("MI2DataLab/SAFE")
 Demo
 ----
 
-In this vignette we present an example of an application of the `rSAFE` package in case of regression problems. It is based on `apartments` and `apartmentsTest` datasets which come from the `DALEX` package but are also available in the `rSAFE` package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical one.
+In this vignette we present an example of an application of the `rSAFE` package in case of regression problems. It is based on `apartments` and `apartmentsTest` datasets which come from the `DALEX` package but are also available in the `rSAFE` package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical.
 
 ``` r
 library(rSAFE)
@@ -67,7 +67,7 @@ Creating a safe\_extractor
 Now, we create a `safe_extractor` object using `rSAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
 
 ``` r
-safe_extractor <- safe_extraction(explainer_rf1, penalty = 20, verbose = FALSE)
+safe_extractor <- safe_extraction(explainer_rf1, penalty = 25, verbose = FALSE)
 ```
 
 Now, let's print summary for the new object we have just created.
@@ -75,17 +75,13 @@ Now, let's print summary for the new object we have just created.
 ``` r
 print(safe_extractor)
 #> Variable 'construction.year' - selected intervals:
-#>  (-Inf, 1930]
-#>      (1930, 1952]
-#>      (1952, 1982]
-#>      (1982, 1994]
+#>  (-Inf, 1937]
+#>      (1937, 1994]
 #>      (1994, Inf)
 #> Variable 'surface' - selected intervals:
-#>  (-Inf, 40]
-#>      (40, 72]
-#>      (72, 98]
-#>      (98, 129]
-#>      (129, Inf)
+#>  (-Inf, 47]
+#>      (47, 101]
+#>      (101, Inf)
 #> Variable 'floor' - selected intervals:
 #>  (-Inf, 5]
 #>      (5, Inf)
@@ -127,12 +123,12 @@ data1 <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], verbo
 
 | district    |  m2.price|  construction.year|  surface|  floor|  no.rooms| construction.year\_new | surface\_new | floor\_new | no.rooms\_new | district\_new                                |
 |:------------|---------:|------------------:|--------:|------:|---------:|:-----------------------|:-------------|:-----------|:--------------|:---------------------------------------------|
-| Bielany     |      3542|               1979|       21|      6|         1| (1952, 1982\]          | (-Inf, 40\]  | (5, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Srodmiescie |      5631|               1997|      107|      2|         4| (1994, Inf)            | (98, 129\]   | (-Inf, 5\] | (3, Inf)      | Srodmiescie                                  |
-| Bielany     |      2989|               1994|       41|      9|         2| (1982, 1994\]          | (40, 72\]    | (5, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Ursynow     |      3822|               1968|       28|      2|         2| (1952, 1982\]          | (-Inf, 40\]  | (-Inf, 5\] | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Ursynow     |      2337|               1971|      146|      3|         6| (1952, 1982\]          | (129, Inf)   | (-Inf, 5\] | (3, Inf)      | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Ochota      |      3381|               1956|       97|      8|         3| (1952, 1982\]          | (72, 98\]    | (5, Inf)   | (-Inf, 3\]    | Mokotow\_Ochota\_Zoliborz                    |
+| Bielany     |      3542|               1979|       21|      6|         1| (1937, 1994\]          | (-Inf, 47\]  | (5, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Srodmiescie |      5631|               1997|      107|      2|         4| (1994, Inf)            | (101, Inf)   | (-Inf, 5\] | (3, Inf)      | Srodmiescie                                  |
+| Bielany     |      2989|               1994|       41|      9|         2| (1937, 1994\]          | (-Inf, 47\]  | (5, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Ursynow     |      3822|               1968|       28|      2|         2| (1937, 1994\]          | (-Inf, 47\]  | (-Inf, 5\] | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Ursynow     |      2337|               1971|      146|      3|         6| (1937, 1994\]          | (101, Inf)   | (-Inf, 5\] | (3, Inf)      | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Ochota      |      3381|               1956|       97|      8|         3| (1937, 1994\]          | (47, 101\]   | (5, Inf)   | (-Inf, 3\]    | Mokotow\_Ochota\_Zoliborz                    |
 
 We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.
 
@@ -150,12 +146,12 @@ Here are the first few rows for our data after feature selection:
 
 |  m2.price|  surface|  floor|  no.rooms| construction.year\_new | district\_new                                |
 |---------:|--------:|------:|---------:|:-----------------------|:---------------------------------------------|
-|      3542|       21|      6|         1| (1952, 1982\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+|      3542|       21|      6|         1| (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
 |      5631|      107|      2|         4| (1994, Inf)            | Srodmiescie                                  |
-|      2989|       41|      9|         2| (1982, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-|      3822|       28|      2|         2| (1952, 1982\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-|      2337|      146|      3|         6| (1952, 1982\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-|      3381|       97|      8|         3| (1952, 1982\]          | Mokotow\_Ochota\_Zoliborz                    |
+|      2989|       41|      9|         2| (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+|      3822|       28|      2|         2| (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+|      2337|      146|      3|         6| (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+|      3381|       97|      8|         3| (1937, 1994\]          | Mokotow\_Ochota\_Zoliborz                    |
 
 Now, we perform transformations on another data that will be used later in explainers:
 

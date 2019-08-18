@@ -120,7 +120,6 @@ interaction_measure <- function(explainer, var1, var2, inter_param) {
   #permutations of var1 and var2 columns
   set.seed(123)
   var1_permutation <- sample(data[,var1])
-  set.seed(123)
   var2_permutation <- sample(data[,var2])
 
   #predictions for original data

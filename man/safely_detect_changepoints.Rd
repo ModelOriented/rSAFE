@@ -21,6 +21,7 @@ a vector of optimal changepoint positions (last observations of each segment)
 The safely_detect_changepoints() function calculates the optimal positioning
 and number of changepoints for given data and penalty. It uses a PELT algorithm
 with a nonparametric cost function based on the empirical distribution.
+The implementation is inspired by the code available on https://github.com/rkillick/changepoint.
 }
 \examples{
 

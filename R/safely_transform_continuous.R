@@ -7,9 +7,11 @@
 #' @param variable a feature for which the transformation function is to be computed
 #' @param response_type character, type of response to be calculated, one of: "pdp", "ale".
 #' If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.
-#' @param N number of observation used for creating the PD/ALE plot, default 50
+#' @param grid_points number of points on x-axis used for creating the PD/ALE plot, default 50
+#' @param N number of observations from the dataset used for creating the PD/ALE plot, default 200
 #' @param penalty penalty for introducing another changepoint,
 #' one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
+#' @param nquantiles the number of quantiles used in integral approximation
 #' @param no_segments numeric, a number of segments variable is to be divided into in case of founding no breakpoints
 #'
 #' @return list of information on the transformation of given variable
@@ -31,7 +33,7 @@
 #'
 #' @export
 
-safely_transform_continuous <- function(explainer, variable, response_type = "ale", N = 50, penalty = "MBIC", no_segments = 2) {
+safely_transform_continuous <- function(explainer, variable, response_type = "ale", grid_points = 50, N = 200, penalty = "MBIC", nquantiles = 10, no_segments = 2) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safely_transform_continuous' applied to an object of class '", class(explainer), "'."))
@@ -49,10 +51,11 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
   }
 
   #calculating average responses of chosen type
+  set.seed(123) #functions from ingredients contain sampling
   if (response_type == "ale") {
-    sv <- ingredients::accumulated_dependency(explainer, variables = variable, N = N)
+    sv <- ingredients::accumulated_dependency(explainer, variables = variable, grid_points = grid_points, N = N)
   } else {
-    sv <- ingredients::partial_dependency(explainer, variables = variable, N = N)
+    sv <- ingredients::partial_dependency(explainer, variables = variable, grid_points = grid_points, N = N)
   }
 
   #if the variable is a factor with two values (but is regarded as a continuous feature) we do not transform it
@@ -63,7 +66,7 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
   }
 
   #computing breakpoints
-  break_points <- safely_detect_changepoints(sv$`_yhat_`, penalty, nquantiles = 10)
+  break_points <- safely_detect_changepoints(sv$`_yhat_`, penalty, nquantiles = nquantiles)
 
   if (length(break_points) == 0) { #no significant changes have been found
     #in this case we take a median as a breakpoint and create two intervals (as deafult)
@@ -114,7 +117,7 @@ pretty_intervals <- function(break_points) {
 }
 
 
-plot_numerical <- function(temp_info, variable) {
+plot_continuous <- function(temp_info, variable) {
   p <- plot(temp_info$sv)
   #adding breakpoints to the pdp/ale plot
   temp_bp <- temp_info$break_points

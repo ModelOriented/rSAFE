@@ -30,17 +30,10 @@ vector of variables names, selected based on AIC values
 }
 \description{
 The safely_select_variables() function selects variables from dataset returned
-by safely_transform_data() function. For each original variable:
-\enumerate{
-\item if encoding = "categorical" then exactly one variable is chosen
-}
+by safely_transform_data() function. For each original variable exactly one variable is chosen
 \itemize{
 \item either original one or transformed one. The choice is based on the AIC value
 for linear model (regression) or logistic regression (classification).
-}
-\enumerate{
-\item if encoding = "one-hot" then backward feature selection is performed
-on all features (using AIC value) and the best set of variables is chosen.
 }
 }
 \examples{

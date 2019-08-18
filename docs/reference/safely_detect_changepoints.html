@@ -102,7 +102,8 @@
     
     <p>The safely_detect_changepoints() function calculates the optimal positioning
 and number of changepoints for given data and penalty. It uses a PELT algorithm
-with a nonparametric cost function based on the empirical distribution.</p>
+with a nonparametric cost function based on the empirical distribution.
+The implementation is inspired by the code available on https://github.com/rkillick/changepoint.</p>
     
 
     <pre class="usage"><span class='fu'>safely_detect_changepoints</span>(<span class='no'>data</span>, <span class='kw'>penalty</span> <span class='kw'>=</span> <span class='st'>"MBIC"</span>, <span class='kw'>nquantiles</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>

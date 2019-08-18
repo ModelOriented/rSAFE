@@ -92,7 +92,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/
 <div id="demo" class="section level2">
 <h2 class="hasAnchor">
 <a href="#demo" class="anchor"></a>Demo</h2>
-<p>In this vignette we present an example of an application of the <code>rSAFE</code> package in case of regression problems. It is based on <code>apartments</code> and <code>apartmentsTest</code> datasets which come from the <code>DALEX</code> package but are also available in the <code>rSAFE</code> package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical one.</p>
+<p>In this vignette we present an example of an application of the <code>rSAFE</code> package in case of regression problems. It is based on <code>apartments</code> and <code>apartmentsTest</code> datasets which come from the <code>DALEX</code> package but are also available in the <code>rSAFE</code> package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rSAFE)
 <span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(apartments)
 <span class="co">#&gt;   m2.price construction.year surface floor no.rooms    district</span>
@@ -129,21 +129,17 @@ explainer_rf1
 <h2 class="hasAnchor">
 <a href="#creating-a-safe_extractor" class="anchor"></a>Creating a safe_extractor</h2>
 <p>Now, we create a <code>safe_extractor</code> object using <code>rSAFE</code> package and our surrogate model. Setting the argument <code>verbose=FALSE</code> stops progress bar from printing.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="reference/safe_extraction.html">safe_extraction</a></span>(explainer_rf1, <span class="dt">penalty =</span> <span class="dv">20</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">safe_extractor &lt;-<span class="st"> </span><span class="kw"><a href="reference/safe_extraction.html">safe_extraction</a></span>(explainer_rf1, <span class="dt">penalty =</span> <span class="dv">25</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>Now, let’s print summary for the new object we have just created.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(safe_extractor)
 <span class="co">#&gt; Variable 'construction.year' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 1930]</span>
-<span class="co">#&gt;      (1930, 1952]</span>
-<span class="co">#&gt;      (1952, 1982]</span>
-<span class="co">#&gt;      (1982, 1994]</span>
+<span class="co">#&gt;  (-Inf, 1937]</span>
+<span class="co">#&gt;      (1937, 1994]</span>
 <span class="co">#&gt;      (1994, Inf)</span>
 <span class="co">#&gt; Variable 'surface' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 40]</span>
-<span class="co">#&gt;      (40, 72]</span>
-<span class="co">#&gt;      (72, 98]</span>
-<span class="co">#&gt;      (98, 129]</span>
-<span class="co">#&gt;      (129, Inf)</span>
+<span class="co">#&gt;  (-Inf, 47]</span>
+<span class="co">#&gt;      (47, 101]</span>
+<span class="co">#&gt;      (101, Inf)</span>
 <span class="co">#&gt; Variable 'floor' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 5]</span>
 <span class="co">#&gt;      (5, Inf)</span>
@@ -189,8 +185,8 @@ explainer_rf1
 <td align="right">21</td>
 <td align="right">6</td>
 <td align="right">1</td>
-<td align="left">(1952, 1982]</td>
-<td align="left">(-Inf, 40]</td>
+<td align="left">(1937, 1994]</td>
+<td align="left">(-Inf, 47]</td>
 <td align="left">(5, Inf)</td>
 <td align="left">(-Inf, 3]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
@@ -203,7 +199,7 @@ explainer_rf1
 <td align="right">2</td>
 <td align="right">4</td>
 <td align="left">(1994, Inf)</td>
-<td align="left">(98, 129]</td>
+<td align="left">(101, Inf)</td>
 <td align="left">(-Inf, 5]</td>
 <td align="left">(3, Inf)</td>
 <td align="left">Srodmiescie</td>
@@ -215,8 +211,8 @@ explainer_rf1
 <td align="right">41</td>
 <td align="right">9</td>
 <td align="right">2</td>
-<td align="left">(1982, 1994]</td>
-<td align="left">(40, 72]</td>
+<td align="left">(1937, 1994]</td>
+<td align="left">(-Inf, 47]</td>
 <td align="left">(5, Inf)</td>
 <td align="left">(-Inf, 3]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
@@ -228,8 +224,8 @@ explainer_rf1
 <td align="right">28</td>
 <td align="right">2</td>
 <td align="right">2</td>
-<td align="left">(1952, 1982]</td>
-<td align="left">(-Inf, 40]</td>
+<td align="left">(1937, 1994]</td>
+<td align="left">(-Inf, 47]</td>
 <td align="left">(-Inf, 5]</td>
 <td align="left">(-Inf, 3]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
@@ -241,8 +237,8 @@ explainer_rf1
 <td align="right">146</td>
 <td align="right">3</td>
 <td align="right">6</td>
-<td align="left">(1952, 1982]</td>
-<td align="left">(129, Inf)</td>
+<td align="left">(1937, 1994]</td>
+<td align="left">(101, Inf)</td>
 <td align="left">(-Inf, 5]</td>
 <td align="left">(3, Inf)</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
@@ -254,8 +250,8 @@ explainer_rf1
 <td align="right">97</td>
 <td align="right">8</td>
 <td align="right">3</td>
-<td align="left">(1952, 1982]</td>
-<td align="left">(72, 98]</td>
+<td align="left">(1937, 1994]</td>
+<td align="left">(47, 101]</td>
 <td align="left">(5, Inf)</td>
 <td align="left">(-Inf, 3]</td>
 <td align="left">Mokotow_Ochota_Zoliborz</td>
@@ -285,7 +281,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">21</td>
 <td align="right">6</td>
 <td align="right">1</td>
-<td align="left">(1952, 1982]</td>
+<td align="left">(1937, 1994]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
 </tr>
 <tr class="even">
@@ -301,7 +297,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">41</td>
 <td align="right">9</td>
 <td align="right">2</td>
-<td align="left">(1982, 1994]</td>
+<td align="left">(1937, 1994]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
 </tr>
 <tr class="even">
@@ -309,7 +305,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">28</td>
 <td align="right">2</td>
 <td align="right">2</td>
-<td align="left">(1952, 1982]</td>
+<td align="left">(1937, 1994]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
 </tr>
 <tr class="odd">
@@ -317,7 +313,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">146</td>
 <td align="right">3</td>
 <td align="right">6</td>
-<td align="left">(1952, 1982]</td>
+<td align="left">(1937, 1994]</td>
 <td align="left">Bemowo_Bielany_Praga_Ursus_Ursynow_Wola</td>
 </tr>
 <tr class="even">
@@ -325,7 +321,7 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <td align="right">97</td>
 <td align="right">8</td>
 <td align="right">3</td>
-<td align="left">(1952, 1982]</td>
+<td align="left">(1937, 1994]</td>
 <td align="left">Mokotow_Ochota_Zoliborz</td>
 </tr>
 </tbody>
