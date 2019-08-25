@@ -34,18 +34,18 @@
 #' @export
 
 
-safely_detect_interactions <- function(explainer, inter_param = 0.25, inter_threshold = 0.25, verbose = TRUE) {
+safely_detect_interactions <- function(explainer, inter_param = 0.5, inter_threshold = 0.5, verbose = TRUE) {
 
   if (class(explainer) != "explainer") {
     stop(paste0("No applicable method for 'safely_detect_interactions' applied to an object of class '", class(explainer), "'."))
   }
   if (!is.numeric(inter_param) | inter_param<=0) {
     warning("Wrong inter_param value - using default one.")
-    inter_param <- 0.25
+    inter_param <- 0.5
   }
   if (!is.numeric(inter_threshold) | inter_threshold<0 | inter_threshold>1) {
     warning("Wrong inter_threshold value - using default one.")
-    inter_threshold <- 0.25
+    inter_threshold <- 0.5
   }
 
 

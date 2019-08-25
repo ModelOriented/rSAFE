@@ -4,8 +4,8 @@
 \alias{safely_detect_interactions}
 \title{Detecting interactions via a permutation approach}
 \usage{
-safely_detect_interactions(explainer, inter_param = 0.25,
-  inter_threshold = 0.25, verbose = TRUE)
+safely_detect_interactions(explainer, inter_param = 0.5,
+  inter_threshold = 0.5, verbose = TRUE)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}

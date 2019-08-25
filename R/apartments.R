@@ -1,20 +1,21 @@
 #' Apartments data
 #'
-#' Datasets \code{apartments} and \code{apartments_test} are artificial,
-#' generated form the same model.
+#' Datasets \code{apartments} and \code{apartmentsTest} are artificial,
+#' generated from the same model.
 #' Structure of the dataset is copied from real dataset from \code{PBImisc} package,
 #' but they were generated in a way to mimic effect of Anscombe quartet for complex black box models.
 #'
 #' \itemize{
 #' \item m2.price - price per square meter
 #' \item surface - apartment area in square meters
-#' \item n.rooms - number of rooms (correlated with surface)
+#' \item no.rooms - number of rooms (correlated with surface)
 #' \item district - district in which apartment is located, factor with 10 levels
+#' (Bemowo, Bielany, Mokotow, Ochota, Praga, Srodmiescie, Ursus, Ursynow, Wola, Zoliborz)
 #' \item floor - floor
-#' \item construction.date - construction year
+#' \item construction.year - construction year
 #' }
 #'
-#' @aliases apartments_test apartmentsTest
+#' @aliases apartmentsTest
 #' @docType data
 #' @keywords apartments
 #' @name apartments
