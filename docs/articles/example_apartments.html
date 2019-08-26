@@ -77,7 +77,7 @@
       <h1>Regression example - apartments dataset</h1>
                         <h4 class="author">Anna Gierlak</h4>
             
-            <h4 class="date">2019-08-25</h4>
+            <h4 class="date">2019-08-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MI2DataLab/SAFE/blob/master/vignettes/example_apartments.Rmd"><code>vignettes/example_apartments.Rmd</code></a></small>
       <div class="hidden name"><code>example_apartments.Rmd</code></div>
@@ -109,7 +109,7 @@ model_rf1 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.
 <a href="#creating-an-explainer" class="anchor"></a>Creating an explainer</h2>
 <p>We also create an <code>explainer</code> object that will be used later to create new variables and at the end to compare models performance.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(DALEX)
-explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf1"</span>)
+explainer_rf1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf1"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
 explainer_rf1
 <span class="co">#&gt; Model label:  rf1 </span>
 <span class="co">#&gt; Model class:  randomForest.formula,randomForest </span>
@@ -327,13 +327,13 @@ data1 &lt;-<span class="st"> </span>data1[,<span class="kw"><a href="https://rdr
 <a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor"></a>Creating white-box models on original and transformed datasets</h2>
 <p>Let’s fit the models to data containg newly created columns. We consider a linear model as a white-box model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_lm2 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>)
+explainer_lm2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm2, <span class="dt">data =</span> data2, <span class="dt">y =</span> apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm2"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
 <span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">111</span>)
 model_rf2 &lt;-<span class="st"> </span><span class="kw">randomForest</span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> data1)
-explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>)</code></pre></div>
+explainer_rf2 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_rf2, data2, apartmentsTest[<span class="dv">6001</span><span class="op">:</span><span class="dv">9000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"rf2"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
 <p>Moreover, we create a linear model based on original <code>apartments</code> dataset and its corresponding explainer in order to check if our methodology improves results.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_lm1 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(m2.price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> apartments)
-explainer_lm1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm1"</span>)</code></pre></div>
+explainer_lm1 &lt;-<span class="st"> </span><span class="kw">explain</span>(model_lm1, <span class="dt">data =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>], <span class="dt">y =</span> apartmentsTest[<span class="dv">1</span><span class="op">:</span><span class="dv">3000</span>,<span class="dv">1</span>], <span class="dt">label =</span> <span class="st">"lm1"</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </div>
 <div id="comparing-models-performance" class="section level2">
 <h2 class="hasAnchor">

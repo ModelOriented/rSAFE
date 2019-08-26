@@ -153,8 +153,15 @@ The gap statistic criterion is used to determine the optimal number of clusters.
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>111</span>)
 <span class='no'>model_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~ <span class='no'>construction.year</span> + <span class='no'>surface</span> + <span class='no'>floor</span> +
                            <span class='no'>no.rooms</span> + <span class='no'>district</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
-<span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])
-<span class='fu'>safely_transform_categorical</span>(<span class='no'>explainer_rf</span>, <span class='st'>"district"</span>)</div><div class='output co'>#&gt; $clustering
+<span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])</div><div class='output co'>#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  randomForest  (<span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; data              :  500  rows  5  cols 
+#&gt;   -&gt; target variable   :  500  values 
+#&gt;   -&gt; predict function  :  yhat.randomForest  will be used (</span><span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; predicted values  :  numerical, min =  2010.939 , mean =  3502.345 , max =  5764.513  
+#&gt;   -&gt; residual function :  difference between y and yhat (</span><span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; residuals         :  numerical, min =  -387.9388 , mean =  -0.6372461 , max =  749.0998  
+#&gt; </span><span style='color: #00BB00;'>A new explainer has been created!</span><span></div><div class='input'><span class='fu'>safely_transform_categorical</span>(<span class='no'>explainer_rf</span>, <span class='st'>"district"</span>)</div><div class='output co'>#&gt; $clustering
 #&gt; 
 #&gt; Call:
 #&gt; stats::hclust(d = dist_matrix, method = method)
@@ -177,7 +184,7 @@ The gap statistic criterion is used to determine the optimal number of clusters.
 #&gt; 9       Ochota                 Mokotow_Ochota_Zoliborz
 #&gt; 10 Srodmiescie                             Srodmiescie
 #&gt; </div><div class='input'>
-</div></pre>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

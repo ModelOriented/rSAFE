@@ -104,11 +104,10 @@ safely_transform_categorical <- function(explainer, variable, method = "complete
 levels_mean_agg <- function(explainer, variable) {
   data <- explainer$data
   lev <- levels(factor(data[,variable]))
-  trans <- explainer$link
   preds <- lapply(lev, function(cur_lev) {
     tmp <- data
     tmp[,variable] <- factor(cur_lev, levels = lev)
-    data.frame(scores = trans(explainer$predict_function(explainer$model, tmp)),
+    data.frame(scores = explainer$predict_function(explainer$model, tmp),
                level = cur_lev)
   })
   preds_combined <- do.call(rbind, preds)

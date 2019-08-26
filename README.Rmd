@@ -57,7 +57,7 @@ We also create an `explainer` object that will be used later to create new varia
 
 ```{r}
 library(DALEX)
-explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "rf1")
+explainer_rf1 <- explain(model_rf1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "rf1", verbose = FALSE)
 explainer_rf1
 ```
 
@@ -129,17 +129,17 @@ Let's fit the models to data containg newly created columns. We consider a linea
 
 ```{r}
 model_lm2 <- lm(m2.price ~ ., data = data1)
-explainer_lm2 <- explain(model_lm2, data = data2, y = apartmentsTest[6001:9000,1], label = "lm2")
+explainer_lm2 <- explain(model_lm2, data = data2, y = apartmentsTest[6001:9000,1], label = "lm2", verbose = FALSE)
 set.seed(111)
 model_rf2 <- randomForest(m2.price ~ ., data = data1)
-explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2")
+explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2", verbose = FALSE)
 ```
 
 Moreover, we create a linear model based on original `apartments` dataset and its corresponding explainer in order to check if our methodology improves results.
 
 ```{r}
 model_lm1 <- lm(m2.price ~ ., data = apartments)
-explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1")
+explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1", verbose = FALSE)
 ```
 
 ## Comparing models performance

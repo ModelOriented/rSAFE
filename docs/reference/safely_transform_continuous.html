@@ -166,108 +166,30 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>111</span>)
 <span class='no'>model_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~ <span class='no'>construction.year</span> + <span class='no'>surface</span> + <span class='no'>floor</span> +
                            <span class='no'>no.rooms</span> + <span class='no'>district</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
-<span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])
-<span class='fu'>safely_transform_continuous</span>(<span class='no'>explainer_rf</span>, <span class='st'>"construction.year"</span>)</div><div class='output co'>#&gt; $sv
-#&gt;                                                           _vname_      _label_
-#&gt; construction.year.randomForest.1920             construction.year randomForest
-#&gt; construction.year.randomForest.1923             construction.year randomForest
-#&gt; construction.year.randomForest.1924             construction.year randomForest
-#&gt; construction.year.randomForest.1926             construction.year randomForest
-#&gt; construction.year.randomForest.1927             construction.year randomForest
-#&gt; construction.year.randomForest.1929             construction.year randomForest
-#&gt; construction.year.randomForest.1931             construction.year randomForest
-#&gt; construction.year.randomForest.1933             construction.year randomForest
-#&gt; construction.year.randomForest.1935             construction.year randomForest
-#&gt; construction.year.randomForest.1936             construction.year randomForest
-#&gt; construction.year.randomForest.1938             construction.year randomForest
-#&gt; construction.year.randomForest.1940             construction.year randomForest
-#&gt; construction.year.randomForest.1943.20408163265 construction.year randomForest
-#&gt; construction.year.randomForest.1945             construction.year randomForest
-#&gt; construction.year.randomForest.1947             construction.year randomForest
-#&gt; construction.year.randomForest.1948.75510204082 construction.year randomForest
-#&gt; construction.year.randomForest.1950             construction.year randomForest
-#&gt; construction.year.randomForest.1951             construction.year randomForest
-#&gt; construction.year.randomForest.1953             construction.year randomForest
-#&gt; construction.year.randomForest.1956             construction.year randomForest
-#&gt; construction.year.randomForest.1958             construction.year randomForest
-#&gt; construction.year.randomForest.1960             construction.year randomForest
-#&gt; construction.year.randomForest.1962             construction.year randomForest
-#&gt; construction.year.randomForest.1964             construction.year randomForest
-#&gt; construction.year.randomForest.1966.59183673469 construction.year randomForest
-#&gt; construction.year.randomForest.1968             construction.year randomForest
-#&gt; construction.year.randomForest.1970             construction.year randomForest
-#&gt; construction.year.randomForest.1971             construction.year randomForest
-#&gt; construction.year.randomForest.1973             construction.year randomForest
-#&gt; construction.year.randomForest.1975             construction.year randomForest
-#&gt; construction.year.randomForest.1977             construction.year randomForest
-#&gt; construction.year.randomForest.1979.87755102041 construction.year randomForest
-#&gt; construction.year.randomForest.1983             construction.year randomForest
-#&gt; construction.year.randomForest.1985             construction.year randomForest
-#&gt; construction.year.randomForest.1986             construction.year randomForest
-#&gt; construction.year.randomForest.1987             construction.year randomForest
-#&gt; construction.year.randomForest.1989             construction.year randomForest
-#&gt; construction.year.randomForest.1990             construction.year randomForest
-#&gt; construction.year.randomForest.1992             construction.year randomForest
-#&gt; construction.year.randomForest.1993             construction.year randomForest
-#&gt; construction.year.randomForest.1994             construction.year randomForest
-#&gt; construction.year.randomForest.1996             construction.year randomForest
-#&gt; construction.year.randomForest.1997             construction.year randomForest
-#&gt; construction.year.randomForest.1999             construction.year randomForest
-#&gt; construction.year.randomForest.2001             construction.year randomForest
-#&gt; construction.year.randomForest.2003.44897959184 construction.year randomForest
-#&gt; construction.year.randomForest.2005             construction.year randomForest
-#&gt; construction.year.randomForest.2007             construction.year randomForest
-#&gt; construction.year.randomForest.2010             construction.year randomForest
-#&gt;                                                      _x_     _yhat_ _ids_
-#&gt; construction.year.randomForest.1920             1920.000    0.00000     0
-#&gt; construction.year.randomForest.1923             1923.000   24.46394     0
-#&gt; construction.year.randomForest.1924             1924.000   19.25767     0
-#&gt; construction.year.randomForest.1926             1926.000   11.36508     0
-#&gt; construction.year.randomForest.1927             1927.000  -20.25104     0
-#&gt; construction.year.randomForest.1929             1929.000  -36.89223     0
-#&gt; construction.year.randomForest.1931             1931.000  -61.07567     0
-#&gt; construction.year.randomForest.1933             1933.000  -93.95953     0
-#&gt; construction.year.randomForest.1935             1935.000 -226.91019     0
-#&gt; construction.year.randomForest.1936             1936.000 -265.47288     0
-#&gt; construction.year.randomForest.1938             1938.000 -286.52685     0
-#&gt; construction.year.randomForest.1940             1940.000 -311.84111     0
-#&gt; construction.year.randomForest.1943.20408163265 1943.204 -316.86066     0
-#&gt; construction.year.randomForest.1945             1945.000 -333.69903     0
-#&gt; construction.year.randomForest.1947             1947.000 -337.82020     0
-#&gt; construction.year.randomForest.1948.75510204082 1948.755 -350.60562     0
-#&gt; construction.year.randomForest.1950             1950.000 -358.25608     0
-#&gt; construction.year.randomForest.1951             1951.000 -366.40703     0
-#&gt; construction.year.randomForest.1953             1953.000 -363.90753     0
-#&gt; construction.year.randomForest.1956             1956.000 -369.63511     0
-#&gt; construction.year.randomForest.1958             1958.000 -365.59776     0
-#&gt; construction.year.randomForest.1960             1960.000 -360.55766     0
-#&gt; construction.year.randomForest.1962             1962.000 -354.60478     0
-#&gt; construction.year.randomForest.1964             1964.000 -370.41073     0
-#&gt; construction.year.randomForest.1966.59183673469 1966.592 -375.87497     0
-#&gt; construction.year.randomForest.1968             1968.000 -376.18428     0
-#&gt; construction.year.randomForest.1970             1970.000 -372.00503     0
-#&gt; construction.year.randomForest.1971             1971.000 -377.12050     0
-#&gt; construction.year.randomForest.1973             1973.000 -373.42861     0
-#&gt; construction.year.randomForest.1975             1975.000 -378.26315     0
-#&gt; construction.year.randomForest.1977             1977.000 -380.34691     0
-#&gt; construction.year.randomForest.1979.87755102041 1979.878 -374.19200     0
-#&gt; construction.year.randomForest.1983             1983.000 -370.07926     0
-#&gt; construction.year.randomForest.1985             1985.000 -364.84144     0
-#&gt; construction.year.randomForest.1986             1986.000 -362.46225     0
-#&gt; construction.year.randomForest.1987             1987.000 -363.21756     0
-#&gt; construction.year.randomForest.1989             1989.000 -350.81047     0
-#&gt; construction.year.randomForest.1990             1990.000 -347.50571     0
-#&gt; construction.year.randomForest.1992             1992.000 -350.08075     0
-#&gt; construction.year.randomForest.1993             1993.000 -340.35548     0
-#&gt; construction.year.randomForest.1994             1994.000 -323.15982     0
-#&gt; construction.year.randomForest.1996             1996.000  -85.53955     0
-#&gt; construction.year.randomForest.1997             1997.000  -85.57973     0
-#&gt; construction.year.randomForest.1999             1999.000  -78.09553     0
-#&gt; construction.year.randomForest.2001             2001.000  -64.20390     0
-#&gt; construction.year.randomForest.2003.44897959184 2003.449  -59.82099     0
-#&gt; construction.year.randomForest.2005             2005.000  -27.68647     0
-#&gt; construction.year.randomForest.2007             2007.000  -14.82230     0
-#&gt; construction.year.randomForest.2010             2010.000  -15.52523     0
+<span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])</div><div class='output co'>#&gt; Preparation of a new explainer is initiated
+#&gt;   -&gt; model label       :  randomForest  (<span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; data              :  500  rows  5  cols 
+#&gt;   -&gt; target variable   :  500  values 
+#&gt;   -&gt; predict function  :  yhat.randomForest  will be used (</span><span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; predicted values  :  numerical, min =  2010.939 , mean =  3502.345 , max =  5764.513  
+#&gt;   -&gt; residual function :  difference between y and yhat (</span><span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; residuals         :  numerical, min =  -387.9388 , mean =  -0.6372461 , max =  749.0998  
+#&gt; </span><span style='color: #00BB00;'>A new explainer has been created!</span><span></div><div class='input'><span class='fu'>safely_transform_continuous</span>(<span class='no'>explainer_rf</span>, <span class='st'>"construction.year"</span>)</div><div class='output co'>#&gt; $sv
+#&gt; Top profiles    : 
+#&gt;                                               _vname_      _label_  _x_
+#&gt; construction.year.randomForest.1920 construction.year randomForest 1920
+#&gt; construction.year.randomForest.1923 construction.year randomForest 1923
+#&gt; construction.year.randomForest.1924 construction.year randomForest 1924
+#&gt; construction.year.randomForest.1926 construction.year randomForest 1926
+#&gt; construction.year.randomForest.1927 construction.year randomForest 1927
+#&gt; construction.year.randomForest.1929 construction.year randomForest 1929
+#&gt;                                        _yhat_ _ids_
+#&gt; construction.year.randomForest.1920   0.00000     0
+#&gt; construction.year.randomForest.1923  24.46394     0
+#&gt; construction.year.randomForest.1924  19.25767     0
+#&gt; construction.year.randomForest.1926  11.36508     0
+#&gt; construction.year.randomForest.1927 -20.25104     0
+#&gt; construction.year.randomForest.1929 -36.89223     0
 #&gt; 
 #&gt; $break_points
 #&gt; [1] 1926.000 1940.000 1962.000 1979.878 1994.000
@@ -276,7 +198,7 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
 #&gt; [1] "(-Inf, 1926]"     "(1926, 1940]"     "(1940, 1962]"     "(1962, 1979.878]"
 #&gt; [5] "(1979.878, 1994]" "(1994, Inf)"     
 #&gt; </div><div class='input'>
-</div></pre>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
