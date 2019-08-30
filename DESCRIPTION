@@ -28,9 +28,8 @@ Suggests:
     rmarkdown,
     DALEX,
     randomForest,
-    xgboost,
-    ALEPlot, 
-    pdp,
+    gbm,
+    pander,
     testthat
 VignetteBuilder: knitr
 URL: https://github.com/MI2DataLab/SAFE
