@@ -28,6 +28,7 @@ Suggests:
     rmarkdown,
     DALEX,
     randomForest,
+    xgboost,
     gbm,
     pander,
     testthat
