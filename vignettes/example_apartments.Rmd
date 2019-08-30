@@ -1,10 +1,10 @@
 ---
-title: "Regression example - apartments dataset"
+title: "Regression example - apartments data"
 author: "Anna Gierlak"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Regression example - apartments dataset}
+  %\VignetteIndexEntry{Regression example - apartments data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -101,7 +101,7 @@ Here are the first few rows for our data after feature selection:
 knitr::kable(head(data1))
 ```
 
-Now, we perform transformations on another data that will be used later in explainers:
+Now, we perform transformations on another data that will be used later in explainers.
 
 ```{r, fig.width=6}
 data2 <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], verbose = FALSE)[,c("m2.price", vars)]

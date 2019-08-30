@@ -1,0 +1,227 @@
+---
+title: "Classification example - HR data"
+author: "Anna Gierlak"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Classification example - HR data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+library(pander)
+```
+
+In this vignette we demonstrate an application of the `rSAFE` package to the `HR_data` set. The dataset contains information from a Human Resources department about employees and may be used in the classification task of predicting whether an employee is likely to leave the company. The data comes from the Kaggle competition "Human Resources Analytics" and is available in `breakDown` and `rSAFE` packages.
+
+```{r}
+library(rSAFE)
+head(HR_data)
+```
+
+As explanatory variables we use all available in the dataset except for \code{sales} which specifies department in which the employee works for.
+
+```{r}
+data <- HR_data[, colnames(HR_data) != "sales"]
+```
+
+In order to ensure the final errors are computed on the data which has not been seen by an approproate model, we divide our data as follows:
+
+* `data1` - the data which initial black-box and white-box models are fitted to,
+* `data2` - the data used to create an `explainer` and a `safe_extractor` for black-box model from the previous point, serving also as a test data,
+* `data3` - the data for which transformations and feature selection are performed, used also as a training set for new models,
+* `data4` - the data used as a test set for the new models, allowing to compare the results.
+Before splitting the data, we first shuffle rows to ensure they are evenly distributed.
+
+```{r}
+set.seed(111)
+data <- data[sample(1:nrow(data)),]
+
+data1 <- data[1:4000,]
+data2 <- data[4001:8000,]
+data3 <- data[8001:12000,]
+data4 <- data[12001:14999,]
+```
+
+## Building a black-box model
+
+In this example we decide to use the xgboost model as a black-box - it will serve us as a surrogate.
+
+```{r}
+n.trees <- 10000
+library(gbm)
+set.seed(111)
+model_xgb1 <- gbm(left ~ ., data = data1, distribution = "bernoulli", n.trees = n.trees)
+```
+
+## Creating an explainer
+
+We also create an `explainer` object that will be used later to create new variables. For classification problems we need to specify `predict_function` - a function that may be used for model predictions and returns a single numerical value for each observation.
+
+```{r}
+library(DALEX)
+predict_function <- function(model, x) predict(model, x, type = "response", n.trees = n.trees)
+explainer_xgb1 <- explain(model_xgb1, data = data2[,-7], y = data2$left, predict_function = predict_function, verbose = FALSE)
+```
+
+## Creating a safe_extractor
+
+Now, we create a `safe_extractor` object using `rSAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
+
+```{r}
+safe_extractor <- safe_extraction(explainer_xgb1, penalty = 20, verbose = FALSE)
+```
+
+Now, let's print summary for the new object we have just created.
+
+```{r}
+print(safe_extractor)
+```
+
+We can see transormation propositions for all variables in our dataset. 
+
+In the plot below we can see which points have been chosen to be the breakpoints for a particular variable: 
+
+```{r, fig.width=7}
+plot(safe_extractor, variable = "last_evaluation")
+```
+
+For factor variables we can observe in which order levels have been merged and what is the optimal clustering:
+
+```{r, fig.width=7}
+plot(safe_extractor, variable = "salary")
+```
+
+## Transforming data
+
+Now we can use our `safe_extractor` object to create new categorical features in the given dataset.
+
+```{r}
+data3_trans <- safely_transform_data(safe_extractor, data3, verbose = FALSE)
+```
+
+```{r, echo = FALSE}
+knitr::kable(head(data3_trans))
+```
+
+We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.
+
+```{r, fig.width=6}
+selected_variables <- safely_select_variables(safe_extractor, data3_trans, which_y = "left", verbose = FALSE)
+data3_trans_sel <- data3_trans[,c("left", selected_variables)]
+print(selected_variables)
+```
+
+It can be observed that for some features the original form was preffered and for others the transformed one.
+
+Here are the first few rows for our data after feature selection:
+
+```{r, echo = FALSE}
+knitr::kable(head(data3_trans_sel))
+```
+
+Now, we perform transformations on another data that will be used later to compare models performance.
+
+```{r, fig.width=6}
+data4_trans <- safely_transform_data(safe_extractor, data4, verbose = FALSE)
+data4_trans_sel <- data4_trans[,c("left", selected_variables)]
+```
+
+## Creating white-box models on original and transformed datasets
+
+Let's fit the models to data containg newly created columns. We consider a generalized linear model (glm) as a white-box model.
+
+```{r}
+model_lr2 <- glm(left ~ ., data = data3_trans_sel, family = binomial())
+set.seed(111)
+model_xgb2 <- gbm(left ~ ., data = data3_trans_sel, distribution = "bernoulli", n.trees = n.trees)
+```
+
+Moreover, we create a glm model based on original data in order to check if our methodology improves results.
+
+```{r}
+model_lr1 <- glm(left ~ ., data = data1, family = binomial())
+```
+
+## Comparing models performance
+
+Final step is the comparison of all four models we have created. For each of them we make predictions on the relevant test set, i.e. we use `model_lr1` and `model_xgb1` to predict the output for `data2` and `model_lr2` and `model_xgb2` to predict the output for `data4`.
+
+```{r}
+pred_lr1 <- round(predict(model_lr1, data2, type = "response"))
+pred_xgb1 <- round(predict(model_xgb1, data2, n.trees = n.trees, type = "response"))
+pred_lr2 <- round(predict(model_lr2, data4_trans_sel, type = "response"))
+pred_xgb2 <- round(predict(model_xgb2, data4_trans_sel, n.trees = n.trees, type = "response"))
+```
+
+The performance of the models may then be evaluated based on confusion matrices with relative percentages obtained via the `confusion_matrix` function:
+
+```{r}
+confusion_matrix <- function(y_true, y_pred) {
+  cm <- data.frame(pred_0 = c(sum(y_true==0 & y_pred==0)/sum(y_true==0),
+                              sum(y_true==1 & y_pred==0)/sum(y_true==1)),
+                   pred_1 = c(sum(y_true==0 & y_pred==1)/sum(y_true==0),
+                              sum(y_true==1 & y_pred==1)/sum(y_true==1)))
+  cm <- apply(cm, MARGIN = 2, function(x) round(x, 2))
+  rownames(cm) <- c("actual_0", "actual_1")
+  cm
+}
+```
+
+Xgboost models give the following results:
+
+* for the original data:
+
+```{r, echo=FALSE}
+A <- matrix(c(0.97, 0.03, 0.09, 0.91),
+            nrow=2, byrow = TRUE)
+rownames(A) <- pandoc.strong.return(c('actual 0', 'actual 1'))
+colnames(A) <- pandoc.strong.return(c('predicted 0', 'predicted 1'))
+pander(A)
+```
+
+* for the data with `rSAFE` transformations applied:
+
+```{r, echo=FALSE}
+A <- matrix(c(0.93, 0.07, 0.27, 0.73),
+            nrow=2, byrow = TRUE)
+rownames(A) <- pandoc.strong.return(c('actual 0', 'actual 1'))
+colnames(A) <- pandoc.strong.return(c('predicted 0', 'predicted 1'))
+pander(A)
+```
+
+The model trained on original data has higher predictive power - feature transformations have caused the loss of valuable information which was apparently used by the first model. However, within logistic regression models the significant improvement can be observed:
+
+* for the original data:
+
+```{r, echo=FALSE}
+A <- matrix(c(0.92, 0.08, 0.63, 0.37),
+            nrow=2, byrow = TRUE)
+rownames(A) <- pandoc.strong.return(c('actual 0', 'actual 1'))
+colnames(A) <- pandoc.strong.return(c('predicted 0', 'predicted 1'))
+pander(A)
+```
+
+* for the data with `rSAFE` transformations applied:
+
+```{r, echo=FALSE}
+A <- matrix(c(0.93, 0.07, 0.27, 0.73),
+            nrow=2, byrow = TRUE)
+rownames(A) <- pandoc.strong.return(c('actual 0', 'actual 1'))
+colnames(A) <- pandoc.strong.return(c('predicted 0', 'predicted 1'))
+pander(A)
+```
+
+The initial logistic regression model has difficulties with "true negatives" - for employees that actually quit it very often predicts the opposite. On the other hand, `model_lr2` which was trained on the set of features modified by the SAFE algorithm has much better accuracy. 
+
+
+
+
+
