@@ -131,35 +131,39 @@ PELT_algorithm <- function(data, penalty_value, sumstat, K) {
 
   n <- length(data)
 
-  Q <- rep(0, n+1) #Q[i] = Q(data[1:(i-1)] = F(i-1)
-  Q[1] <- (-penalty_value) #F(0) = -beta
+  Q <- rep(0, n+1) #Q[i] = Q(data[1:(i-1)] = F(i-1) - minimum of the segmentation cost for data[1:(i-1)]
+  Q[1] <- (-penalty_value) #Q[1] = F(0) = -beta
 
-  cp <- matrix(0, n+1, n+1) #cp[i,j] - if j-th point was recorded as a changepoint in i-th step
-  #cp(0) = NULL
   cp <- vector("list", length = n+1)
+  #cp[[i]] - set of optimal changepoints for data[1:(i-1)] for i=2,...,n+1,
+  #cp[[1]]=NULL
 
-  R <- rep(0, n+1) #changepoints that could be last ones, updated during loop
-  R[1] <- 1 #R_1 = {0}
   R <- sets::set(0)
+  #R - set of points that could be the last optimal changepoint, updated in a loop
+  #initially R={0}
 
+  #computing minima of the segmentation cost Q[v+1]=F(v), starting from data[1:1] till data[1:n]
   for (v in 1:n) {
     u_index_min <- (-1)
     Q_min <- Inf
-    for (u in R) { #searching for Q minimmum
+    for (u in R) { #searching for Q minimmum for data[1:v], with the last changepoint coming from R set
       Q_actual <- Q[u+1] + cost(data, u+1, v, sumstat, K) + penalty_value
-      if (Q_actual < Q_min) {
+      if (Q_actual < Q_min) { #if the better segmentation is found both Q value and u index are saved
         Q_min <- Q_actual
         u_index_min <- u
       }
     }
 
+    #saving the optimal Q_min value and u_index_min index
     Q[v+1] <- Q_min
     cp[[v+1]] <- sets::set(u_index_min)
+    #if u_index_min is the optimal last changepoint, then the optimal segmentation of data[1:u_index_min]
+    #together with u_index_min give the optimal segmentation of data[1:v]
     if (! is.null(cp[[u_index_min+1]])) {
       cp[[v+1]] <- sets::set_union(cp[[u_index_min+1]], cp[[v+1]])
     }
 
-    #updating R set
+    #updating R set for next iterations - removing those points that can never be the last optimal changepoint
     for (tau in R) {
       if (Q[tau+1] + cost(data, tau+1, v, sumstat, K) > Q[v+1] + epsilon) {
         R <- R - tau
@@ -169,6 +173,7 @@ PELT_algorithm <- function(data, penalty_value, sumstat, K) {
   }
 
   cpts_final <- cp[[n+1]] - 0
+
   return(sort(unlist(cpts_final)))
 
 }

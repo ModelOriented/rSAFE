@@ -63,8 +63,8 @@ data <- apartments[1:500,]
 set.seed(111)
 model_rf <- randomForest(m2.price ~ construction.year + surface + floor +
                            no.rooms + district, data = data)
-explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
-safe_extractor <- safe_extraction(explainer_rf, verbose = FALSE)
+explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1], verbose = FALSE)
+safe_extractor <- safe_extraction(explainer_rf, grid_points = 30, N = 100, verbose = FALSE)
 print(safe_extractor)
 plot(safe_extractor, variable = "construction.year")
 

@@ -60,11 +60,18 @@ safely_detect_interactions <- function(explainer, inter_param = 0.5, inter_thres
 
   p <- length(term_names)
 
+  #if there is only one feature we omit searching for interactions
+  if (p <= 1) {
+    return(NULL)
+  }
+
   #creating all 2-elements subsets of term_names vector
   no_pairs <- p*(p-1)/2
+  #interaction_strength is a dataframe with two columns storing names of all vaiable pairs
   interactions_strength <- as.data.frame(matrix(rep("", 2*no_pairs), ncol = 2))
   levels(interactions_strength[,1]) <- term_names
   levels(interactions_strength[,2]) <- term_names
+  #interaction_values is a column with values that specify the strength between pairs of variables from interaction_strength
   interaction_values <- as.data.frame(matrix(rep(0, no_pairs), ncol = 1))
 
   if (verbose == TRUE) {
@@ -74,10 +81,8 @@ safely_detect_interactions <- function(explainer, inter_param = 0.5, inter_thres
   }
 
   i <- 1
-  for (j1 in 1:p) {
-    if (j1 == p) {
-      break
-    }
+  #for each of the p*(p-1)/2 variable pairs we check how strong is an interaction between them
+  for (j1 in 1:(p-1)) {
     for (j2 in (j1+1):p) {
       temp_interaction <- interaction_measure(explainer, term_names[j1], term_names[j2], inter_param)
       #percentage of observations for which interaction measure is greater than inter_param
@@ -96,8 +101,10 @@ safely_detect_interactions <- function(explainer, inter_param = 0.5, inter_thres
     close(pb)
   }
 
+  #combining pairs of feature names with their corresponding interaction strengths
   interactions_strength <- cbind(interactions_strength, interaction_values)
   colnames(interactions_strength) <- c("variable1", "variable2", "strength")
+  #choosing only those pairs for which the overall strength is not less than chosen inter_threshold
   interactions_strength <- interactions_strength[interactions_strength["strength"] >= inter_threshold,]
   if (nrow(interactions_strength) == 0) {
     interactions_strength <- NULL
@@ -145,8 +152,11 @@ interaction_measure <- function(explainer, var1, var2, inter_param) {
   diff_pred_perm12 <- y_pred_perm12 - y_pred
 
   #a non-additive effect of var1 and var2 for all observations
+  #(if two features do not interact with each other the change in prediction triggered by the pair of them
+  # should be equal to the sum of changes caused by these features separately)
   non_additive_effect <- diff_pred_perm12 - (diff_pred_perm1 + diff_pred_perm2)
 
+  #returning the information for which observation the non-additive effect is significant
   return(abs(non_additive_effect)>=inter_param*abs(diff_pred_perm1 + diff_pred_perm2))
 
 }
