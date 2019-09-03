@@ -15,8 +15,8 @@ A model agnostic tool for making an explainable
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/MI2DataLab/SAFE}
-  \item Report bugs at \url{https://github.com/MI2DataLab/SAFE/issues}
+  \item \url{https://github.com/ModelOriented/rSAFE}
+  \item Report bugs at \url{https://github.com/ModelOriented/rSAFE/issues}
 }
 
 }
