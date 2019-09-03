@@ -5,8 +5,8 @@ output: github_document
 
 # rSAFE - Surrogate Assisted Feature Extraction in R
 
-[![Build Status](https://travis-ci.org/MI2DataLab/SAFE.svg?branch=master)](https://travis-ci.org/MI2DataLab/SAFE)
-[![Coverage Status](https://codecov.io/gh/MI2DataLab/SAFE/branch/master/graph/badge.svg)](https://codecov.io/gh/MI2DataLab/SAFE)
+[![Build Status](https://travis-ci.org/ModelOriented/rSAFE.svg?branch=master)](https://travis-ci.org/ModelOriented/rSAFE)
+[![Coverage Status](https://codecov.io/gh/ModelOriented/rSAFE/branch/master/graph/badge.svg)](https://codecov.io/gh/ModelOriented/rSAFE)
 
 The `rSAFE` package is a model agnostic tool for making an interpretable white-box model more accurate using alternative black-box model called surrogate model. Based on the complicated model, such as neural network or random forest, new features are being extracted and then used in the process of fitting a simpler interpretable model, improving its overall performance.
 
@@ -17,7 +17,7 @@ The package can be installed from GitHub using the code below:
 
 ```{r, eval=FALSE}
 install.packages("devtools")
-devtools::install_github("MI2DataLab/SAFE")
+devtools::install_github("ModelOriented/rSAFE")
 ```
 
 

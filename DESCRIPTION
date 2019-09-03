@@ -33,5 +33,5 @@ Suggests:
     pander,
     testthat
 VignetteBuilder: knitr
-URL: https://github.com/MI2DataLab/SAFE
-BugReports: https://github.com/MI2DataLab/SAFE/issues
+URL: https://github.com/ModelOriented/rSAFE
+BugReports: https://github.com/ModelOriented/rSAFE/issues
