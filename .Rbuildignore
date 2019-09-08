@@ -4,6 +4,10 @@
 .travis.yml
 LICENSE
 README.Rmd
+README.md
 README_files
 _pkgdown.yml
 docs
+^CRAN-RELEASE$
+^cran-comments.md$
+^cran-comments\.md$
