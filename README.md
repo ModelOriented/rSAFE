@@ -1,13 +1,12 @@
-
-rSAFE - Surrogate Assisted Feature Extraction in R
-==================================================
+# Surrogate Assisted Feature Extraction in R <img src="man/figures/logo.png" align="right" width="150"/>
 
 [![Build Status](https://travis-ci.org/ModelOriented/rSAFE.svg?branch=master)](https://travis-ci.org/ModelOriented/rSAFE) [![Coverage Status](https://codecov.io/gh/ModelOriented/rSAFE/branch/master/graph/badge.svg)](https://codecov.io/gh/ModelOriented/rSAFE)
 
+## Overview
+
 The `rSAFE` package is a model agnostic tool for making an interpretable white-box model more accurate using alternative black-box model called surrogate model. Based on the complicated model, such as neural network or random forest, new features are being extracted and then used in the process of fitting a simpler interpretable model, improving its overall performance.
 
-Getting started
----------------
+## Installation
 
 The package can be installed from GitHub using the code below:
 
@@ -16,8 +15,7 @@ install.packages("devtools")
 devtools::install_github("ModelOriented/rSAFE")
 ```
 
-Demo
-----
+## Demo
 
 In this vignette we present an example of an application of the `rSAFE` package in case of regression problems. It is based on `apartments` and `apartmentsTest` datasets which come from the `DALEX` package but are also available in the `rSAFE` package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical.
 
