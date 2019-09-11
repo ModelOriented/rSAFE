@@ -1,6 +1,6 @@
-pandoc: 1.19.2.1
-pkgdown: 1.3.0.9100
-pkgdown_sha: 2b8150dacfcdad662773c77eb3866901695fa8e0
+pandoc: 2.3.1
+pkgdown: 1.4.0
+pkgdown_sha: ~
 articles:
   example_apartments: example_apartments.html
   example_hr: example_hr.html
