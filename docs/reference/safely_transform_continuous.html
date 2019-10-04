@@ -205,14 +205,14 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
 <span class='no'>model_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='no'>m2.price</span> ~ <span class='no'>construction.year</span> + <span class='no'>surface</span> + <span class='no'>floor</span> +
                            <span class='no'>no.rooms</span> + <span class='no'>district</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
 <span class='no'>explainer_rf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='no'>model_rf</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>2</span>:<span class='fl'>6</span>], <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>data</span>[,<span class='fl'>1</span>])</div><div class='output co'>#&gt; Preparation of a new explainer is initiated
-#&gt;   -&gt; model label       :  randomForest  (<span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; model label       :  randomForest  ( <span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; data              :  500  rows  5  cols 
 #&gt;   -&gt; target variable   :  500  values 
-#&gt;   -&gt; predict function  :  yhat.randomForest  will be used (</span><span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; predict function  :  yhat.randomForest  will be used ( </span><span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; predicted values  :  numerical, min =  2010.939 , mean =  3502.345 , max =  5764.513  
-#&gt;   -&gt; residual function :  difference between y and yhat (</span><span style='color: #BBBB00;'>default</span><span>)
+#&gt;   -&gt; residual function :  difference between y and yhat ( </span><span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; residuals         :  numerical, min =  -387.9388 , mean =  -0.6372461 , max =  749.0998  
-#&gt; </span><span style='color: #00BB00;'>A new explainer has been created!</span><span></div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safely_transform_continuous.html'>safely_transform_continuous</a></span>(<span class='no'>explainer_rf</span>, <span class='st'>"construction.year"</span>)</div><div class='output co'>#&gt; $sv
+#&gt;  </span><span style='color: #00BB00;'> A new explainer has been created! </span><span> </div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safely_transform_continuous.html'>safely_transform_continuous</a></span>(<span class='no'>explainer_rf</span>, <span class='st'>"construction.year"</span>)</div><div class='output co'>#&gt; $sv
 #&gt; Top profiles    : 
 #&gt;                                               _vname_      _label_  _x_
 #&gt; construction.year.randomForest.1920 construction.year randomForest 1920
@@ -221,19 +221,20 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
 #&gt; construction.year.randomForest.1926 construction.year randomForest 1926
 #&gt; construction.year.randomForest.1927 construction.year randomForest 1927
 #&gt; construction.year.randomForest.1929 construction.year randomForest 1929
-#&gt;                                         _yhat_ _ids_
-#&gt; construction.year.randomForest.1920   0.000000     0
-#&gt; construction.year.randomForest.1923  20.273587     0
-#&gt; construction.year.randomForest.1924  14.306277     0
-#&gt; construction.year.randomForest.1926   6.372492     0
-#&gt; construction.year.randomForest.1927 -21.358573     0
-#&gt; construction.year.randomForest.1929 -36.608490     0
+#&gt;                                        _yhat_ _ids_
+#&gt; construction.year.randomForest.1920   0.00000     0
+#&gt; construction.year.randomForest.1923  24.46394     0
+#&gt; construction.year.randomForest.1924  19.25767     0
+#&gt; construction.year.randomForest.1926  11.36508     0
+#&gt; construction.year.randomForest.1927 -20.25104     0
+#&gt; construction.year.randomForest.1929 -36.89223     0
 #&gt; 
 #&gt; $break_points
-#&gt; [1] 1931 1964 1983 1994
+#&gt; [1] 1926.000 1940.000 1962.000 1979.878 1994.000
 #&gt; 
 #&gt; $new_levels
-#&gt; [1] "(-Inf, 1931]" "(1931, 1964]" "(1964, 1983]" "(1983, 1994]" "(1994, Inf)" 
+#&gt; [1] "(-Inf, 1926]"     "(1926, 1940]"     "(1940, 1962]"     "(1962, 1979.878]"
+#&gt; [5] "(1979.878, 1994]" "(1994, Inf)"     
 #&gt; </div><div class='input'>
 </div></span></pre>
   </div>
