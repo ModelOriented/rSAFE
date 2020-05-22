@@ -61,13 +61,13 @@ safe_extraction <- function(explainer, response_type = "ale", grid_points = 50, 
 
 
   #explainer$data might contain also a response variable - we use model attributes to get only the predictors
-  term_names <- attr(explainer$model$terms, "term.labels")
-  if (is.null(term_names)) {
-    term_names <- explainer$model$feature_names #xgboost
-  }
-  if (is.null(term_names)) {
+  # term_names <- attr(explainer$model$terms, "term.labels")
+  # if (is.null(term_names)) {
+  #   term_names <- explainer$model$feature_names #xgboost
+  # }
+  #if (is.null(term_names)) {
     term_names <- colnames(explainer$data) #we take column names from dataset (the output variable should not be there)
-  }
+  #}
 
   p <- length(term_names) #number of variables in dataset
   n <- nrow(explainer$data) #number of observations in dataset
