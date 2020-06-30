@@ -4,8 +4,14 @@
 \alias{safely_select_variables}
 \title{Performing feature selection on the dataset with transformed variables}
 \usage{
-safely_select_variables(safe_extractor, data, y = NULL, which_y = NULL,
-  class_pred = NULL, verbose = TRUE)
+safely_select_variables(
+  safe_extractor,
+  data,
+  y = NULL,
+  which_y = NULL,
+  class_pred = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{safe_extractor}{object containing information about variables transformations created with safe_extraction() function}

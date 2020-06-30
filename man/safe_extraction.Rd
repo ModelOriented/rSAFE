@@ -4,11 +4,22 @@
 \alias{safe_extraction}
 \title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
 \usage{
-safe_extraction(explainer, response_type = "ale", grid_points = 50,
-  N = 200, penalty = "MBIC", nquantiles = 10, no_segments = 2,
-  method = "complete", B = 500, collapse = "_",
-  interactions = FALSE, inter_param = 0.25, inter_threshold = 0.25,
-  verbose = TRUE)
+safe_extraction(
+  explainer,
+  response_type = "ale",
+  grid_points = 50,
+  N = 200,
+  penalty = "MBIC",
+  nquantiles = 10,
+  no_segments = 2,
+  method = "complete",
+  B = 500,
+  collapse = "_",
+  interactions = FALSE,
+  inter_param = 0.25,
+  inter_threshold = 0.25,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
@@ -40,7 +51,7 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
 are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
 into account}
 
-\item{inter_threshold}{numeric, a value from \code{[0,1]} interval indicating which interactions should be returned
+\item{inter_threshold}{numeric, a value from \verb{[0,1]} interval indicating which interactions should be returned
 as significant. It corresponds to the percentage of observations for which interaction measure is greater
 than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.}
 

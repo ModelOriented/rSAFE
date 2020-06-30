@@ -4,9 +4,16 @@
 \alias{safely_transform_continuous}
 \title{Calculating a transformation of continuous feature using PDP/ALE plot}
 \usage{
-safely_transform_continuous(explainer, variable, response_type = "ale",
-  grid_points = 50, N = 200, penalty = "MBIC", nquantiles = 10,
-  no_segments = 2)
+safely_transform_continuous(
+  explainer,
+  variable,
+  response_type = "ale",
+  grid_points = 50,
+  N = 200,
+  penalty = "MBIC",
+  nquantiles = 10,
+  no_segments = 2
+)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}

@@ -6,7 +6,9 @@
 \alias{rSAFE-package}
 \title{rSAFE: Surrogate-Assisted Feature Extraction in R}
 \description{
-A model agnostic tool for making an explainable
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+
+Provides a model agnostic tool for making an explainable
   white-box model more accurate using alternative black-box model called surrogate model.
   Based on the complicated model, such as neural network or random forest, new features
   are being extracted and then used in the process of fitting a simpler explainable model,
@@ -21,10 +23,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Anna Gierlak \email{anna.gierlak@op.pl}
+\strong{Maintainer}: Alicja Gosiewska \email{alicjagosiewska@gmail.com}
 
 Authors:
 \itemize{
+  \item Anna Gierlak \email{anna.gierlak@op.pl}
   \item Przemyslaw Biecek [thesis advisor]
 }
 

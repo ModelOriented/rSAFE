@@ -4,8 +4,13 @@
 \alias{safely_transform_categorical}
 \title{Calculating a transformation of categorical feature using hierarchical clustering}
 \usage{
-safely_transform_categorical(explainer, variable, method = "complete",
-  B = 500, collapse = "_")
+safely_transform_categorical(
+  explainer,
+  variable,
+  method = "complete",
+  B = 500,
+  collapse = "_"
+)
 }
 \arguments{
 \item{explainer}{DALEX explainer created with explain() function}
