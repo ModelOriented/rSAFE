@@ -1,6 +1,6 @@
 # Surrogate Assisted Feature Extraction in R <img src="man/figures/logo.png" align="right" width="150"/>
 
-[![Build Status](https://travis-ci.org/ModelOriented/rSAFE.svg?branch=master)](https://travis-ci.org/ModelOriented/rSAFE) [![Coverage Status](https://codecov.io/gh/ModelOriented/rSAFE/branch/master/graph/badge.svg)](https://codecov.io/gh/ModelOriented/rSAFE)
+![R-CMD-check](https://github.com/ModelOriented/rSAFE/workflows/R-CMD-check/badge.svg) [![Build Status](https://travis-ci.org/ModelOriented/rSAFE.svg?branch=master)](https://travis-ci.org/ModelOriented/rSAFE) [![Coverage Status](https://codecov.io/gh/ModelOriented/rSAFE/branch/master/graph/badge.svg)](https://codecov.io/gh/ModelOriented/rSAFE)
 
 ## Overview
 
