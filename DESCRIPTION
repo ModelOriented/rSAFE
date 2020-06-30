@@ -1,8 +1,9 @@
 Package: rSAFE
 Title: Surrogate-Assisted Feature Extraction in R
-Version: 0.1.0
+Version: 0.1.1
 Authors@R:
-    c(person("Anna", "Gierlak", role = c("aut", "cre"), email = "anna.gierlak@op.pl"),
+    c(person("Alicja", "Gosiewska", role = c("aut", "cre"), email = "alicjagosiewska@gmail.com"),
+      person("Anna", "Gierlak", role = c("aut"), email = "anna.gierlak@op.pl"),
       person("Przemyslaw", "Biecek", role = c("aut", "ths")))
 Description: A model agnostic tool for making an explainable
   white-box model more accurate using alternative black-box model called surrogate model.
@@ -14,7 +15,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Imports:
     ingredients,
     sets,
