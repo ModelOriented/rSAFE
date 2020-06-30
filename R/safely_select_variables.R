@@ -63,6 +63,7 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
     if (is.character(which_y)) {
       #which_y is a column name
       data <- data[, colnames(data) != which_y]
+      data <- data[, colnames(data) != paste0(which_y, "_new")]
     } else {
       #which_y is a column index
       data <- data[, -which_y]
@@ -91,17 +92,18 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
 
   #checking whether data is already transformed or not
   term_names <- names(safe_extractor$variables_info)
+  term_names <- term_names[term_names != which_y]
   term_names_new <- sapply(term_names, function(x) paste0(x, "_new"))
   #we check whether there is at least one transformed variable in given dataset
   term_names_new_present <- intersect(colnames(data), term_names_new)
 
   if (length(term_names_new_present) == 0) {
     #there are only original variables, no transformations have been done - we will do it now
+
     data <- safely_transform_data(safe_extractor, data, verbose = FALSE)
     term_names_new_present <- intersect(colnames(data), term_names_new)
   }
   #now data is supposed to contain also transformed variables
-
   var_best <- term_names #set of variables, each is either original or transformed, initially all are original
 
   if (verbose == TRUE) {
