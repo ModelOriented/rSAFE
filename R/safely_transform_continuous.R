@@ -31,6 +31,9 @@
 #' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
 #' safely_transform_continuous(explainer_rf, "construction.year")
 #'
+#' @import ingredients
+#'
+#'
 #' @export
 
 safely_transform_continuous <- function(explainer, variable, response_type = "ale", grid_points = 50, N = 200, penalty = "MBIC", nquantiles = 10, no_segments = 2) {
@@ -53,9 +56,9 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
   #calculating average responses of chosen type
   set.seed(123) #functions from ingredients contain sampling
   if (response_type == "ale") {
-    sv <- ingredients::accumulated_dependency(explainer, variables = variable, grid_points = grid_points, N = N)
+    sv <- accumulated_dependence(explainer, variables = variable, grid_points = grid_points, N = N)
   } else {
-    sv <- ingredients::partial_dependency(explainer, variables = variable, grid_points = grid_points, N = N)
+    sv <- partial_dependence(explainer, variables = variable, grid_points = grid_points, N = N)
   }
 
   #if the variable is a factor with two values (but is regarded as a continuous feature) we do not transform it
@@ -116,8 +119,8 @@ pretty_intervals <- function(break_points) {
 
 }
 
-
 plot_continuous <- function(temp_info, variable) {
+  # browser()
   p <- plot(temp_info$sv)
   #adding breakpoints to the pdp/ale plot
   temp_bp <- temp_info$break_points
