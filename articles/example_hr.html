@@ -112,14 +112,14 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ModelOriented/rSAFE" class="external-link">rSAFE</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">HR_data</span><span class="op">)</span>
-<span class="co">#&gt;   satisfaction_level last_evaluation number_project average_montly_hours</span>
-<span class="co">#&gt; 1               0.38            0.53              2                  157</span>
-<span class="co">#&gt; 2               0.80            0.86              5                  262</span>
-<span class="co">#&gt; 3               0.11            0.88              7                  272</span>
-<span class="co">#&gt; 4               0.72            0.87              5                  223</span>
-<span class="co">#&gt; 5               0.37            0.52              2                  159</span>
-<span class="co">#&gt; 6               0.41            0.50              2                  153</span>
-<span class="co">#&gt;   time_spend_company Work_accident left promotion_last_5years sales salary</span>
+<span class="co">#&gt;   satisfaction_level last_evaluation number_project average_monthly_hours</span>
+<span class="co">#&gt; 1               0.38            0.53              2                   157</span>
+<span class="co">#&gt; 2               0.80            0.86              5                   262</span>
+<span class="co">#&gt; 3               0.11            0.88              7                   272</span>
+<span class="co">#&gt; 4               0.72            0.87              5                   223</span>
+<span class="co">#&gt; 5               0.37            0.52              2                   159</span>
+<span class="co">#&gt; 6               0.41            0.50              2                   153</span>
+<span class="co">#&gt;   time_spend_company work_accident left promotion_last_5years sales salary</span>
 <span class="co">#&gt; 1                  3             0    1                     0 sales    low</span>
 <span class="co">#&gt; 2                  6             0    1                     0 sales medium</span>
 <span class="co">#&gt; 3                  4             0    1                     0 sales medium</span>
@@ -129,7 +129,7 @@
 <p>As explanatory variables we use all available in the dataset except for  which specifies department in which the employee works for.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">HR_data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">HR_data</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"sales"</span><span class="op">]</span></code></pre></div>
-<p>In order to ensure the final errors are computed on the data which has not been seen by an approproate model, we divide our data as follows:</p>
+<p>In order to ensure the final errors are computed on the data which has not been seen by an appropriate model, we divide our data as follows:</p>
 <ul>
 <li>
 <code>data1</code> - the data which initial black-box and white-box models are fitted to,</li>
@@ -189,7 +189,7 @@
 <span class="co">#&gt; Variable 'number_project' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 4]</span>
 <span class="co">#&gt;      (4, Inf)</span>
-<span class="co">#&gt; Variable 'average_montly_hours' - selected intervals:</span>
+<span class="co">#&gt; Variable 'average_monthly_hours' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 115.6122]</span>
 <span class="co">#&gt;      (115.6122, 160]</span>
 <span class="co">#&gt;      (160, 214]</span>
@@ -197,12 +197,12 @@
 <span class="co">#&gt; Variable 'time_spend_company' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 3]</span>
 <span class="co">#&gt;      (3, Inf)</span>
-<span class="co">#&gt; Variable 'Work_accident' - no transformation suggested.</span>
+<span class="co">#&gt; Variable 'work_accident' - no transformation suggested.</span>
 <span class="co">#&gt; Variable 'promotion_last_5years' - no transformation suggested.</span>
 <span class="co">#&gt; Variable 'salary' - created levels:</span>
 <span class="co">#&gt;  high -&gt;  high </span>
 <span class="co">#&gt;  low, medium -&gt;  low_medium</span></code></pre></div>
-<p>We can see transormation propositions for all variables in our dataset.</p>
+<p>We can see transformation propositions for all variables in our dataset.</p>
 <p>In the plot below we can see which points have been chosen to be the breakpoints for a particular variable:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">safe_extractor</span>, variable <span class="op">=</span> <span class="st">"last_evaluation"</span><span class="op">)</span></code></pre></div>
@@ -241,15 +241,15 @@
 <th align="right">satisfaction_level</th>
 <th align="right">last_evaluation</th>
 <th align="right">number_project</th>
-<th align="right">average_montly_hours</th>
+<th align="right">average_monthly_hours</th>
 <th align="right">time_spend_company</th>
-<th align="right">Work_accident</th>
+<th align="right">work_accident</th>
 <th align="right">left</th>
 <th align="right">promotion_last_5years</th>
 <th align="left">satisfaction_level_new</th>
 <th align="left">last_evaluation_new</th>
 <th align="left">number_project_new</th>
-<th align="left">average_montly_hours_new</th>
+<th align="left">average_monthly_hours_new</th>
 <th align="left">time_spend_company_new</th>
 <th align="left">salary_new</th>
 </tr></thead>
@@ -363,11 +363,11 @@
 <code class="sourceCode R"><span class="va">selected_variables</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_select_variables.html">safely_select_variables</a></span><span class="op">(</span><span class="va">safe_extractor</span>, <span class="va">data3_trans</span>, which_y <span class="op">=</span> <span class="st">"left"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">data3_trans_sel</span> <span class="op">&lt;-</span> <span class="va">data3_trans</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="va">selected_variables</span><span class="op">)</span><span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">selected_variables</span><span class="op">)</span>
-<span class="co">#&gt; [1] "Work_accident"            "promotion_last_5years"   </span>
-<span class="co">#&gt; [3] "salary"                   "satisfaction_level_new"  </span>
-<span class="co">#&gt; [5] "last_evaluation_new"      "number_project_new"      </span>
-<span class="co">#&gt; [7] "average_montly_hours_new" "time_spend_company_new"</span></code></pre></div>
-<p>It can be observed that for some features the original form was preffered and for others the transformed one.</p>
+<span class="co">#&gt; [1] "work_accident"             "promotion_last_5years"    </span>
+<span class="co">#&gt; [3] "salary"                    "satisfaction_level_new"   </span>
+<span class="co">#&gt; [5] "last_evaluation_new"       "number_project_new"       </span>
+<span class="co">#&gt; [7] "average_monthly_hours_new" "time_spend_company_new"</span></code></pre></div>
+<p>It can be observed that for some features the original form was preferred and for others the transformed one.</p>
 <p>Here are the first few rows for our data after feature selection:</p>
 <table style="width:100%;" class="table">
 <colgroup>
@@ -377,19 +377,19 @@
 <col width="4%">
 <col width="14%">
 <col width="12%">
-<col width="12%">
-<col width="15%">
+<col width="11%">
+<col width="16%">
 <col width="14%">
 </colgroup>
 <thead><tr class="header">
 <th align="right">left</th>
-<th align="right">Work_accident</th>
+<th align="right">work_accident</th>
 <th align="right">promotion_last_5years</th>
 <th align="left">salary</th>
 <th align="left">satisfaction_level_new</th>
 <th align="left">last_evaluation_new</th>
 <th align="left">number_project_new</th>
-<th align="left">average_montly_hours_new</th>
+<th align="left">average_monthly_hours_new</th>
 <th align="left">time_spend_company_new</th>
 </tr></thead>
 <tbody>
@@ -469,7 +469,7 @@
 <div id="creating-white-box-models-on-original-and-transformed-datasets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor"></a>Creating white-box models on original and transformed datasets</h2>
-<p>Let’s fit the models to data containg newly created columns. We consider a generalized linear model (glm) as a white-box model.</p>
+<p>Let’s fit the models to data containing newly created columns. We consider a generalized linear model (glm) as a white-box model.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_lr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">left</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data3_trans_sel</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span>

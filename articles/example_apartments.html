@@ -170,7 +170,7 @@
 <span class="co">#&gt;  Bemowo, Bielany, Ursus, Ursynow, Praga, Wola -&gt;  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola </span>
 <span class="co">#&gt;  Zoliborz, Mokotow, Ochota -&gt;  Mokotow_Ochota_Zoliborz </span>
 <span class="co">#&gt;  Srodmiescie -&gt;  Srodmiescie</span></code></pre></div>
-<p>We can see transormation propositions for all variables in our dataset.</p>
+<p>We can see transformation propositions for all variables in our dataset.</p>
 <p>In the plot below we can see which points have been chosen to be the breakpoints for a particular variable:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">safe_extractor</span>, variable <span class="op">=</span> <span class="st">"construction.year"</span><span class="op">)</span></code></pre></div>
@@ -301,7 +301,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
 <span class="co">#&gt; [1] "surface"               "floor"                 "no.rooms"             </span>
 <span class="co">#&gt; [4] "construction.year_new" "district_new"</span></code></pre></div>
-<p>It can be observed that for some features the original form was preffered and for others the transformed one.</p>
+<p>It can be observed that for some features the original form was preferred and for others the transformed one.</p>
 <p>Here are the first few rows for our data after feature selection:</p>
 <table class="table">
 <thead><tr class="header">
@@ -370,7 +370,7 @@
 <div id="creating-white-box-models-on-original-and-transformed-datasets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor"></a>Creating white-box models on original and transformed datasets</h2>
-<p>Let’s fit the models to data containg newly created columns. We consider a linear model as a white-box model.</p>
+<p>Let’s fit the models to data containing newly created columns. We consider a linear model as a white-box model.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span>
 <span class="va">explainer_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model_lm2</span>, data <span class="op">=</span> <span class="va">data2</span>, y <span class="op">=</span> <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">6001</span><span class="op">:</span><span class="fl">9000</span>,<span class="fl">1</span><span class="op">]</span>, label <span class="op">=</span> <span class="st">"lm2"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
