@@ -1,8 +1,8 @@
 # version 0.1.2
 
-- added spellcheck
-- fixed imports
-- fixed titles in the documentation
+- added spellcheck.
+- fixed imports.
+- fixed titles in the documentation.
 
 # version 0.1.1
 
@@ -12,4 +12,4 @@
 
 # version 0.1.0
 
-First official version of the `rSAFE` package
+First official version of the `rSAFE` package.

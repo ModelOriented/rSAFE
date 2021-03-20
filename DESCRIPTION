@@ -5,11 +5,7 @@ Authors@R:
     c(person("Alicja", "Gosiewska", role = c("aut", "cre"), email = "alicjagosiewska@gmail.com"),
       person("Anna", "Gierlak", role = c("aut"), email = "anna.gierlak@op.pl"),
       person("Przemyslaw", "Biecek", role = c("aut", "ths")))
-Description: Provides a model agnostic tool for making an explainable
-  white-box model more accurate using alternative black-box model called surrogate model.
-  Based on the complicated model, such as neural network or random forest, new features
-  are being extracted and then used in the process of fitting a simpler explainable model,
-  improving its overall performance.
+Description: Provides a model agnostic tool for white-box model trained on features extracted from a black-box model. For more information see: Gosiewska et al. (2020) <arxiv.org/abs/2002.04267>.
 Depends: R (>= 3.5.0)
 License: GPL-3
 Encoding: UTF-8

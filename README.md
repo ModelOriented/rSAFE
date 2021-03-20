@@ -1,10 +1,19 @@
+
 # Surrogate Assisted Feature Extraction in R <img src="man/figures/logo.png" align="right" width="150"/>
 
-![R-CMD-check](https://github.com/ModelOriented/rSAFE/workflows/R-CMD-check/badge.svg) [![Build Status](https://travis-ci.org/ModelOriented/rSAFE.svg?branch=master)](https://travis-ci.org/ModelOriented/rSAFE) [![Coverage Status](https://codecov.io/gh/ModelOriented/rSAFE/branch/master/graph/badge.svg)](https://codecov.io/gh/ModelOriented/rSAFE)
+[![Build
+Status](https://travis-ci.org/ModelOriented/rSAFE.svg?branch=master)](https://travis-ci.org/ModelOriented/rSAFE)
+[![Coverage
+Status](https://codecov.io/gh/ModelOriented/rSAFE/branch/master/graph/badge.svg)](https://codecov.io/gh/ModelOriented/rSAFE)
 
 ## Overview
 
-The `rSAFE` package is a model agnostic tool for making an interpretable white-box model more accurate using alternative black-box model called surrogate model. Based on the complicated model, such as neural network or random forest, new features are being extracted and then used in the process of fitting a simpler interpretable model, improving its overall performance.
+The `rSAFE` package is a model agnostic tool for making an interpretable
+white-box model more accurate using alternative black-box model called
+surrogate model. Based on the complicated model, such as neural network
+or random forest, new features are being extracted and then used in the
+process of fitting a simpler interpretable model, improving its overall
+performance.
 
 ## Installation
 
@@ -17,7 +26,14 @@ devtools::install_github("ModelOriented/rSAFE")
 
 ## Demo
 
-In this vignette we present an example of an application of the `rSAFE` package in case of regression problems. It is based on `apartments` and `apartmentsTest` datasets which come from the `DALEX` package but are also available in the `rSAFE` package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical.
+In this vignette we present an example of an application of the `rSAFE`
+package in case of regression problems. It is based on `apartments` and
+`apartmentsTest` datasets which come from the `DALEX` package but are
+also available in the `rSAFE` package. We will use these artificial
+datasets to predict the price per square meter of an apartment based on
+features such as construction year, surface, floor, number of rooms and
+district. It should be mentioned that four of these variables are
+continuous while the fifth one is categorical.
 
 ``` r
 library(rSAFE)
@@ -31,10 +47,10 @@ head(apartments)
 #> 6     5795              1926      61     6        2 Srodmiescie
 ```
 
-Building a black-box model
---------------------------
+## Building a black-box model
 
-First we fit a random forest model to the original `apartments` dataset - this is our complex model that will serve us as a surrogate.
+First we fit a random forest model to the original `apartments` dataset
+- this is our complex model that will serve us as a surrogate.
 
 ``` r
 library(randomForest)
@@ -42,10 +58,10 @@ set.seed(111)
 model_rf1 <- randomForest(m2.price ~ construction.year + surface + floor + no.rooms + district, data = apartments)
 ```
 
-Creating an explainer
----------------------
+## Creating an explainer
 
-We also create an `explainer` object that will be used later to create new variables and at the end to compare models performance.
+We also create an `explainer` object that will be used later to create
+new variables and at the end to compare models performance.
 
 ``` r
 library(DALEX)
@@ -59,16 +75,17 @@ explainer_rf1
 #> 1002              1978     112     9        4     Mokotow
 ```
 
-Creating a safe\_extractor
---------------------------
+## Creating a safe\_extractor
 
-Now, we create a `safe_extractor` object using `rSAFE` package and our surrogate model. Setting the argument `verbose=FALSE` stops progress bar from printing.
+Now, we create a `safe_extractor` object using `rSAFE` package and our
+surrogate model. Setting the argument `verbose=FALSE` stops progress bar
+from printing.
 
 ``` r
 safe_extractor <- safe_extraction(explainer_rf1, penalty = 25, verbose = FALSE)
 ```
 
-Now, let's print summary for the new object we have just created.
+Now, let’s print summary for the new object we have just created.
 
 ``` r
 print(safe_extractor)
@@ -92,43 +109,47 @@ print(safe_extractor)
 #>  Srodmiescie ->  Srodmiescie
 ```
 
-We can see transormation propositions for all variables in our dataset.
+We can see transformation propositions for all variables in our dataset.
 
-In the plot below we can see which points have been chosen to be the breakpoints for a particular variable:
+In the plot below we can see which points have been chosen to be the
+breakpoints for a particular variable:
 
 ``` r
 plot(safe_extractor, variable = "construction.year")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-For factor variables we can observe in which order levels have been merged and what is the optimal clustering:
+For factor variables we can observe in which order levels have been
+merged and what is the optimal clustering:
 
 ``` r
 plot(safe_extractor, variable = "district")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-Transforming data
------------------
+## Transforming data
 
-Now we can use our `safe_extractor` object to create new categorical features in the given dataset.
+Now we can use our `safe_extractor` object to create new categorical
+features in the given dataset.
 
 ``` r
 data1 <- safely_transform_data(safe_extractor, apartmentsTest[3001:6000,], verbose = FALSE)
 ```
 
-| district    |  m2.price|  construction.year|  surface|  floor|  no.rooms| construction.year\_new | surface\_new | floor\_new | no.rooms\_new | district\_new                                |
-|:------------|---------:|------------------:|--------:|------:|---------:|:-----------------------|:-------------|:-----------|:--------------|:---------------------------------------------|
-| Bielany     |      3542|               1979|       21|      6|         1| (1937, 1994\]          | (-Inf, 47\]  | (5, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Srodmiescie |      5631|               1997|      107|      2|         4| (1994, Inf)            | (101, Inf)   | (-Inf, 5\] | (3, Inf)      | Srodmiescie                                  |
-| Bielany     |      2989|               1994|       41|      9|         2| (1937, 1994\]          | (-Inf, 47\]  | (5, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Ursynow     |      3822|               1968|       28|      2|         2| (1937, 1994\]          | (-Inf, 47\]  | (-Inf, 5\] | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Ursynow     |      2337|               1971|      146|      3|         6| (1937, 1994\]          | (101, Inf)   | (-Inf, 5\] | (3, Inf)      | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-| Ochota      |      3381|               1956|       97|      8|         3| (1937, 1994\]          | (47, 101\]   | (5, Inf)   | (-Inf, 3\]    | Mokotow\_Ochota\_Zoliborz                    |
+| district    | m2.price | construction.year | surface | floor | no.rooms | construction.year\_new | surface\_new | floor\_new | no.rooms\_new | district\_new                                |
+| :---------- | -------: | ----------------: | ------: | ----: | -------: | :--------------------- | :----------- | :--------- | :------------ | :------------------------------------------- |
+| Bielany     |     3542 |              1979 |      21 |     6 |        1 | (1937, 1994\]          | (-Inf, 47\]  | (5, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Srodmiescie |     5631 |              1997 |     107 |     2 |        4 | (1994, Inf)            | (101, Inf)   | (-Inf, 5\] | (3, Inf)      | Srodmiescie                                  |
+| Bielany     |     2989 |              1994 |      41 |     9 |        2 | (1937, 1994\]          | (-Inf, 47\]  | (5, Inf)   | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Ursynow     |     3822 |              1968 |      28 |     2 |        2 | (1937, 1994\]          | (-Inf, 47\]  | (-Inf, 5\] | (-Inf, 3\]    | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Ursynow     |     2337 |              1971 |     146 |     3 |        6 | (1937, 1994\]          | (101, Inf)   | (-Inf, 5\] | (3, Inf)      | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+| Ochota      |     3381 |              1956 |      97 |     8 |        3 | (1937, 1994\]          | (47, 101\]   | (5, Inf)   | (-Inf, 3\]    | Mokotow\_Ochota\_Zoliborz                    |
 
-We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.
+We can also perform feature selection if we wish. For each original
+feature it keeps exactly one of their forms - original one or
+transformed one.
 
 ``` r
 vars <- safely_select_variables(safe_extractor, data1, which_y = "m2.price", verbose = FALSE)
@@ -138,29 +159,31 @@ print(vars)
 #> [4] "construction.year_new" "district_new"
 ```
 
-It can be observed that for some features the original form was preffered and for others the transformed one.
+It can be observed that for some features the original form was
+preferred and for others the transformed one.
 
 Here are the first few rows for our data after feature selection:
 
-|  m2.price|  surface|  floor|  no.rooms| construction.year\_new | district\_new                                |
-|---------:|--------:|------:|---------:|:-----------------------|:---------------------------------------------|
-|      3542|       21|      6|         1| (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-|      5631|      107|      2|         4| (1994, Inf)            | Srodmiescie                                  |
-|      2989|       41|      9|         2| (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-|      3822|       28|      2|         2| (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-|      2337|      146|      3|         6| (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
-|      3381|       97|      8|         3| (1937, 1994\]          | Mokotow\_Ochota\_Zoliborz                    |
+| m2.price | surface | floor | no.rooms | construction.year\_new | district\_new                                |
+| -------: | ------: | ----: | -------: | :--------------------- | :------------------------------------------- |
+|     3542 |      21 |     6 |        1 | (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+|     5631 |     107 |     2 |        4 | (1994, Inf)            | Srodmiescie                                  |
+|     2989 |      41 |     9 |        2 | (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+|     3822 |      28 |     2 |        2 | (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+|     2337 |     146 |     3 |        6 | (1937, 1994\]          | Bemowo\_Bielany\_Praga\_Ursus\_Ursynow\_Wola |
+|     3381 |      97 |     8 |        3 | (1937, 1994\]          | Mokotow\_Ochota\_Zoliborz                    |
 
-Now, we perform transformations on another data that will be used later in explainers:
+Now, we perform transformations on another data that will be used later
+in explainers:
 
 ``` r
 data2 <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], verbose = FALSE)[,c("m2.price", vars)]
 ```
 
-Creating white-box models on original and transformed datasets
---------------------------------------------------------------
+## Creating white-box models on original and transformed datasets
 
-Let's fit the models to data containg newly created columns. We consider a linear model as a white-box model.
+Let’s fit the models to data containing newly created columns. We
+consider a linear model as a white-box model.
 
 ``` r
 model_lm2 <- lm(m2.price ~ ., data = data1)
@@ -170,15 +193,16 @@ model_rf2 <- randomForest(m2.price ~ ., data = data1)
 explainer_rf2 <- explain(model_rf2, data2, apartmentsTest[6001:9000,1], label = "rf2", verbose = FALSE)
 ```
 
-Moreover, we create a linear model based on original `apartments` dataset and its corresponding explainer in order to check if our methodology improves results.
+Moreover, we create a linear model based on original `apartments`
+dataset and its corresponding explainer in order to check if our
+methodology improves results.
 
 ``` r
 model_lm1 <- lm(m2.price ~ ., data = apartments)
 explainer_lm1 <- explain(model_lm1, data = apartmentsTest[1:3000,2:6], y = apartmentsTest[1:3000,1], label = "lm1", verbose = FALSE)
 ```
 
-Comparing models performance
-----------------------------
+## Comparing models performance
 
 Final step is the comparison of all the models we have created.
 
@@ -193,14 +217,20 @@ mp_rf2 <- model_performance(explainer_rf2)
 plot(mp_lm1, mp_rf1, mp_lm2, mp_rf2, geom = "boxplot")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-In the plot above we can see that the linear model based on transformed features has generally more accurate predictions that the one fitted to the original dataset.
+In the plot above we can see that the linear model based on transformed
+features has generally more accurate predictions that the one fitted to
+the original dataset.
 
-References
-----------
+## References
 
--   [Python version of SAFE package](https://github.com/ModelOriented/SAFE)
--   [SAFE article](https://arxiv.org/abs/1902.11035) - the article about SAFE algorithm, including benchmark results obtained using Python version of SAFE package
+  - [Python version of SAFE
+    package](https://github.com/ModelOriented/SAFE)
+  - [SAFE article](https://arxiv.org/abs/1902.11035) - the article about
+    SAFE algorithm, including benchmark results obtained using Python
+    version of SAFE package
 
-The package was created as a part of master's diploma thesis at Warsaw University of Technology at Faculty of Mathematics and Information Science by Anna Gierlak.
+The package was created as a part of master’s diploma thesis at Warsaw
+University of Technology at Faculty of Mathematics and Information
+Science by Anna Gierlak.

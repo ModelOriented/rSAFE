@@ -8,11 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Provides a model agnostic tool for making an explainable
-  white-box model more accurate using alternative black-box model called surrogate model.
-  Based on the complicated model, such as neural network or random forest, new features
-  are being extracted and then used in the process of fitting a simpler explainable model,
-  improving its overall performance.
+Provides a model agnostic tool for white-box model trained on features extracted from a black-box model. For more information see: Gosiewska et al. (2020) <arxiv.org/abs/2002.04267>.
 }
 \seealso{
 Useful links:
