@@ -32,7 +32,9 @@ Suggests:
     randomForest,
     rmarkdown,
     testthat,
-    xgboost
+    xgboost,
+    spelling
 VignetteBuilder: knitr
 URL: https://github.com/ModelOriented/rSAFE
 BugReports: https://github.com/ModelOriented/rSAFE/issues
+Language: en-US

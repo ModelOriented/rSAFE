@@ -27,7 +27,7 @@ otherwise 'y' argument should be provided.}
 
 \item{class_pred}{numeric or character, used only in multi-classification problems.
 If response vector has more than two levels, then 'class_pred' should indicate the class of interest
-which will denote failure - all other classess will stand for success.}
+which will denote failure - all other classes will stand for success.}
 
 \item{verbose}{logical, if progress bar is to be printed}
 }

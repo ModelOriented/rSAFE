@@ -7,9 +7,9 @@
 #'    \item  satisfaction_level Level of satisfaction (0-1)
 #'    \item  last_evaluation Time since last performance evaluation (in Years)
 #'    \item  number_project  Number of projects completed while at work
-#'    \item  average_montly_hours  Average monthly hours at workplace
+#'    \item  average_monthly_hours  Average monthly hours at workplace
 #'    \item  time_spend_company  Number of years spent in the company
-#'    \item  Work_accident  Whether the employee had a workplace accident
+#'    \item  work_accident  Whether the employee had a workplace accident
 #'    \item  left  Whether the employee left the workplace or not (1 or 0) Factor
 #'    \item  promotion_last_5years  Whether the employee was promoted in the last five years
 #'    \item  sales  Department in which they work for
