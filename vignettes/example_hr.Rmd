@@ -52,7 +52,7 @@ data4 <- data[12001:14999,]
 
 ## Building a black-box model
 
-In this example we decide to use the xgboost model as a black-box - it will serve us as a surrogate.
+In this example we decide to use the GBM model as a black-box - it will serve us as a surrogate.
 
 ```{r}
 n.trees <- 10000
@@ -175,7 +175,7 @@ confusion_matrix <- function(y_true, y_pred) {
 }
 ```
 
-Xgboost models give the following results:
+GBM models give the following results:
 
 * for the original data:
 

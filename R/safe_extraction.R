@@ -1,4 +1,4 @@
-#' @title Creating SAFE extractor - an object used for surrogate-assisted feature extraction
+#' @title Creating SAFE Extractor - an Object Used for Surrogate-Assisted Feature Extraction
 #'
 #' @description The safe_extraction() function creates a SAFE-extractor object which may be used later
 #' for surrogate feature extraction.
@@ -31,6 +31,7 @@
 #'
 #' @importFrom graphics plot
 #' @importFrom stats AIC aggregate binomial quantile
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #'
 #' @examples
 #'
@@ -91,7 +92,7 @@ safe_extraction <- function(explainer, response_type = "ale", grid_points = 50, 
       cat("Single variables processing...\n")
     }
     #progress bar - to let the user know how many variables have been already processed
-    pb <- utils::txtProgressBar(min = 0, max = p, style = 3)
+    pb <- txtProgressBar(min = 0, max = p, style = 3)
   }
 
   for (var_temp in term_names) {
@@ -111,7 +112,7 @@ safe_extraction <- function(explainer, response_type = "ale", grid_points = 50, 
 
     #updating progress bar
     if (verbose == TRUE) {
-      utils::setTxtProgressBar(pb, which(term_names == var_temp))
+      setTxtProgressBar(pb, which(term_names == var_temp))
     }
 
     variables_info[[var_temp]] <- temp_info
@@ -140,7 +141,7 @@ safe_extraction <- function(explainer, response_type = "ale", grid_points = 50, 
 }
 
 
-#' @title Plotting transformations of the SAFE extractor object
+#' @title Plotting Transformations of the SAFE Extractor Object
 #'
 #' @param x safe_extractor object containing information about variables transformations created with safe_extraction() function
 #' @param ... other parameters
@@ -150,7 +151,6 @@ safe_extraction <- function(explainer, response_type = "ale", grid_points = 50, 
 #'
 #' @export
 #'
-#' @import ggplot2
 plot.safe_extractor <- function(x, ..., variable = NULL) {
 
   if (is.null(variable)) { #argument 'variable' not specified
@@ -172,7 +172,7 @@ plot.safe_extractor <- function(x, ..., variable = NULL) {
 }
 
 
-#' @title Printing summary of the SAFE extractor object
+#' @title Printing Summary of the SAFE Extractor Object
 #'
 #' @param x safe_extractor object containing information about variables transformations created with safe_extraction() function
 #' @param ... other parameters

@@ -2,7 +2,7 @@
 % Please edit documentation in R/safely_detect_interactions.R
 \name{safely_detect_interactions}
 \alias{safely_detect_interactions}
-\title{Detecting interactions via a permutation approach}
+\title{Detecting Interactions via Permutation Approach}
 \usage{
 safely_detect_interactions(
   explainer,

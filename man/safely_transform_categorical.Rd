@@ -2,7 +2,7 @@
 % Please edit documentation in R/safely_transform_categorical.R
 \name{safely_transform_categorical}
 \alias{safely_transform_categorical}
-\title{Calculating a transformation of categorical feature using hierarchical clustering}
+\title{Calculating a Transformation of Categorical Feature Using Hierarchical Clustering}
 \usage{
 safely_transform_categorical(
   explainer,

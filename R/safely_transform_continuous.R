@@ -1,4 +1,4 @@
-#' @title Calculating a transformation of continuous feature using PDP/ALE plot
+#' @title Calculating a Transformation of a Continuous Feature Using PDP/ALE Plot
 #'
 #' @description The safely_transform_continuous() function calculates a transformation function
 #' for the continuous variable using a PD/ALE plot obtained from black box model.
@@ -31,8 +31,7 @@
 #' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
 #' safely_transform_continuous(explainer_rf, "construction.year")
 #'
-#' @import ingredients
-#'
+#' @importFrom ingredients accumulated_dependence partial_dependence
 #'
 #' @export
 
@@ -119,8 +118,8 @@ pretty_intervals <- function(break_points) {
 
 }
 
+#' @importFrom ggplot2 geom_vline
 plot_continuous <- function(temp_info, variable) {
-  # browser()
   p <- plot(temp_info$sv)
   #adding breakpoints to the pdp/ale plot
   temp_bp <- temp_info$break_points

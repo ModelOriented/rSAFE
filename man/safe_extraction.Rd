@@ -2,7 +2,7 @@
 % Please edit documentation in R/safe_extraction.R
 \name{safe_extraction}
 \alias{safe_extraction}
-\title{Creating SAFE extractor - an object used for surrogate-assisted feature extraction}
+\title{Creating SAFE Extractor - an Object Used for Surrogate-Assisted Feature Extraction}
 \usage{
 safe_extraction(
   explainer,

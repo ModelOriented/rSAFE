@@ -2,7 +2,7 @@
 % Please edit documentation in R/safely_detect_changepoints.R
 \name{safely_detect_changepoints}
 \alias{safely_detect_changepoints}
-\title{Identyfying changes in a series using PELT algorithm}
+\title{Identyfying Changes in a Series Using PELT Algorithm}
 \usage{
 safely_detect_changepoints(data, penalty = "MBIC", nquantiles = 10)
 }

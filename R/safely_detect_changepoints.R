@@ -1,4 +1,4 @@
-#' @title Identyfying changes in a series using PELT algorithm
+#' @title Identyfying Changes in a Series Using PELT Algorithm
 #'
 #' @description The safely_detect_changepoints() function calculates the optimal positioning
 #' and number of changepoints for given data and penalty. It uses a PELT algorithm
@@ -120,7 +120,7 @@ cost <- function(data, u, v, sumstat, K) { #function that evaluates cost of data
 
 }
 
-
+#' @importFrom sets set_union
 PELT_algorithm <- function(data, penalty_value, sumstat, K) {
 
   if (is.null(data)) {
@@ -160,7 +160,7 @@ PELT_algorithm <- function(data, penalty_value, sumstat, K) {
     #if u_index_min is the optimal last changepoint, then the optimal segmentation of data[1:u_index_min]
     #together with u_index_min give the optimal segmentation of data[1:v]
     if (! is.null(cp[[u_index_min+1]])) {
-      cp[[v+1]] <- sets::set_union(cp[[u_index_min+1]], cp[[v+1]])
+      cp[[v+1]] <- set_union(cp[[u_index_min+1]], cp[[v+1]])
     }
 
     #updating R set for next iterations - removing those points that can never be the last optimal changepoint
@@ -169,7 +169,7 @@ PELT_algorithm <- function(data, penalty_value, sumstat, K) {
         R <- R - tau
       }
     }
-    R <- sets::set_union(R, v)
+    R <- set_union(R, v)
   }
 
   cpts_final <- cp[[n+1]] - 0

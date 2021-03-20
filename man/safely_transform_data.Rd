@@ -2,7 +2,7 @@
 % Please edit documentation in R/safely_transform_data.R
 \name{safely_transform_data}
 \alias{safely_transform_data}
-\title{Performing transformations on all features in the dataset}
+\title{Performing Transformations on All Features in the Dataset}
 \usage{
 safely_transform_data(safe_extractor, data, verbose = TRUE)
 }

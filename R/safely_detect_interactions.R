@@ -1,4 +1,4 @@
-#' @title Detecting interactions via a permutation approach
+#' @title Detecting Interactions via Permutation Approach
 #'
 #' @description The safely_detect_interactions() function detects second-order interactions based on predictions
 #' made by a surrogate model. For each pair of features it performs values permutation in order
@@ -30,6 +30,8 @@
 #' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
 #' safely_detect_interactions(explainer_rf, inter_param = 0.25,
 #'                           inter_threshold = 0.2, verbose = TRUE)
+#'
+#' @importFrom  utils txtProgressBar setTxtProgressBar
 #'
 #' @export
 
@@ -77,7 +79,7 @@ safely_detect_interactions <- function(explainer, inter_param = 0.5, inter_thres
   if (verbose == TRUE) {
     #progress bar - to let the user know how many interactions have been already processed
     cat("Interactions processing...\n")
-    pb <- utils::txtProgressBar(min = 0, max = no_pairs, style = 3)
+    pb <- txtProgressBar(min = 0, max = no_pairs, style = 3)
   }
 
   i <- 1
@@ -90,7 +92,7 @@ safely_detect_interactions <- function(explainer, inter_param = 0.5, inter_thres
       interactions_strength[i,] <- c(term_names[j1], term_names[j2])
       #updating progress bar
       if (verbose == TRUE) {
-        utils::setTxtProgressBar(pb, i)
+        setTxtProgressBar(pb, i)
       }
       i <- i + 1
     }

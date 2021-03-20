@@ -1,4 +1,4 @@
-#' @title Performing feature selection on the dataset with transformed variables
+#' @title Performing Feature Selection on the Dataset with Transformed Variables
 #'
 #' @description The safely_select_variables() function selects variables from dataset returned
 #' by safely_transform_data() function. For each original variable exactly one variable is chosen
@@ -35,6 +35,8 @@
 #' safe_extractor <- safe_extraction(explainer_rf, verbose = FALSE)
 #' safely_select_variables(safe_extractor, data, which_y = "m2.price", verbose = FALSE)
 #'
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#' @importFrom stats AIC glm lm
 #' @export
 
 
@@ -108,7 +110,7 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
 
   if (verbose == TRUE) {
     #progress bar
-    pb <- utils::txtProgressBar(min = 0, max = length(term_names), style = 3)
+    pb <- txtProgressBar(min = 0, max = length(term_names), style = 3)
   }
 
   #fitting white box model to decide which of the original and transformed variable is better
@@ -120,14 +122,14 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
     for (var_temp in term_names) {
       if (paste0(var_temp, "_new") %in% colnames(data)) { #checking if there is transformed variable
         var_checked <- c(setdiff(var_best, var_temp), paste0(var_temp, "_new"))
-        model_best <- stats::glm((y == class_pred) ~ ., data = as.data.frame(data[, var_best]), family = binomial(link = 'logit'))
-        model_checked <- stats::glm((y == class_pred) ~ ., data = as.data.frame(data[, var_checked]), family = binomial(link = 'logit'))
-        if (stats::AIC(model_checked) < stats::AIC(model_best)) {
+        model_best <- glm((y == class_pred) ~ ., data = as.data.frame(data[, var_best]), family = binomial(link = 'logit'))
+        model_checked <- glm((y == class_pred) ~ ., data = as.data.frame(data[, var_checked]), family = binomial(link = 'logit'))
+        if (AIC(model_checked) < AIC(model_best)) {
           var_best <- var_checked
         }
       }
       if (verbose == TRUE) {
-        utils::setTxtProgressBar(pb, which(term_names == var_temp))
+        setTxtProgressBar(pb, which(term_names == var_temp))
       }
     }
 
@@ -136,14 +138,14 @@ safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NU
     for (var_temp in term_names) {
       if (paste0(var_temp, "_new") %in% colnames(data)) { #checking if there is transformed variable
         var_checked <- c(setdiff(var_best, var_temp), paste0(var_temp, "_new"))
-        model_best <- stats::lm(y ~ ., data = as.data.frame(data[, var_best]))
-        model_checked <- stats::lm(y ~ ., data = as.data.frame(data[, var_checked]))
-        if (stats::AIC(model_checked) < stats::AIC(model_best)) { #comparing AIC to choose better set of variables
+        model_best <- lm(y ~ ., data = as.data.frame(data[, var_best]))
+        model_checked <- lm(y ~ ., data = as.data.frame(data[, var_checked]))
+        if (AIC(model_checked) < AIC(model_best)) { #comparing AIC to choose better set of variables
           var_best <- var_checked
         }
       }
       if (verbose == TRUE) {
-        utils::setTxtProgressBar(pb, which(term_names == var_temp))
+        setTxtProgressBar(pb, which(term_names == var_temp))
       }
     }
 

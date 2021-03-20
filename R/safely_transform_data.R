@@ -1,4 +1,4 @@
-#' @title Performing transformations on all features in the dataset
+#' @title Performing Transformations on All Features in the Dataset
 #'
 #' @description The safely_transform_data() function creates new variables in dataset
 #' using safe_extractor object.
@@ -25,6 +25,8 @@
 #' safe_extractor <- safe_extraction(explainer_rf, verbose = FALSE)
 #' safely_transform_data(safe_extractor, data, verbose = FALSE)
 #'
+#' @importFrom utils txtProgressBar setTxtProgressBar
+#'
 #' @export
 
 safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
@@ -45,7 +47,7 @@ safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
 
   if (verbose == TRUE) {
     #progress bar - to let the user know how many variables have been already processed
-    pb <- utils::txtProgressBar(min = 0, max = length(term_names), style = 3)
+    pb <- txtProgressBar(min = 0, max = length(term_names), style = 3)
   }
 
   for (var_temp in term_names) {
@@ -54,7 +56,7 @@ safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
 
     if (is.null(temp_info$new_levels)) { #no transformation available
       if (verbose == TRUE) {
-        utils::setTxtProgressBar(pb, which(term_names == var_temp))
+        setTxtProgressBar(pb, which(term_names == var_temp))
       }
       next
     }
@@ -86,7 +88,7 @@ safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
 
     #updating progress bar
     if (verbose == TRUE) {
-      utils::setTxtProgressBar(pb, which(term_names == var_temp))
+      setTxtProgressBar(pb, which(term_names == var_temp))
     }
 
   }

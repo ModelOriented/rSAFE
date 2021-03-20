@@ -15,24 +15,24 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports:
-    ingredients,
-    sets,
-    stats,
+    DALEX,
+    dendextend,
     ggplot2,
     ggpubr,
-    dendextend,
-    grDevices
+    grDevices,
+    ingredients,
+    sets,
+    stats
 Suggests:
-    knitr,
-    rmarkdown,
-    DALEX,
-    randomForest,
-    xgboost,
     gbm,
+    knitr,
     pander,
-    testthat
+    randomForest,
+    rmarkdown,
+    testthat,
+    xgboost
 VignetteBuilder: knitr
 URL: https://github.com/ModelOriented/rSAFE
 BugReports: https://github.com/ModelOriented/rSAFE/issues

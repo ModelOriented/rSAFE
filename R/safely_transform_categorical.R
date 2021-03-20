@@ -1,4 +1,4 @@
-#' @title Calculating a transformation of categorical feature using hierarchical clustering
+#' @title Calculating a Transformation of Categorical Feature Using Hierarchical Clustering
 #'
 #' @description The safely_transform_categorical() function calculates a transformation function
 #' for the categorical variable using predictions obtained from black box model and hierarchical clustering.
@@ -27,6 +27,8 @@
 #'                            no.rooms + district, data = data)
 #' explainer_rf <- explain(model_rf, data = data[,2:6], y = data[,1])
 #' safely_transform_categorical(explainer_rf, "district")
+#'
+#' @importFrom stats runif cutree aggregate
 #'
 #' @export
 
@@ -59,7 +61,7 @@ safely_transform_categorical <- function(explainer, variable, method = "complete
   ref_values <- matrix(rep(0, (n-2)*B), ncol = B)
   set.seed(123)
   for (b in 1:B) { #B reference datasets
-    uni_data <- stats::runif(n, min = min(preds_agg), max = max(preds_agg))
+    uni_data <- runif(n, min = min(preds_agg), max = max(preds_agg))
     ref_values[,b] <- log(WSS_all(uni_data, method = method)$wss)
   }
   exp_log_Wk <- apply(ref_values, 1, mean)
@@ -86,10 +88,10 @@ safely_transform_categorical <- function(explainer, variable, method = "complete
     }
   }
 
-  groups <- stats::cutree(clustering, final_cluster_size)
+  groups <- cutree(clustering, final_cluster_size)
   new_levels <- data.frame(names(groups), groups)
   names(new_levels)[1] <- variable
-  pred <- stats::aggregate(new_levels[variable], by = list(new_levels$groups), function(x) paste0(x, collapse = collapse))
+  pred <- aggregate(new_levels[variable], by = list(new_levels$groups), function(x) paste0(x, collapse = collapse))
   names(pred)[2] <- paste0(variable, "_new")
   new_levels <- merge(new_levels, pred, by.x = "groups", by.y = "Group.1")
   new_levels <- new_levels[, colnames(new_levels) != "groups"]
@@ -100,7 +102,7 @@ safely_transform_categorical <- function(explainer, variable, method = "complete
 }
 
 
-
+#' @importFrom  stats aggregate
 levels_mean_agg <- function(explainer, variable) {
   data <- explainer$data
   lev <- levels(factor(data[,variable]))
@@ -112,7 +114,7 @@ levels_mean_agg <- function(explainer, variable) {
   })
   preds_combined <- do.call(rbind, preds)
 
-  preds_agg <- stats::aggregate(preds_combined$scores, by = list(preds_combined$level), mean)
+  preds_agg <- aggregate(preds_combined$scores, by = list(preds_combined$level), mean)
   preds_agg_final <- preds_agg$x
   names(preds_agg_final) <- preds_agg$"Group.1"
   return(preds_agg_final)
@@ -132,13 +134,14 @@ WSS <- function(data, groups) {
   return(sum(wss))
 }
 
+#' @importFrom stats dist hclust cutree
 WSS_all <- function(data, method) {
   n <- length(data)
   wss <- rep(0, n)
-  dist_matrix <- stats::dist(data, method = "euclidean")
-  clustering <- stats::hclust(dist_matrix, method = method)
+  dist_matrix <- dist(data, method = "euclidean")
+  clustering <- hclust(dist_matrix, method = method)
   for (k in 1:n) {
-    groups <- stats::cutree(clustering, k)
+    groups <- cutree(clustering, k)
     wss[k] <- WSS(data, groups)
   }
   #omitting k=1 and k=n
@@ -146,31 +149,40 @@ WSS_all <- function(data, method) {
   return(list(wss = wss, clustering = clustering))
 }
 
+
+#' @importFrom ggplot2 ggplot geom_segment guides aes_string scale_size_identity
+#' scale_linetype_identity scale_colour_identity coord_flip scale_y_reverse theme
+#' expand_limits element_blank labs geom_text
+#' @importFrom DALEX theme_drwhy
+#' @importFrom ggpubr geom_exec
+#' @importFrom dendextend get_branches_heights as.ggdend prepare.ggdend
+#' @importFrom stats as.dendrogram
+#' @importFrom grDevices hcl
 plot_categorical <- function(temp_info, variable) {
-  dend <- stats::as.dendrogram(temp_info$clustering)
+  dend <- as.dendrogram(temp_info$clustering)
   if (!is.null(temp_info$new_levels)) {
     final_cluster_size <- length(unique(temp_info$new_levels[,2]))
   } else {
     final_cluster_size <- 1
   }
   hues <- seq(15, 375, length = final_cluster_size + 1)
-  k_colors <- grDevices::hcl(h = hues, l = 65, c = 100, alpha = 1)[1:final_cluster_size]
+  k_colors <- hcl(h = hues, l = 65, c = 100, alpha = 1)[1:final_cluster_size]
   dend <- dendextend::set(dend, "labels_cex", 4)
   dend <- dendextend::set(dend, "branches_lwd", 0.5)
   dend <- dendextend::set(dend, "branches_k_color", k = final_cluster_size, value = k_colors)
   dend <- dendextend::set(dend, "labels_col", k = final_cluster_size, value = k_colors)
-  max_height <- max(dendextend::get_branches_heights(dend))
+  max_height <- max(get_branches_heights(dend))
   labels_track_height <- max_height/8
   if(max_height < 1) {
     offset_labels <- -max_height/100
   } else {
     offset_labels <- -0.1
   }
-  gdend <- dendextend::as.ggdend(dend, type = "rectangle")
+  gdend <- as.ggdend(dend, type = "rectangle")
   gdend$labels$angle <- 0
   gdend$labels$hjust <- -0.1
   gdend$labels$vjust <- 0.5
-  data <- dendextend::prepare.ggdend(gdend)
+  data <- prepare.ggdend(gdend)
   data$labels$y <- data$labels$y + offset_labels
 
   p <- ggplot()
@@ -182,10 +194,10 @@ plot_categorical <- function(temp_info, variable) {
     scale_size_identity() +
     scale_linetype_identity()
   p <- p + scale_colour_identity()
-  p <- p + ggpubr::geom_exec(geom_text, data = data$labels,
+  p <- p + geom_exec(geom_text, data = data$labels,
                              x = "x", y = "y", label = "label", color = "col", size = "cex",
                              angle = "angle", hjust = "hjust", vjust = "vjust")
-  p <- p + DALEX::theme_drwhy()
+  p <- p + theme_drwhy()
   p <- p + coord_flip() +
     scale_y_reverse() +
     theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
