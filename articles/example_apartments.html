@@ -48,20 +48,14 @@
       <div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">rSAFE</a>
         <div class="info">
-          <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy">DrWhy.AI</a>
-           developed by the <a href="https://mi2.mini.pw.edu.pl/">MI^2 DataLab</a> </span>
+          <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy" class="external-link">DrWhy.AI</a>
+           developed by the <a href="https://mi2.mini.pw.edu.pl/" class="external-link">MI^2 DataLab</a> </span>
           <span class="version version-default">0.1.2</span>
         </div>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -84,8 +78,8 @@
   <a href="../news/index.html">Changelog</a>
 </li>
         <li>
-  <a href="https://github.com/ModelOriented/rSAFE/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/ModelOriented/rSAFE/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -103,11 +97,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Regression example - apartments data</h1>
-                        <h4 class="author">Anna Gierlak</h4>
+                        <h4 data-toc-skip class="author">Anna Gierlak</h4>
             
-            <h4 class="date">2020-07-01</h4>
+            <h4 data-toc-skip class="date">2021-03-20</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ModelOriented/rSAFE/blob/master/vignettes/example_apartments.Rmd"><code>vignettes/example_apartments.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ModelOriented/rSAFE/blob/master/vignettes/example_apartments.Rmd" class="external-link"><code>vignettes/example_apartments.Rmd</code></a></small>
       <div class="hidden name"><code>example_apartments.Rmd</code></div>
 
     </div>
@@ -115,53 +109,49 @@
     
     
 <p>In this vignette we present an example of an application of the <code>rSAFE</code> package in case of regression problems. It is based on <code>apartments</code> and <code>apartmentsTest</code> datasets which come from the <code>DALEX</code> package but are also available in the <code>rSAFE</code> package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/ModelOriented/rSAFE">rSAFE</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">apartments</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ModelOriented/rSAFE" class="external-link">rSAFE</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">apartments</span><span class="op">)</span>
 <span class="co">#&gt;   m2.price construction.year surface floor no.rooms    district</span>
 <span class="co">#&gt; 1     5897              1953      25     3        1 Srodmiescie</span>
 <span class="co">#&gt; 2     1818              1992     143     9        5     Bielany</span>
 <span class="co">#&gt; 3     3643              1937      56     1        2       Praga</span>
 <span class="co">#&gt; 4     3517              1995      93     7        3      Ochota</span>
 <span class="co">#&gt; 5     3013              1992     144     6        5     Mokotow</span>
-<span class="co">#&gt; 6     5795              1926      61     6        2 Srodmiescie</span>
-</pre></div>
+<span class="co">#&gt; 6     5795              1926      61     6        2 Srodmiescie</span></code></pre></div>
 <div id="building-a-black-box-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#building-a-black-box-model" class="anchor"></a>Building a black-box model</h2>
 <p>First we fit a random forest model to the original <code>apartments</code> dataset - this is our complex model that will serve us as a surrogate.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests">randomForest</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">111</span>)
-<span class="kw">model_rf1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span>(<span class="kw">m2.price</span> <span class="op">~</span> <span class="kw">construction.year</span> <span class="op">+</span> <span class="kw">surface</span> <span class="op">+</span> <span class="kw">floor</span> <span class="op">+</span> <span class="kw">no.rooms</span> <span class="op">+</span> <span class="kw">district</span>, data = <span class="kw">apartments</span>)
-</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" class="external-link">randomForest</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span>
+<span class="va">model_rf1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html" class="external-link">randomForest</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">construction.year</span> <span class="op">+</span> <span class="va">surface</span> <span class="op">+</span> <span class="va">floor</span> <span class="op">+</span> <span class="va">no.rooms</span> <span class="op">+</span> <span class="va">district</span>, data <span class="op">=</span> <span class="va">apartments</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="creating-an-explainer" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-an-explainer" class="anchor"></a>Creating an explainer</h2>
 <p>We also create an <code>explainer</code> object that will be used later to create new variables and at the end to compare models performance.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://ModelOriented.github.io/DALEX">DALEX</a></span>)
-<span class="kw">explainer_rf1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="kw">model_rf1</span>, data = <span class="kw">apartmentsTest</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">6</span>], y = <span class="kw">apartmentsTest</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>,<span class="fl">1</span>], label = <span class="st">"rf1"</span>, verbose = <span class="fl">FALSE</span>)
-<span class="kw">explainer_rf1</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dalex.drwhy.ai" class="external-link">DALEX</a></span><span class="op">)</span>
+<span class="va">explainer_rf1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model_rf1</span>, data <span class="op">=</span> <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>,<span class="fl">1</span><span class="op">]</span>, label <span class="op">=</span> <span class="st">"rf1"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">explainer_rf1</span>
 <span class="co">#&gt; Model label:  rf1 </span>
 <span class="co">#&gt; Model class:  randomForest.formula,randomForest </span>
 <span class="co">#&gt; Data head  :</span>
 <span class="co">#&gt;      construction.year surface floor no.rooms    district</span>
 <span class="co">#&gt; 1001              1976     131     3        5 Srodmiescie</span>
-<span class="co">#&gt; 1002              1978     112     9        4     Mokotow</span>
-</pre></div>
+<span class="co">#&gt; 1002              1978     112     9        4     Mokotow</span></code></pre></div>
 </div>
 <div id="creating-a-safe_extractor" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-a-safe_extractor" class="anchor"></a>Creating a safe_extractor</h2>
 <p>Now, we create a <code>safe_extractor</code> object using <code>rSAFE</code> package and our surrogate model. Setting the argument <code>verbose=FALSE</code> stops progress bar from printing.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">safe_extractor</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safe_extraction.html">safe_extraction</a></span>(<span class="kw">explainer_rf1</span>, penalty = <span class="fl">25</span>, verbose = <span class="fl">FALSE</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">safe_extractor</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safe_extraction.html">safe_extraction</a></span><span class="op">(</span><span class="va">explainer_rf1</span>, penalty <span class="op">=</span> <span class="fl">25</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>Now, let’s print summary for the new object we have just created.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">safe_extractor</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">safe_extractor</span><span class="op">)</span>
 <span class="co">#&gt; Variable 'construction.year' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 1937]</span>
 <span class="co">#&gt;      (1937, 1994]</span>
@@ -179,27 +169,23 @@
 <span class="co">#&gt; Variable 'district' - created levels:</span>
 <span class="co">#&gt;  Bemowo, Bielany, Ursus, Ursynow, Praga, Wola -&gt;  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola </span>
 <span class="co">#&gt;  Zoliborz, Mokotow, Ochota -&gt;  Mokotow_Ochota_Zoliborz </span>
-<span class="co">#&gt;  Srodmiescie -&gt;  Srodmiescie</span>
-</pre></div>
+<span class="co">#&gt;  Srodmiescie -&gt;  Srodmiescie</span></code></pre></div>
 <p>We can see transormation propositions for all variables in our dataset.</p>
 <p>In the plot below we can see which points have been chosen to be the breakpoints for a particular variable:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">safe_extractor</span>, variable = <span class="st">"construction.year"</span>)
-</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">safe_extractor</span>, variable <span class="op">=</span> <span class="st">"construction.year"</span><span class="op">)</span></code></pre></div>
 <p><img src="example_apartments_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>For factor variables we can observe in which order levels have been merged and what is the optimal clustering:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">safe_extractor</span>, variable = <span class="st">"district"</span>)
-</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">safe_extractor</span>, variable <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span></code></pre></div>
 <p><img src="example_apartments_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 </div>
 <div id="transforming-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#transforming-data" class="anchor"></a>Transforming data</h2>
 <p>Now we can use our <code>safe_extractor</code> object to create new categorical features in the given dataset.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span>(<span class="kw">safe_extractor</span>, <span class="kw">apartmentsTest</span>[<span class="fl">3001</span><span class="op">:</span><span class="fl">6000</span>,], verbose = <span class="fl">FALSE</span>)
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span><span class="op">(</span><span class="va">safe_extractor</span>, <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">3001</span><span class="op">:</span><span class="fl">6000</span>,<span class="op">]</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="7%">
@@ -309,13 +295,12 @@
 </tbody>
 </table>
 <p>We can also perform feature selection if we wish. For each original feature it keeps exactly one of their forms - original one or transformed one.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="kw">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_select_variables.html">safely_select_variables</a></span>(<span class="kw">safe_extractor</span>, <span class="kw">data1</span>, which_y = <span class="st">"m2.price"</span>, verbose = <span class="fl">FALSE</span>)
-<span class="kw">data1</span> <span class="op">&lt;-</span> <span class="kw">data1</span>[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"m2.price"</span>, <span class="kw">vars</span>)]
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">vars</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_select_variables.html">safely_select_variables</a></span><span class="op">(</span><span class="va">safe_extractor</span>, <span class="va">data1</span>, which_y <span class="op">=</span> <span class="st">"m2.price"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">data1</span> <span class="op">&lt;-</span> <span class="va">data1</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m2.price"</span>, <span class="va">vars</span><span class="op">)</span><span class="op">]</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">vars</span><span class="op">)</span>
 <span class="co">#&gt; [1] "surface"               "floor"                 "no.rooms"             </span>
-<span class="co">#&gt; [4] "construction.year_new" "district_new"</span>
-</pre></div>
+<span class="co">#&gt; [4] "construction.year_new" "district_new"</span></code></pre></div>
 <p>It can be observed that for some features the original form was preffered and for others the transformed one.</p>
 <p>Here are the first few rows for our data after feature selection:</p>
 <table class="table">
@@ -379,40 +364,35 @@
 </tbody>
 </table>
 <p>Now, we perform transformations on another data that will be used later in explainers.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span>(<span class="kw">safe_extractor</span>, <span class="kw">apartmentsTest</span>[<span class="fl">6001</span><span class="op">:</span><span class="fl">9000</span>,], verbose = <span class="fl">FALSE</span>)[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"m2.price"</span>, <span class="kw">vars</span>)]
-</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span><span class="op">(</span><span class="va">safe_extractor</span>, <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">6001</span><span class="op">:</span><span class="fl">9000</span>,<span class="op">]</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"m2.price"</span>, <span class="va">vars</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 </div>
 <div id="creating-white-box-models-on-original-and-transformed-datasets" class="section level2">
 <h2 class="hasAnchor">
 <a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor"></a>Creating white-box models on original and transformed datasets</h2>
 <p>Let’s fit the models to data containg newly created columns. We consider a linear model as a white-box model.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">model_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(<span class="kw">m2.price</span> <span class="op">~</span> <span class="kw">.</span>, data = <span class="kw">data1</span>)
-<span class="kw">explainer_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="kw">model_lm2</span>, data = <span class="kw">data2</span>, y = <span class="kw">apartmentsTest</span>[<span class="fl">6001</span><span class="op">:</span><span class="fl">9000</span>,<span class="fl">1</span>], label = <span class="st">"lm2"</span>, verbose = <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">111</span>)
-<span class="kw">model_rf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html">randomForest</a></span>(<span class="kw">m2.price</span> <span class="op">~</span> <span class="kw">.</span>, data = <span class="kw">data1</span>)
-<span class="kw">explainer_rf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="kw">model_rf2</span>, <span class="kw">data2</span>, <span class="kw">apartmentsTest</span>[<span class="fl">6001</span><span class="op">:</span><span class="fl">9000</span>,<span class="fl">1</span>], label = <span class="st">"rf2"</span>, verbose = <span class="fl">FALSE</span>)
-</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span>
+<span class="va">explainer_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model_lm2</span>, data <span class="op">=</span> <span class="va">data2</span>, y <span class="op">=</span> <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">6001</span><span class="op">:</span><span class="fl">9000</span>,<span class="fl">1</span><span class="op">]</span>, label <span class="op">=</span> <span class="st">"lm2"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span>
+<span class="va">model_rf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html" class="external-link">randomForest</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span>
+<span class="va">explainer_rf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model_rf2</span>, <span class="va">data2</span>, <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">6001</span><span class="op">:</span><span class="fl">9000</span>,<span class="fl">1</span><span class="op">]</span>, label <span class="op">=</span> <span class="st">"rf2"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>Moreover, we create a linear model based on original <code>apartments</code> dataset and its corresponding explainer in order to check if our methodology improves results.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="kw">model_lm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span>(<span class="kw">m2.price</span> <span class="op">~</span> <span class="kw">.</span>, data = <span class="kw">apartments</span>)
-<span class="kw">explainer_lm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/explain.html">explain</a></span>(<span class="kw">model_lm1</span>, data = <span class="kw">apartmentsTest</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">6</span>], y = <span class="kw">apartmentsTest</span>[<span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>,<span class="fl">1</span>], label = <span class="st">"lm1"</span>, verbose = <span class="fl">FALSE</span>)
-</pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model_lm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">apartments</span><span class="op">)</span>
+<span class="va">explainer_lm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model_lm1</span>, data <span class="op">=</span> <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3000</span>,<span class="fl">1</span><span class="op">]</span>, label <span class="op">=</span> <span class="st">"lm1"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="comparing-models-performance" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparing-models-performance" class="anchor"></a>Comparing models performance</h2>
 <p>Final step is the comparison of all the models we have created.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">mp_lm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/model_performance.html">model_performance</a></span>(<span class="kw">explainer_lm1</span>)
-<span class="kw">mp_rf1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/model_performance.html">model_performance</a></span>(<span class="kw">explainer_rf1</span>)
-<span class="kw">mp_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/model_performance.html">model_performance</a></span>(<span class="kw">explainer_lm2</span>)
-<span class="kw">mp_rf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DALEX/man/model_performance.html">model_performance</a></span>(<span class="kw">explainer_rf2</span>)
-</pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">mp_lm1</span>, <span class="kw">mp_rf1</span>, <span class="kw">mp_lm2</span>, <span class="kw">mp_rf2</span>, geom = <span class="st">"boxplot"</span>)
-</pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mp_lm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/model_performance.html" class="external-link">model_performance</a></span><span class="op">(</span><span class="va">explainer_lm1</span><span class="op">)</span>
+<span class="va">mp_rf1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/model_performance.html" class="external-link">model_performance</a></span><span class="op">(</span><span class="va">explainer_rf1</span><span class="op">)</span>
+<span class="va">mp_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/model_performance.html" class="external-link">model_performance</a></span><span class="op">(</span><span class="va">explainer_lm2</span><span class="op">)</span>
+<span class="va">mp_rf2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/model_performance.html" class="external-link">model_performance</a></span><span class="op">(</span><span class="va">explainer_rf2</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mp_lm1</span>, <span class="va">mp_rf1</span>, <span class="va">mp_lm2</span>, <span class="va">mp_rf2</span>, geom <span class="op">=</span> <span class="st">"boxplot"</span><span class="op">)</span></code></pre></div>
 <p><img src="example_apartments_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <p>In the plot above we can see that the linear model based on transformed features has generally more accurate predictions that the one fitted to the original dataset.</p>
 </div>
@@ -433,7 +413,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>.</p>
 </div>
 
       </footer>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Performing feature selection on the dataset with transformed variables — safely_select_variables • rSAFE</title>
+<title>Performing Feature Selection on the Dataset with Transformed Variables — safely_select_variables • rSAFE</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,7 +52,7 @@
 
 
 
-<meta property="og:title" content="Performing feature selection on the dataset with transformed variables — safely_select_variables" />
+<meta property="og:title" content="Performing Feature Selection on the Dataset with Transformed Variables — safely_select_variables" />
 <meta property="og:description" content="The safely_select_variables() function selects variables from dataset returned
 by safely_transform_data() function. For each original variable exactly one variable is chosen
 either original one or transformed one. The choice is based on the AIC value
@@ -110,12 +110,6 @@ for linear model (regression) or logistic regression (classification).
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -138,7 +132,7 @@ for linear model (regression) or logistic regression (classification).
 </li>
         <li>
   <a href="https://github.com/ModelOriented/rSAFE/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -155,7 +149,7 @@ for linear model (regression) or logistic regression (classification).
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Performing feature selection on the dataset with transformed variables</h1>
+    <h1>Performing Feature Selection on the Dataset with Transformed Variables</h1>
     <small class="dont-index">Source: <a href='https://github.com/ModelOriented/rSAFE/blob/master/R/safely_select_variables.R'><code>R/safely_select_variables.R</code></a></small>
     <div class="hidden name"><code>safely_select_variables.Rd</code></div>
     </div>
@@ -169,14 +163,14 @@ for linear model (regression) or logistic regression (classification).</p></li>
 
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safely_select_variables.html'>safely_select_variables</a></span>(
-  <span class='kw'>safe_extractor</span>,
-  <span class='kw'>data</span>,
-  y = <span class='kw'>NULL</span>,
-  which_y = <span class='kw'>NULL</span>,
-  class_pred = <span class='kw'>NULL</span>,
-  verbose = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>safely_select_variables</span><span class='op'>(</span>
+  <span class='va'>safe_extractor</span>,
+  <span class='va'>data</span>,
+  y <span class='op'>=</span> <span class='cn'>NULL</span>,
+  which_y <span class='op'>=</span> <span class='cn'>NULL</span>,
+  class_pred <span class='op'>=</span> <span class='cn'>NULL</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -217,30 +211,34 @@ which will denote failure - all other classess will stand for success.</p></td>
     <p>vector of variables names, selected based on AIC values</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/rSAFE/man/safely_transform_data.html'>safely_transform_data</a></code></p></div>
+    <div class='dont-index'><p><code><a href='safely_transform_data.html'>safely_transform_data</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://ModelOriented.github.io/DALEX'>DALEX</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://www.stat.berkeley.edu/~breiman/RandomForests'>randomForest</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/ModelOriented/rSAFE'>rSAFE</a></span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dalex.drwhy.ai'>DALEX</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.stat.berkeley.edu/~breiman/RandomForests/'>randomForest</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ModelOriented/rSAFE'>rSAFE</a></span><span class='op'>)</span>
 
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='kw'>apartments</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>500</span>,]
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>111</span>)
-<span class='kw'>model_rf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span>(<span class='kw'>m2.price</span> <span class='op'>~</span> <span class='kw'>construction.year</span> <span class='op'>+</span> <span class='kw'>surface</span> <span class='op'>+</span> <span class='kw'>floor</span> <span class='op'>+</span>
-                           <span class='kw'>no.rooms</span> <span class='op'>+</span> <span class='kw'>district</span>, data = <span class='kw'>data</span>)
-<span class='kw'>explainer_rf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/DALEX/man/explain.html'>explain</a></span>(<span class='kw'>model_rf</span>, data = <span class='kw'>data</span>[,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>6</span>], y = <span class='kw'>data</span>[,<span class='fl'>1</span>])</div><div class='output co'>#&gt; Preparation of a new explainer is initiated
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>apartments</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>500</span>,<span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>111</span><span class='op'>)</span>
+<span class='va'>model_rf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span><span class='op'>(</span><span class='va'>m2.price</span> <span class='op'>~</span> <span class='va'>construction.year</span> <span class='op'>+</span> <span class='va'>surface</span> <span class='op'>+</span> <span class='va'>floor</span> <span class='op'>+</span>
+                           <span class='va'>no.rooms</span> <span class='op'>+</span> <span class='va'>district</span>, data <span class='op'>=</span> <span class='va'>data</span><span class='op'>)</span>
+<span class='va'>explainer_rf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dalex.drwhy.ai/reference/explain.html'>explain</a></span><span class='op'>(</span><span class='va'>model_rf</span>, data <span class='op'>=</span> <span class='va'>data</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>, y <span class='op'>=</span> <span class='va'>data</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Preparation of a new explainer is initiated
 #&gt;   -&gt; model label       :  randomForest  ( <span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; data              :  500  rows  5  cols 
 #&gt;   -&gt; target variable   :  500  values 
-#&gt;   -&gt; model_info        :  package randomForest , ver. 4.6.14 , task regression ( </span><span style='color: #BBBB00;'> default </span><span> ) 
 #&gt;   -&gt; predict function  :  yhat.randomForest  will be used ( </span><span style='color: #BBBB00;'> default </span><span> )
+#&gt;   -&gt; predicted values  :  No value for predict function target column. ( </span><span style='color: #BBBB00;'> default </span><span> )
+#&gt;   -&gt; model_info        :  package randomForest , ver. 4.6.14 , task regression ( </span><span style='color: #BBBB00;'> default </span><span> ) 
 #&gt;   -&gt; predicted values  :  numerical, min =  2010.939 , mean =  3502.345 , max =  5764.513  
 #&gt;   -&gt; residual function :  difference between y and yhat ( </span><span style='color: #BBBB00;'> default </span><span> )
 #&gt;   -&gt; residuals         :  numerical, min =  -387.9388 , mean =  -0.6372461 , max =  749.0998  
-#&gt;  </span><span style='color: #00BB00;'> A new explainer has been created! </span><span> </div><div class='input'><span class='kw'>safe_extractor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safe_extraction.html'>safe_extraction</a></span>(<span class='kw'>explainer_rf</span>, verbose = <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safely_select_variables.html'>safely_select_variables</a></span>(<span class='kw'>safe_extractor</span>, <span class='kw'>data</span>, which_y = <span class='st'>"m2.price"</span>, verbose = <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "surface"               "floor"                 "no.rooms"             
-#&gt; [4] "construction.year_new" "district_new"         </div><div class='input'></div></span></pre>
+#&gt;  </span><span style='color: #00BB00;'> A new explainer has been created! </span><span> </div><div class='input'><span class='va'>safe_extractor</span> <span class='op'>&lt;-</span> <span class='fu'><a href='safe_extraction.html'>safe_extraction</a></span><span class='op'>(</span><span class='va'>explainer_rf</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>safely_select_variables</span><span class='op'>(</span><span class='va'>safe_extractor</span>, <span class='va'>data</span>, which_y <span class='op'>=</span> <span class='st'>"m2.price"</span>, verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "surface"               "floor"                 "no.rooms"             
+#&gt; [4] "construction.year_new" "district_new"         </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

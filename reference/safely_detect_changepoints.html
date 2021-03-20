@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Identyfying changes in a series using PELT algorithm — safely_detect_changepoints • rSAFE</title>
+<title>Identyfying Changes in a Series Using PELT Algorithm — safely_detect_changepoints • rSAFE</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,7 +52,7 @@
 
 
 
-<meta property="og:title" content="Identyfying changes in a series using PELT algorithm — safely_detect_changepoints" />
+<meta property="og:title" content="Identyfying Changes in a Series Using PELT Algorithm — safely_detect_changepoints" />
 <meta property="og:description" content="The safely_detect_changepoints() function calculates the optimal positioning
 and number of changepoints for given data and penalty. It uses a PELT algorithm
 with a nonparametric cost function based on the empirical distribution.
@@ -108,12 +108,6 @@ The implementation is inspired by the code available on https://github.com/rkill
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -136,7 +130,7 @@ The implementation is inspired by the code available on https://github.com/rkill
 </li>
         <li>
   <a href="https://github.com/ModelOriented/rSAFE/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -153,7 +147,7 @@ The implementation is inspired by the code available on https://github.com/rkill
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Identyfying changes in a series using PELT algorithm</h1>
+    <h1>Identyfying Changes in a Series Using PELT Algorithm</h1>
     <small class="dont-index">Source: <a href='https://github.com/ModelOriented/rSAFE/blob/master/R/safely_detect_changepoints.R'><code>R/safely_detect_changepoints.R</code></a></small>
     <div class="hidden name"><code>safely_detect_changepoints.Rd</code></div>
     </div>
@@ -165,7 +159,7 @@ with a nonparametric cost function based on the empirical distribution.
 The implementation is inspired by the code available on https://github.com/rkillick/changepoint.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safely_detect_changepoints.html'>safely_detect_changepoints</a></span>(<span class='kw'>data</span>, penalty = <span class='st'>"MBIC"</span>, nquantiles = <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>safely_detect_changepoints</span><span class='op'>(</span><span class='va'>data</span>, penalty <span class='op'>=</span> <span class='st'>"MBIC"</span>, nquantiles <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,17 +184,21 @@ one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value
     <p>a vector of optimal changepoint positions (last observations of each segment)</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/rSAFE/man/safely_transform_continuous.html'>safely_transform_continuous</a></code></p></div>
+    <div class='dont-index'><p><code><a href='safely_transform_continuous.html'>safely_transform_continuous</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/ModelOriented/rSAFE'>rSAFE</a></span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ModelOriented/rSAFE'>rSAFE</a></span><span class='op'>)</span>
 
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>7</span>), each=<span class='fl'>4</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safely_detect_changepoints.html'>safely_detect_changepoints</a></span>(<span class='kw'>data</span>)</div><div class='output co'>#&gt; [1] 4</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>123</span>)
-<span class='kw'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>15</span>, <span class='fl'>0</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>20</span>, <span class='fl'>2</span>), <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>30</span>, <span class='fl'>8</span>))
-<span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safely_detect_changepoints.html'>safely_detect_changepoints</a></span>(<span class='kw'>data</span>)</div><div class='output co'>#&gt; [1] 15 35</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/rSAFE/man/safely_detect_changepoints.html'>safely_detect_changepoints</a></span>(<span class='kw'>data</span>, penalty = <span class='fl'>25</span>)</div><div class='output co'>#&gt; [1] 35</div><div class='input'></div></pre>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>,<span class='fl'>7</span><span class='op'>)</span>, each<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span>
+<span class='fu'>safely_detect_changepoints</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 4</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
+<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='fl'>0</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>30</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>safely_detect_changepoints</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 15 35</div><div class='input'><span class='fu'>safely_detect_changepoints</span><span class='op'>(</span><span class='va'>data</span>, penalty <span class='op'>=</span> <span class='fl'>25</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 35</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
