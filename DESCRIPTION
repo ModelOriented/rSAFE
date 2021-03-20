@@ -10,7 +10,7 @@ Description: Provides a model agnostic tool for making an explainable
   Based on the complicated model, such as neural network or random forest, new features
   are being extracted and then used in the process of fitting a simpler explainable model,
   improving its overall performance.
-Depends: R (>= 3.0.0)
+Depends: R (>= 3.5.0)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
