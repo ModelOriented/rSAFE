@@ -32,7 +32,7 @@ As explanatory variables we use all available in the dataset except for \code{sa
 data <- HR_data[, colnames(HR_data) != "sales"]
 ```
 
-In order to ensure the final errors are computed on the data which has not been seen by an approproate model, we divide our data as follows:
+In order to ensure the final errors are computed on the data which has not been seen by an appropriate model, we divide our data as follows:
 
 * `data1` - the data which initial black-box and white-box models are fitted to,
 * `data2` - the data used to create an `explainer` and a `safe_extractor` for black-box model from the previous point, serving also as a test data,
@@ -85,7 +85,7 @@ Now, let's print summary for the new object we have just created.
 print(safe_extractor)
 ```
 
-We can see transormation propositions for all variables in our dataset. 
+We can see transformation propositions for all variables in our dataset. 
 
 In the plot below we can see which points have been chosen to be the breakpoints for a particular variable: 
 
@@ -119,7 +119,7 @@ data3_trans_sel <- data3_trans[,c("left", selected_variables)]
 print(selected_variables)
 ```
 
-It can be observed that for some features the original form was preffered and for others the transformed one.
+It can be observed that for some features the original form was preferred and for others the transformed one.
 
 Here are the first few rows for our data after feature selection:
 
@@ -136,7 +136,7 @@ data4_trans_sel <- data4_trans[,c("left", selected_variables)]
 
 ## Creating white-box models on original and transformed datasets
 
-Let's fit the models to data containg newly created columns. We consider a generalized linear model (glm) as a white-box model.
+Let's fit the models to data containing newly created columns. We consider a generalized linear model (glm) as a white-box model.
 
 ```{r}
 model_lr2 <- glm(left ~ ., data = data3_trans_sel, family = binomial())

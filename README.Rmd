@@ -75,7 +75,7 @@ Now, let's print summary for the new object we have just created.
 print(safe_extractor)
 ```
 
-We can see transormation propositions for all variables in our dataset. 
+We can see transformation propositions for all variables in our dataset. 
 
 In the plot below we can see which points have been chosen to be the breakpoints for a particular variable: 
 
@@ -109,7 +109,7 @@ data1 <- data1[,c("m2.price", vars)]
 print(vars)
 ```
 
-It can be observed that for some features the original form was preffered and for others the transformed one.
+It can be observed that for some features the original form was preferred and for others the transformed one.
 
 Here are the first few rows for our data after feature selection:
 
@@ -125,7 +125,7 @@ data2 <- safely_transform_data(safe_extractor, apartmentsTest[6001:9000,], verbo
 
 ## Creating white-box models on original and transformed datasets
 
-Let's fit the models to data containg newly created columns. We consider a linear model as a white-box model.
+Let's fit the models to data containing newly created columns. We consider a linear model as a white-box model.
 
 ```{r}
 model_lm2 <- lm(m2.price ~ ., data = data1)
