@@ -14,6 +14,10 @@ test_that("plot.safe_extractor", {
   expect_is(plot(safe_extractor, variable = "district"), "ggplot")
   expect_error(plot(safe_extractor))
   expect_error(plot(safe_extractor, variable = "strange_variable"))
+  vdiffr::expect_doppelganger("plot discrete variable",
+                              plot(safe_extractor, variable = "district"))
+  vdiffr::expect_doppelganger("plot continuous variable",
+                              plot(safe_extractor, variable = "construction.year"))
 })
 
 test_that("print.safe_extractor", {

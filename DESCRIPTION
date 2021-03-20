@@ -31,9 +31,10 @@ Suggests:
     pander,
     randomForest,
     rmarkdown,
+    spelling,
     testthat,
-    xgboost,
-    spelling
+    vdiffr,
+    xgboost
 VignetteBuilder: knitr
 URL: https://github.com/ModelOriented/rSAFE
 BugReports: https://github.com/ModelOriented/rSAFE/issues
