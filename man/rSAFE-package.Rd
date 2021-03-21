@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Provides a model agnostic tool for white-box model trained on features extracted from a black-box model. For more information see: Gosiewska et al. (2020) <arxiv.org/abs/2002.04267>.
+Provides a model agnostic tool for white-box model trained on features extracted from a black-box model. For more information see: Gosiewska et al. (2020) <arXiv:2002.04267>.
 }
 \seealso{
 Useful links:
@@ -25,6 +25,11 @@ Authors:
 \itemize{
   \item Anna Gierlak \email{anna.gierlak@op.pl}
   \item Przemyslaw Biecek [thesis advisor]
+}
+
+Other contributors:
+\itemize{
+  \item Michal Burdukiewicz (\href{https://orcid.org/0000-0001-8926-582X}{ORCID}) [contributor]
 }
 
 }

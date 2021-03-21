@@ -3,6 +3,7 @@
 - added spellcheck.
 - fixed imports.
 - fixed titles in the documentation.
+- @michbur added as a contributor.
 
 # version 0.1.1
 
