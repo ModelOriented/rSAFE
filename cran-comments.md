@@ -9,3 +9,4 @@
 
 * This is a new release.
 * Fixed  arXiv id i n the DESCRIPTION.
+* Reduced timing for tests: xgboost removed from tests, reduced number of rows in data.

@@ -30,8 +30,7 @@ Suggests:
     rmarkdown,
     spelling,
     testthat,
-    vdiffr,
-    xgboost
+    vdiffr
 VignetteBuilder: knitr
 URL: https://github.com/ModelOriented/rSAFE
 BugReports: https://github.com/ModelOriented/rSAFE/issues

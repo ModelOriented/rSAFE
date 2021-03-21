@@ -4,6 +4,7 @@
 - fixed imports.
 - fixed titles in the documentation.
 - @michbur added as a contributor.
+- reduced timing for tests: xgboost removed from tests, reduced number of rows in data.
 
 # version 0.1.1
 
