@@ -4,7 +4,7 @@
 \name{rSAFE-package}
 \alias{rSAFE}
 \alias{rSAFE-package}
-\title{rSAFE: Surrogate-Assisted Feature Extraction in R}
+\title{rSAFE: Surrogate-Assisted Feature Extraction}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 

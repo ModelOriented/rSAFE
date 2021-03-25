@@ -53,7 +53,6 @@ safely_transform_continuous <- function(explainer, variable, response_type = "al
   }
 
   #calculating average responses of chosen type
-  set.seed(123) #functions from ingredients contain sampling
   if (response_type == "ale") {
     sv <- accumulated_dependence(explainer, variables = variable, grid_points = grid_points, N = N)
   } else {

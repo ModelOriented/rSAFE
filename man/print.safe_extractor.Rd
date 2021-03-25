@@ -14,6 +14,9 @@
 \item{variable}{character, name of the variable to be plotted. If this argument
 is not specified then transformations for all variables are printed}
 }
+\value{
+No return value, prints the structure of the object
+}
 \description{
 Printing Summary of the SAFE Extractor Object
 }

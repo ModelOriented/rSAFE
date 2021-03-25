@@ -179,7 +179,7 @@ plot.safe_extractor <- function(x, ..., variable = NULL) {
 #' @param variable character, name of the variable to be plotted. If this argument
 #' is not specified then transformations for all variables are printed
 #'
-#' @return NULL
+#' @return No return value, prints the structure of the object
 #'
 #' @export
 print.safe_extractor <- function(x, ..., variable = NULL) {

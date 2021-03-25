@@ -1,5 +1,5 @@
 Package: rSAFE
-Title: Surrogate-Assisted Feature Extraction in R
+Title: Surrogate-Assisted Feature Extraction
 Version: 0.1.2
 Authors@R:
     c(person("Alicja", "Gosiewska", role = c("aut", "cre"), email = "alicjagosiewska@gmail.com"),
