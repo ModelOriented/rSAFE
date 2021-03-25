@@ -99,7 +99,7 @@
       <h1 data-toc-skip>Classification example - HR data</h1>
                         <h4 data-toc-skip class="author">Anna Gierlak</h4>
             
-            <h4 data-toc-skip class="date">2021-03-21</h4>
+            <h4 data-toc-skip class="date">2021-03-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/rSAFE/blob/master/vignettes/example_hr.Rmd" class="external-link"><code>vignettes/example_hr.Rmd</code></a></small>
       <div class="hidden name"><code>example_hr.Rmd</code></div>
@@ -177,10 +177,9 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">safe_extractor</span><span class="op">)</span>
 <span class="co">#&gt; Variable 'satisfaction_level' - selected intervals:</span>
-<span class="co">#&gt;  (-Inf, 0.12]</span>
-<span class="co">#&gt;      (0.12, 0.28]</span>
-<span class="co">#&gt;      (0.28, 0.45]</span>
-<span class="co">#&gt;      (0.45, Inf)</span>
+<span class="co">#&gt;  (-Inf, 0.48]</span>
+<span class="co">#&gt;      (0.48, 0.9193878]</span>
+<span class="co">#&gt;      (0.9193878, Inf)</span>
 <span class="co">#&gt; Variable 'last_evaluation' - selected intervals:</span>
 <span class="co">#&gt;  (-Inf, 0.42]</span>
 <span class="co">#&gt;      (0.42, 0.57]</span>
@@ -264,7 +263,7 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.57, 0.8]</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(160, 214]</td>
@@ -281,7 +280,7 @@
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.8, Inf)</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(214, Inf)</td>
@@ -298,7 +297,7 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.8, Inf)</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(214, Inf)</td>
@@ -315,7 +314,7 @@
 <td align="right">0</td>
 <td align="right">1</td>
 <td align="right">0</td>
-<td align="left">(0.12, 0.28]</td>
+<td align="left">(-Inf, 0.48]</td>
 <td align="left">(0.42, 0.57]</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(214, Inf)</td>
@@ -332,7 +331,7 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.42, 0.57]</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(214, Inf)</td>
@@ -349,7 +348,7 @@
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="right">0</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.8, Inf)</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(160, 214]</td>
@@ -398,7 +397,7 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left">low</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.57, 0.8]</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(160, 214]</td>
@@ -409,7 +408,7 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left">low</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.8, Inf)</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(214, Inf)</td>
@@ -420,7 +419,7 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left">medium</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.8, Inf)</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(214, Inf)</td>
@@ -431,7 +430,7 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left">medium</td>
-<td align="left">(0.12, 0.28]</td>
+<td align="left">(-Inf, 0.48]</td>
 <td align="left">(0.42, 0.57]</td>
 <td align="left">(4, Inf)</td>
 <td align="left">(214, Inf)</td>
@@ -442,7 +441,7 @@
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="left">low</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.42, 0.57]</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(214, Inf)</td>
@@ -453,7 +452,7 @@
 <td align="right">1</td>
 <td align="right">0</td>
 <td align="left">high</td>
-<td align="left">(0.45, Inf)</td>
+<td align="left">(0.48, 0.9193878]</td>
 <td align="left">(0.8, Inf)</td>
 <td align="left">(-Inf, 4]</td>
 <td align="left">(160, 214]</td>
