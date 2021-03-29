@@ -5,6 +5,7 @@
 - fixed titles in the documentation.
 - @michbur added as a contributor.
 - reduced timing for tests: xgboost removed from tests, reduced number of rows in data.
+- seed removed from functions `safely_detect_interactions()`, `safely_transform_categorical()`, `safely_transform_continuous()`. 
 
 # version 0.1.1
 

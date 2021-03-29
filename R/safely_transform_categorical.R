@@ -59,7 +59,6 @@ safely_transform_categorical <- function(explainer, variable, method = "complete
 
   #reference distribution
   ref_values <- matrix(rep(0, (n-2)*B), ncol = B)
-  set.seed(123)
   for (b in 1:B) { #B reference datasets
     uni_data <- runif(n, min = min(preds_agg), max = max(preds_agg))
     ref_values[,b] <- log(WSS_all(uni_data, method = method)$wss)
