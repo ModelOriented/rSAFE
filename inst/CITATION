@@ -1,0 +1,11 @@
+
+bibentry(bibtype = "Article",
+    title = "Simpler is better: Lifting interpretability-performance trade-off via automated feature engineering",
+  journal = "Decision Support Systems",
+  pages = "113556",
+  year = "2021",
+  issn = "0167-9236",
+  doi = "https://doi.org/10.1016/j.dss.2021.113556",
+  url = "https://www.sciencedirect.com/science/article/pii/S016792362100066X",
+  author = "Alicja Gosiewska and Anna Kozak and Przemyslaw Biecek",
+)
