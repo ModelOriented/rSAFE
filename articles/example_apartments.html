@@ -99,7 +99,7 @@
       <h1 data-toc-skip>Regression example - apartments data</h1>
                         <h4 data-toc-skip class="author">Anna Gierlak</h4>
             
-            <h4 data-toc-skip class="date">2021-04-01</h4>
+            <h4 data-toc-skip class="date">2021-06-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ModelOriented/rSAFE/blob/master/vignettes/example_apartments.Rmd" class="external-link"><code>vignettes/example_apartments.Rmd</code></a></small>
       <div class="hidden name"><code>example_apartments.Rmd</code></div>
@@ -121,7 +121,7 @@
 <span class="co">#&gt; 6     5795              1926      61     6        2 Srodmiescie</span></code></pre></div>
 <div id="building-a-black-box-model" class="section level2">
 <h2 class="hasAnchor">
-<a href="#building-a-black-box-model" class="anchor"></a>Building a black-box model</h2>
+<a href="#building-a-black-box-model" class="anchor" aria-hidden="true"></a>Building a black-box model</h2>
 <p>First we fit a random forest model to the original <code>apartments</code> dataset - this is our complex model that will serve us as a surrogate.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" class="external-link">randomForest</a></span><span class="op">)</span>
@@ -130,7 +130,7 @@
 </div>
 <div id="creating-an-explainer" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-an-explainer" class="anchor"></a>Creating an explainer</h2>
+<a href="#creating-an-explainer" class="anchor" aria-hidden="true"></a>Creating an explainer</h2>
 <p>We also create an <code>explainer</code> object that will be used later to create new variables and at the end to compare models performance.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dalex.drwhy.ai" class="external-link">DALEX</a></span><span class="op">)</span>
@@ -145,7 +145,7 @@
 </div>
 <div id="creating-a-safe_extractor" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-a-safe_extractor" class="anchor"></a>Creating a safe_extractor</h2>
+<a href="#creating-a-safe_extractor" class="anchor" aria-hidden="true"></a>Creating a safe_extractor</h2>
 <p>Now, we create a <code>safe_extractor</code> object using <code>rSAFE</code> package and our surrogate model. Setting the argument <code>verbose=FALSE</code> stops progress bar from printing.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">safe_extractor</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safe_extraction.html">safe_extraction</a></span><span class="op">(</span><span class="va">explainer_rf1</span>, penalty <span class="op">=</span> <span class="fl">25</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -182,7 +182,7 @@
 </div>
 <div id="transforming-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#transforming-data" class="anchor"></a>Transforming data</h2>
+<a href="#transforming-data" class="anchor" aria-hidden="true"></a>Transforming data</h2>
 <p>Now we can use our <code>safe_extractor</code> object to create new categorical features in the given dataset.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span><span class="op">(</span><span class="va">safe_extractor</span>, <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">3001</span><span class="op">:</span><span class="fl">6000</span>,<span class="op">]</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -369,7 +369,7 @@
 </div>
 <div id="creating-white-box-models-on-original-and-transformed-datasets" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor"></a>Creating white-box models on original and transformed datasets</h2>
+<a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor" aria-hidden="true"></a>Creating white-box models on original and transformed datasets</h2>
 <p>Let’s fit the models to data containing newly created columns. We consider a linear model as a white-box model.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span>
@@ -384,7 +384,7 @@
 </div>
 <div id="comparing-models-performance" class="section level2">
 <h2 class="hasAnchor">
-<a href="#comparing-models-performance" class="anchor"></a>Comparing models performance</h2>
+<a href="#comparing-models-performance" class="anchor" aria-hidden="true"></a>Comparing models performance</h2>
 <p>Final step is the comparison of all the models we have created.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mp_lm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/model_performance.html" class="external-link">model_performance</a></span><span class="op">(</span><span class="va">explainer_lm1</span><span class="op">)</span>

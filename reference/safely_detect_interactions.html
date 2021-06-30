@@ -157,12 +157,12 @@ made by a surrogate model. For each pair of features it performs values permutat
 to evaluate their non_additive effect.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>safely_detect_interactions</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>safely_detect_interactions</span><span class='op'>(</span>
   <span class='va'>explainer</span>,
   inter_param <span class='op'>=</span> <span class='fl'>0.5</span>,
   inter_threshold <span class='op'>=</span> <span class='fl'>0.5</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -197,34 +197,37 @@ than inter_param - if this percentage is less than inter_threshold then interact
     <div class='dont-index'><p><code><a href='safe_extraction.html'>safe_extraction</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dalex.drwhy.ai'>DALEX</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.stat.berkeley.edu/~breiman/RandomForests/'>randomForest</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ModelOriented/rSAFE'>rSAFE</a></span><span class='op'>)</span>
-
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>apartments</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>500</span>,<span class='op'>]</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>111</span><span class='op'>)</span>
-<span class='va'>model_rf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span><span class='op'>(</span><span class='va'>m2.price</span> <span class='op'>~</span> <span class='va'>construction.year</span> <span class='op'>+</span> <span class='va'>surface</span> <span class='op'>+</span> <span class='va'>floor</span> <span class='op'>+</span>
-                           <span class='va'>no.rooms</span> <span class='op'>+</span> <span class='va'>district</span>, data <span class='op'>=</span> <span class='va'>data</span><span class='op'>)</span>
-<span class='va'>explainer_rf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dalex.drwhy.ai/reference/explain.html'>explain</a></span><span class='op'>(</span><span class='va'>model_rf</span>, data <span class='op'>=</span> <span class='va'>data</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>, y <span class='op'>=</span> <span class='va'>data</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Preparation of a new explainer is initiated
-#&gt;   -&gt; model label       :  randomForest  ( <span style='color: #BBBB00;'> default </span><span> )
-#&gt;   -&gt; data              :  500  rows  5  cols 
-#&gt;   -&gt; target variable   :  500  values 
-#&gt;   -&gt; predict function  :  yhat.randomForest  will be used ( </span><span style='color: #BBBB00;'> default </span><span> )
-#&gt;   -&gt; predicted values  :  No value for predict function target column. ( </span><span style='color: #BBBB00;'> default </span><span> )
-#&gt;   -&gt; model_info        :  package randomForest , ver. 4.6.14 , task regression ( </span><span style='color: #BBBB00;'> default </span><span> ) 
-#&gt;   -&gt; predicted values  :  numerical, min =  2010.939 , mean =  3502.345 , max =  5764.513  
-#&gt;   -&gt; residual function :  difference between y and yhat ( </span><span style='color: #BBBB00;'> default </span><span> )
-#&gt;   -&gt; residuals         :  numerical, min =  -387.9388 , mean =  -0.6372461 , max =  749.0998  
-#&gt;  </span><span style='color: #00BB00;'> A new explainer has been created! </span><span> </div><div class='input'><span class='fu'>safely_detect_interactions</span><span class='op'>(</span><span class='va'>explainer_rf</span>, inter_param <span class='op'>=</span> <span class='fl'>0.25</span>,
-                          inter_threshold <span class='op'>=</span> <span class='fl'>0.2</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Interactions processing...
-#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt;   variable1 variable2 strength
-#&gt; 1   surface     floor    0.222
-#&gt; 2   surface  no.rooms    0.208
-#&gt; 3     floor  no.rooms    0.202</div><div class='input'>
-</div></span></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dalex.drwhy.ai'>DALEX</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://www.stat.berkeley.edu/~breiman/RandomForests/'>randomForest</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/ModelOriented/rSAFE'>rSAFE</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>apartments</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>500</span>,<span class='op'>]</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>111</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>model_rf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/randomForest/man/randomForest.html'>randomForest</a></span><span class='op'>(</span><span class='va'>m2.price</span> <span class='op'>~</span> <span class='va'>construction.year</span> <span class='op'>+</span> <span class='va'>surface</span> <span class='op'>+</span> <span class='va'>floor</span> <span class='op'>+</span></span>
+<span class='r-in'>                           <span class='va'>no.rooms</span> <span class='op'>+</span> <span class='va'>district</span>, data <span class='op'>=</span> <span class='va'>data</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>explainer_rf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://dalex.drwhy.ai/reference/explain.html'>explain</a></span><span class='op'>(</span><span class='va'>model_rf</span>, data <span class='op'>=</span> <span class='va'>data</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>]</span>, y <span class='op'>=</span> <span class='va'>data</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Preparation of a new explainer is initiated</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; model label       :  randomForest  ( <span style='color: #BBBB00;'> default </span> )</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; data              :  500  rows  5  cols </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; target variable   :  500  values </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; predict function  :  yhat.randomForest  will be used ( <span style='color: #BBBB00;'> default </span> )</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; predicted values  :  No value for predict function target column. ( <span style='color: #BBBB00;'> default </span> )</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; model_info        :  package randomForest , ver. 4.6.14 , task regression ( <span style='color: #BBBB00;'> default </span> ) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; predicted values  :  numerical, min =  2010.939 , mean =  3502.345 , max =  5764.513  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; residual function :  difference between y and yhat ( <span style='color: #BBBB00;'> default </span> )</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   -&gt; residuals         :  numerical, min =  -387.9388 , mean =  -0.6372461 , max =  749.0998  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  <span style='color: #00BB00;'> A new explainer has been created! </span> </span>
+<span class='r-in'><span class='fu'>safely_detect_interactions</span><span class='op'>(</span><span class='va'>explainer_rf</span>, inter_param <span class='op'>=</span> <span class='fl'>0.25</span>,</span>
+<span class='r-in'>                          inter_threshold <span class='op'>=</span> <span class='fl'>0.2</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Interactions processing...</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   variable1 variable2 strength</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   surface     floor    0.222</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   surface  no.rooms    0.208</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3     floor  no.rooms    0.202</span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

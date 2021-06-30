@@ -97,25 +97,25 @@
   <div class="contents col-md-9">
 <div id="surrogate-assisted-feature-extraction-in-r-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#surrogate-assisted-feature-extraction-in-r-" class="anchor"></a>Surrogate Assisted Feature Extraction in R <img src="reference/figures/logo.png" align="right" width="150">
+<a href="#surrogate-assisted-feature-extraction-in-r-" class="anchor" aria-hidden="true"></a>Surrogate Assisted Feature Extraction in R <img src="reference/figures/logo.png" align="right" width="150">
 </h1></div>
 
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
+<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h2>
 <p>The <code>rSAFE</code> package is a model agnostic tool for making an interpretable white-box model more accurate using alternative black-box model called surrogate model. Based on the complicated model, such as neural network or random forest, new features are being extracted and then used in the process of fitting a simpler interpretable model, improving its overall performance.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h2>
 <p>The package can be installed from GitHub using the code below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ModelOriented/rSAFE"</span><span class="op">)</span></code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ModelOriented/rSAFE"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="demo" class="section level2">
 <h2 class="hasAnchor">
-<a href="#demo" class="anchor"></a>Demo</h2>
+<a href="#demo" class="anchor" aria-hidden="true"></a>Demo</h2>
 <p>In this vignette we present an example of an application of the <code>rSAFE</code> package in case of regression problems. It is based on <code>apartments</code> and <code>apartmentsTest</code> datasets which come from the <code>DALEX</code> package but are also available in the <code>rSAFE</code> package. We will use these artificial datasets to predict the price per square meter of an apartment based on features such as construction year, surface, floor, number of rooms and district. It should be mentioned that four of these variables are continuous while the fifth one is categorical.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ModelOriented/rSAFE" class="external-link">rSAFE</a></span><span class="op">)</span>
@@ -130,7 +130,7 @@
 </div>
 <div id="building-a-black-box-model" class="section level2">
 <h2 class="hasAnchor">
-<a href="#building-a-black-box-model" class="anchor"></a>Building a black-box model</h2>
+<a href="#building-a-black-box-model" class="anchor" aria-hidden="true"></a>Building a black-box model</h2>
 <p>First we fit a random forest model to the original <code>apartments</code> dataset - this is our complex model that will serve us as a surrogate.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" class="external-link">randomForest</a></span><span class="op">)</span>
@@ -139,7 +139,7 @@
 </div>
 <div id="creating-an-explainer" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-an-explainer" class="anchor"></a>Creating an explainer</h2>
+<a href="#creating-an-explainer" class="anchor" aria-hidden="true"></a>Creating an explainer</h2>
 <p>We also create an <code>explainer</code> object that will be used later to create new variables and at the end to compare models performance.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dalex.drwhy.ai" class="external-link">DALEX</a></span><span class="op">)</span>
@@ -154,7 +154,7 @@
 </div>
 <div id="creating-a-safe_extractor" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-a-safe_extractor" class="anchor"></a>Creating a safe_extractor</h2>
+<a href="#creating-a-safe_extractor" class="anchor" aria-hidden="true"></a>Creating a safe_extractor</h2>
 <p>Now, we create a <code>safe_extractor</code> object using <code>rSAFE</code> package and our surrogate model. Setting the argument <code>verbose=FALSE</code> stops progress bar from printing.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">safe_extractor</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/safe_extraction.html">safe_extraction</a></span><span class="op">(</span><span class="va">explainer_rf1</span>, penalty <span class="op">=</span> <span class="fl">25</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -191,7 +191,7 @@
 </div>
 <div id="transforming-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#transforming-data" class="anchor"></a>Transforming data</h2>
+<a href="#transforming-data" class="anchor" aria-hidden="true"></a>Transforming data</h2>
 <p>Now we can use our <code>safe_extractor</code> object to create new categorical features in the given dataset.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/safely_transform_data.html">safely_transform_data</a></span><span class="op">(</span><span class="va">safe_extractor</span>, <span class="va">apartmentsTest</span><span class="op">[</span><span class="fl">3001</span><span class="op">:</span><span class="fl">6000</span>,<span class="op">]</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -378,7 +378,7 @@
 </div>
 <div id="creating-white-box-models-on-original-and-transformed-datasets" class="section level2">
 <h2 class="hasAnchor">
-<a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor"></a>Creating white-box models on original and transformed datasets</h2>
+<a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor" aria-hidden="true"></a>Creating white-box models on original and transformed datasets</h2>
 <p>Let’s fit the models to data containing newly created columns. We consider a linear model as a white-box model.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_lm2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data1</span><span class="op">)</span>
@@ -393,7 +393,7 @@
 </div>
 <div id="comparing-models-performance" class="section level2">
 <h2 class="hasAnchor">
-<a href="#comparing-models-performance" class="anchor"></a>Comparing models performance</h2>
+<a href="#comparing-models-performance" class="anchor" aria-hidden="true"></a>Comparing models performance</h2>
 <p>Final step is the comparison of all the models we have created.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mp_lm1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/model_performance.html" class="external-link">model_performance</a></span><span class="op">(</span><span class="va">explainer_lm1</span><span class="op">)</span>
@@ -407,7 +407,7 @@
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
+<a href="#references" class="anchor" aria-hidden="true"></a>References</h2>
 <ul>
 <li><a href="https://github.com/ModelOriented/SAFE" class="external-link">Python version of SAFE package</a></li>
 <li>
