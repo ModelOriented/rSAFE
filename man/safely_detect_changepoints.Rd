@@ -34,7 +34,6 @@ set.seed(123)
 data <- c(rnorm(15, 0), rnorm(20, 2), rnorm(30, 8))
 safely_detect_changepoints(data)
 safely_detect_changepoints(data, penalty = 25)
-
 }
 \seealso{
 \code{\link{safely_transform_continuous}}

@@ -25,7 +25,6 @@
 #' data <- c(rnorm(15, 0), rnorm(20, 2), rnorm(30, 8))
 #' safely_detect_changepoints(data)
 #' safely_detect_changepoints(data, penalty = 25)
-#'
 #' @export
 
 safely_detect_changepoints <- function(data, penalty = "MBIC", nquantiles = 10) {
@@ -120,7 +119,7 @@ cost <- function(data, u, v, sumstat, K) { #function that evaluates cost of data
 
 }
 
-#' @importFrom sets set_union
+#' @importFrom sets set_union set
 PELT_algorithm <- function(data, penalty_value, sumstat, K) {
 
   if (is.null(data)) {
@@ -166,13 +165,13 @@ PELT_algorithm <- function(data, penalty_value, sumstat, K) {
     #updating R set for next iterations - removing those points that can never be the last optimal changepoint
     for (tau in R) {
       if (Q[tau+1] + cost(data, tau+1, v, sumstat, K) > Q[v+1] + epsilon) {
-        R <- R - tau
+        R <- R - set(tau)
       }
     }
     R <- set_union(R, v)
   }
 
-  cpts_final <- cp[[n+1]] - 0
+  cpts_final <- cp[[n+1]] - set(0)
 
   return(sort(unlist(cpts_final)))
 
