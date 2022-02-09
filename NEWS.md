@@ -1,6 +1,7 @@
 # version 0.1.3
 - Updated DESCRIPTION (arxiv link changed to doi).
 - Added citation to [Simpler is better: Lifting interpretability-performance trade-off via automated feature engineering](https://doi.org/10.1016/j.dss.2021.113556).
+- Small fixes for compatibility with `sets` package.
 
 # version 0.1.2
 
