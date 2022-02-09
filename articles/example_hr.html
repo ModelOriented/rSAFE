@@ -99,9 +99,9 @@
       <h1 data-toc-skip>Classification example - HR data</h1>
                         <h4 data-toc-skip class="author">Anna Gierlak</h4>
             
-            <h4 data-toc-skip class="date">2021-06-30</h4>
+            <h4 data-toc-skip class="date">2022-02-09</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ModelOriented/rSAFE/blob/master/vignettes/example_hr.Rmd" class="external-link"><code>vignettes/example_hr.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ModelOriented/rSAFE/blob/HEAD/vignettes/example_hr.Rmd" class="external-link"><code>vignettes/example_hr.Rmd</code></a></small>
       <div class="hidden name"><code>example_hr.Rmd</code></div>
 
     </div>
@@ -148,9 +148,9 @@
 <span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">4001</span><span class="op">:</span><span class="fl">8000</span>,<span class="op">]</span>
 <span class="va">data3</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">8001</span><span class="op">:</span><span class="fl">12000</span>,<span class="op">]</span>
 <span class="va">data4</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[</span><span class="fl">12001</span><span class="op">:</span><span class="fl">14999</span>,<span class="op">]</span></code></pre></div>
-<div id="building-a-black-box-model" class="section level2">
-<h2 class="hasAnchor">
-<a href="#building-a-black-box-model" class="anchor" aria-hidden="true"></a>Building a black-box model</h2>
+<div class="section level2">
+<h2 id="building-a-black-box-model">Building a black-box model<a class="anchor" aria-label="anchor" href="#building-a-black-box-model"></a>
+</h2>
 <p>In this example we decide to use the GBM model as a black-box - it will serve us as a surrogate.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">n.trees</span> <span class="op">&lt;-</span> <span class="fl">10000</span>
@@ -158,18 +158,18 @@
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span>
 <span class="va">model_xgb1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/gbm/man/gbm.html" class="external-link">gbm</a></span><span class="op">(</span><span class="va">left</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data1</span>, distribution <span class="op">=</span> <span class="st">"bernoulli"</span>, n.trees <span class="op">=</span> <span class="va">n.trees</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="creating-an-explainer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#creating-an-explainer" class="anchor" aria-hidden="true"></a>Creating an explainer</h2>
+<div class="section level2">
+<h2 id="creating-an-explainer">Creating an explainer<a class="anchor" aria-label="anchor" href="#creating-an-explainer"></a>
+</h2>
 <p>We also create an <code>explainer</code> object that will be used later to create new variables. For classification problems we need to specify <code>predict_function</code> - a function that may be used for model predictions and returns a single numerical value for each observation.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dalex.drwhy.ai" class="external-link">DALEX</a></span><span class="op">)</span>
 <span class="va">predict_function</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">x</span>, type <span class="op">=</span> <span class="st">"response"</span>, n.trees <span class="op">=</span> <span class="va">n.trees</span><span class="op">)</span>
 <span class="va">explainer_xgb1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model_xgb1</span>, data <span class="op">=</span> <span class="va">data2</span><span class="op">[</span>,<span class="op">-</span><span class="fl">7</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">data2</span><span class="op">$</span><span class="va">left</span>, predict_function <span class="op">=</span> <span class="va">predict_function</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="creating-a-safe_extractor" class="section level2">
-<h2 class="hasAnchor">
-<a href="#creating-a-safe_extractor" class="anchor" aria-hidden="true"></a>Creating a safe_extractor</h2>
+<div class="section level2">
+<h2 id="creating-a-safe_extractor">Creating a safe_extractor<a class="anchor" aria-label="anchor" href="#creating-a-safe_extractor"></a>
+</h2>
 <p>Now, we create a <code>safe_extractor</code> object using <code>rSAFE</code> package and our surrogate model. Setting the argument <code>verbose=FALSE</code> stops progress bar from printing.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">safe_extractor</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safe_extraction.html">safe_extraction</a></span><span class="op">(</span><span class="va">explainer_xgb1</span>, penalty <span class="op">=</span> <span class="fl">20</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -211,9 +211,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">safe_extractor</span>, variable <span class="op">=</span> <span class="st">"salary"</span><span class="op">)</span></code></pre></div>
 <p><img src="example_hr_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 </div>
-<div id="transforming-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#transforming-data" class="anchor" aria-hidden="true"></a>Transforming data</h2>
+<div class="section level2">
+<h2 id="transforming-data">Transforming data<a class="anchor" aria-label="anchor" href="#transforming-data"></a>
+</h2>
 <p>Now we can use our <code>safe_extractor</code> object to create new categorical features in the given dataset.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data3_trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span><span class="op">(</span><span class="va">safe_extractor</span>, <span class="va">data3</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
@@ -465,9 +465,9 @@
 <code class="sourceCode R"><span class="va">data4_trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/safely_transform_data.html">safely_transform_data</a></span><span class="op">(</span><span class="va">safe_extractor</span>, <span class="va">data4</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">data4_trans_sel</span> <span class="op">&lt;-</span> <span class="va">data4_trans</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="va">selected_variables</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 </div>
-<div id="creating-white-box-models-on-original-and-transformed-datasets" class="section level2">
-<h2 class="hasAnchor">
-<a href="#creating-white-box-models-on-original-and-transformed-datasets" class="anchor" aria-hidden="true"></a>Creating white-box models on original and transformed datasets</h2>
+<div class="section level2">
+<h2 id="creating-white-box-models-on-original-and-transformed-datasets">Creating white-box models on original and transformed datasets<a class="anchor" aria-label="anchor" href="#creating-white-box-models-on-original-and-transformed-datasets"></a>
+</h2>
 <p>Let’s fit the models to data containing newly created columns. We consider a generalized linear model (glm) as a white-box model.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_lr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">left</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data3_trans_sel</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
@@ -477,9 +477,9 @@
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">model_lr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">left</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">data1</span>, family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html" class="external-link">binomial</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="comparing-models-performance" class="section level2">
-<h2 class="hasAnchor">
-<a href="#comparing-models-performance" class="anchor" aria-hidden="true"></a>Comparing models performance</h2>
+<div class="section level2">
+<h2 id="comparing-models-performance">Comparing models performance<a class="anchor" aria-label="anchor" href="#comparing-models-performance"></a>
+</h2>
 <p>Final step is the comparison of all four models we have created. For each of them we make predictions on the relevant test set, i.e. we use <code>model_lr1</code> and <code>model_xgb1</code> to predict the output for <code>data2</code> and <code>model_lr2</code> and <code>model_xgb2</code> to predict the output for <code>data4</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pred_lr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">model_lr1</span>, <span class="va">data2</span>, type <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span><span class="op">)</span>
@@ -622,7 +622,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Alicja Gosiewska, Anna Gierlak, Przemyslaw Biecek.</p>
+  <p>Developed by .</p>
 </div>
 
 <div class="pkgdown">
