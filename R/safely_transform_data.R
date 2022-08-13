@@ -31,7 +31,7 @@
 
 safely_transform_data <- function(safe_extractor, data, verbose = TRUE) {
 
-  if (class(safe_extractor) != "safe_extractor") {
+  if (!inhehrits(safe_extractor, "safe_extractor")) {
     stop(paste0("No applicable method for 'safely_transform_data' applied to an object of class '", class(safe_extractor), "'."))
   }
   if (is.null(data)) {

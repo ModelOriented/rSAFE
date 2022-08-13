@@ -42,7 +42,7 @@
 
 safely_select_variables <- function(safe_extractor, data, y = NULL, which_y = NULL, class_pred = NULL, verbose = TRUE) {
 
-  if (class(safe_extractor) != "safe_extractor") {
+  if (inherits(safe_extractor, "safe_extractor")) {
     stop(paste0("No applicable method for 'safely_select_variables' applied to an object of class '", class(safe_extractor), "'."))
   }
   if (is.null(data)) {

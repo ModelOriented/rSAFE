@@ -34,7 +34,7 @@
 
 safely_transform_categorical <- function(explainer, variable, method = "complete", B = 500, collapse = "_") {
 
-  if (class(explainer) != "explainer") {
+  if (inherits(explainer, "explainer")) {
     stop(paste0("No applicable method for 'safely_transform_categorical' applied to an object of class '", class(explainer), "'."))
   }
   if (! variable %in% colnames(explainer$data)) {

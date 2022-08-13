@@ -37,7 +37,7 @@
 
 safely_transform_continuous <- function(explainer, variable, response_type = "ale", grid_points = 50, N = 200, penalty = "MBIC", nquantiles = 10, no_segments = 2) {
 
-  if (class(explainer) != "explainer") {
+  if (inherits(explainer, "explainer")) {
     stop(paste0("No applicable method for 'safely_transform_continuous' applied to an object of class '", class(explainer), "'."))
   }
   if (! variable %in% colnames(explainer$data)) {
