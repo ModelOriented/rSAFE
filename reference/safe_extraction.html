@@ -26,7 +26,7 @@ for surrogate feature extraction."><meta property="og:image" content="/logo.png"
         <div class="info">
           <span class="partof">part of the <a href="https://github.com/ModelOriented/DrWhy" class="external-link">DrWhy.AI</a>
            developed by the <a href="https://mi2.mini.pw.edu.pl/" class="external-link">MI^2 DataLab</a> </span>
-          <span class="version version-default">0.1.3</span>
+          <span class="version version-default">0.1.4</span>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@ for surrogate feature extraction."><meta property="og:image" content="/logo.png"
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -76,65 +76,94 @@ for surrogate feature extraction.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">safe_extraction</span><span class="op">(</span>
-  <span class="va">explainer</span>,
-  response_type <span class="op">=</span> <span class="st">"ale"</span>,
-  grid_points <span class="op">=</span> <span class="fl">50</span>,
-  N <span class="op">=</span> <span class="fl">200</span>,
-  penalty <span class="op">=</span> <span class="st">"MBIC"</span>,
-  nquantiles <span class="op">=</span> <span class="fl">10</span>,
-  no_segments <span class="op">=</span> <span class="fl">2</span>,
-  method <span class="op">=</span> <span class="st">"complete"</span>,
-  B <span class="op">=</span> <span class="fl">500</span>,
-  collapse <span class="op">=</span> <span class="st">"_"</span>,
-  interactions <span class="op">=</span> <span class="cn">FALSE</span>,
-  inter_param <span class="op">=</span> <span class="fl">0.25</span>,
-  inter_threshold <span class="op">=</span> <span class="fl">0.25</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">safe_extraction</span><span class="op">(</span></span>
+<span>  <span class="va">explainer</span>,</span>
+<span>  response_type <span class="op">=</span> <span class="st">"ale"</span>,</span>
+<span>  grid_points <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  N <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  penalty <span class="op">=</span> <span class="st">"MBIC"</span>,</span>
+<span>  nquantiles <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  no_segments <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"complete"</span>,</span>
+<span>  B <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  collapse <span class="op">=</span> <span class="st">"_"</span>,</span>
+<span>  interactions <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  inter_param <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  inter_threshold <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>explainer</dt>
 <dd><p>DALEX explainer created with explain() function</p></dd>
+
+
 <dt>response_type</dt>
 <dd><p>character, type of response to be calculated, one of: "pdp", "ale".
 If features are uncorrelated, one can use "pdp" type - otherwise "ale" is strongly recommended.</p></dd>
+
+
 <dt>grid_points</dt>
 <dd><p>number of points on x-axis used for creating the PD/ALE plot, default 50</p></dd>
+
+
 <dt>N</dt>
 <dd><p>number of observations from the dataset used for creating the PD/ALE plot, default 200</p></dd>
+
+
 <dt>penalty</dt>
 <dd><p>penalty for introducing another changepoint,
 one of "AIC", "BIC", "SIC", "MBIC", "Hannan-Quinn" or numeric non-negative value</p></dd>
+
+
 <dt>nquantiles</dt>
 <dd><p>the number of quantiles used in integral approximation</p></dd>
+
+
 <dt>no_segments</dt>
 <dd><p>numeric, a number of segments variable is to be divided into in case of founding no breakpoints</p></dd>
+
+
 <dt>method</dt>
 <dd><p>the agglomeration method to be used in hierarchical clustering, one of:
 "ward.D", "ward.D2", "single", "complete", "average", "mcquitty", "median", "centroid"</p></dd>
+
+
 <dt>B</dt>
 <dd><p>number of reference datasets used to calculate gap statistics</p></dd>
+
+
 <dt>collapse</dt>
 <dd><p>a character string to separate original levels while combining them to the new one</p></dd>
+
+
 <dt>interactions</dt>
 <dd><p>logical, if interactions between variables are to be taken into account</p></dd>
+
+
 <dt>inter_param</dt>
 <dd><p>numeric, a positive value indicating which of single observation non-additive effects
 are to be regarded as significant, the higher value the higher non-additive effect has to be to be taken
 into account</p></dd>
+
+
 <dt>inter_threshold</dt>
 <dd><p>numeric, a value from <code>[0,1]</code> interval indicating which interactions should be returned
 as significant. It corresponds to the percentage of observations for which interaction measure is greater
 than inter_param - if this percentage is less than inter_threshold then interaction effect is ignored.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>logical, if progress bar is to be printed</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>safe_extractor object containing information about variables transformation</p>
+    
+
+<p>safe_extractor object containing information about variables transformation</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -143,22 +172,22 @@ than inter_param - if this percentage is less than inter_threshold then interact
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dalex.drwhy.ai" class="external-link">DALEX</a></span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Welcome to DALEX (version: 2.3.0).</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://modeloriented.github.io/DALEX/" class="external-link">DALEX</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Welcome to DALEX (version: 2.4.2).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Find examples and detailed introduction at: http://ema.drwhy.ai/</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" class="external-link">randomForest</a></span><span class="op">)</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> randomForest 4.7-1</span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stat.berkeley.edu/~breiman/RandomForests/" class="external-link">randomForest</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> randomForest 4.7-1.1</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Type rfNews() to see new features/changes/bug fixes.</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ModelOriented/rSAFE" class="external-link">rSAFE</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">apartments</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,<span class="op">]</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">model_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html" class="external-link">randomForest</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">construction.year</span> <span class="op">+</span> <span class="va">surface</span> <span class="op">+</span> <span class="va">floor</span> <span class="op">+</span></span>
-<span class="r-in">                           <span class="va">no.rooms</span> <span class="op">+</span> <span class="va">district</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">explainer_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dalex.drwhy.ai/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model_rf</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">safe_extractor</span> <span class="op">&lt;-</span> <span class="fu">safe_extraction</span><span class="op">(</span><span class="va">explainer_rf</span>, grid_points <span class="op">=</span> <span class="fl">30</span>, N <span class="op">=</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">safe_extractor</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ModelOriented/rSAFE" class="external-link">rSAFE</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">apartments</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">500</span>,<span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">111</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">model_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/randomForest/man/randomForest.html" class="external-link">randomForest</a></span><span class="op">(</span><span class="va">m2.price</span> <span class="op">~</span> <span class="va">construction.year</span> <span class="op">+</span> <span class="va">surface</span> <span class="op">+</span> <span class="va">floor</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>                           <span class="va">no.rooms</span> <span class="op">+</span> <span class="va">district</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">explainer_rf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://modeloriented.github.io/DALEX/reference/explain.html" class="external-link">explain</a></span><span class="op">(</span><span class="va">model_rf</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">data</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">safe_extractor</span> <span class="op">&lt;-</span> <span class="fu">safe_extraction</span><span class="op">(</span><span class="va">explainer_rf</span>, grid_points <span class="op">=</span> <span class="fl">30</span>, N <span class="op">=</span> <span class="fl">100</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">safe_extractor</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable 'construction.year' - selected intervals:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	(-Inf, 1943]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  	(1943, 1994]</span>
@@ -177,9 +206,9 @@ than inter_param - if this percentage is less than inter_threshold then interact
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bemowo, Bielany, Ursus, Ursynow, Praga, Wola -&gt;  Bemowo_Bielany_Praga_Ursus_Ursynow_Wola </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Zoliborz, Mokotow, Ochota -&gt;  Mokotow_Ochota_Zoliborz </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Srodmiescie -&gt;  Srodmiescie </span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">safe_extractor</span>, variable <span class="op">=</span> <span class="st">"construction.year"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">safe_extractor</span>, variable <span class="op">=</span> <span class="st">"construction.year"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="safe_extraction-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>

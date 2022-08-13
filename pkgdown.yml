@@ -1,8 +1,8 @@
 pandoc: 2.7.3
-pkgdown: 2.0.2.9000
-pkgdown_sha: ae7363faac9040a473a54fb3d770decdfb8dfec1
+pkgdown: 2.0.6.9000
+pkgdown_sha: 956f076f661eb2de9413f64ea24a580cf444466d
 articles:
   example_apartments: example_apartments.html
   example_hr: example_hr.html
-last_built: 2022-02-09T15:36Z
+last_built: 2022-08-13T11:08Z
 
