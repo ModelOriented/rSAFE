@@ -38,7 +38,7 @@
 
 safely_detect_interactions <- function(explainer, inter_param = 0.5, inter_threshold = 0.5, verbose = TRUE) {
 
-  if (inherits(explainer, "explainer")) {
+  if (!inherits(explainer, "explainer")) {
     stop(paste0("No applicable method for 'safely_detect_interactions' applied to an object of class '", class(explainer), "'."))
   }
   if (!is.numeric(inter_param) | inter_param<=0) {

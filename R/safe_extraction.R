@@ -51,8 +51,7 @@
 #' @export
 
 safe_extraction <- function(explainer, response_type = "ale", grid_points = 50, N = 200, penalty = "MBIC", nquantiles = 10, no_segments = 2, method = "complete", B = 500, collapse = "_", interactions = FALSE, inter_param = 0.25, inter_threshold = 0.25, verbose = TRUE) {
-
-  if inherits(explainer, "explainer") {
+  if (!inherits(explainer, "explainer")) {
     stop(paste0("No applicable method for 'safe_extraction' applied to an object of class '", class(explainer), "'."))
   }
   if (! response_type %in% c("pdp", "ale")) {
