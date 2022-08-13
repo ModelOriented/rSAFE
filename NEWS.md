@@ -1,3 +1,7 @@
+# version 0.1.4
+- Fixes for compatibility with HTML5.
+- Use `inherit()` to check object class.
+
 # version 0.1.3
 - Updated DESCRIPTION (arxiv link changed to doi).
 - Added citation to [Simpler is better: Lifting interpretability-performance trade-off via automated feature engineering](https://doi.org/10.1016/j.dss.2021.113556).
